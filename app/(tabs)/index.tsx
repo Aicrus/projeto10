@@ -4,10 +4,12 @@ import { HelloWave } from '@/components/HelloWave';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemeSelector } from '@/components/ThemeSelector';
+import { Sidebar } from '@/components/Sidebar';
 
 export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
+      <Sidebar onNavigate={(route) => console.log('Navegando para:', route)} />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
@@ -60,10 +62,12 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'row',
   },
   scrollContent: {
     padding: 16,
     gap: 16,
+    flex: 1,
   },
   titleContainer: {
     flexDirection: 'row',

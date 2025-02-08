@@ -101,12 +101,13 @@ export default function DesignSystemScreen() {
           <ThemedView style={styles.colorSection}>
             <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores de Interface</ThemedText>
             <ThemedText style={styles.colorSectionDescription}>
-              Utilizadas em ícones e elementos de navegação
+              Utilizadas em ícones, elementos de navegação e divisórias
             </ThemedText>
             <View style={styles.colorsGrid}>
               <ColorBox color={COLORS[currentTheme].icon} name="Icon" />
               <ColorBox color={COLORS[currentTheme].tabIconDefault} name="Tab Icon" />
               <ColorBox color={COLORS[currentTheme].tabIconSelected} name="Tab Selected" />
+              <ColorBox color={COLORS[currentTheme].divider} name="Divider" />
             </View>
           </ThemedView>
 

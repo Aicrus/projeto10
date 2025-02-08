@@ -9,6 +9,8 @@ export const COLORS = {
     icon: '#71717A',    // Cor padrão para ícones
     tabIconDefault: '#71717A', // Cor dos ícones inativos na tab
     tabIconSelected: '#0a7ea4', // Cor dos ícones ativos na tab (igual à primary)
+    divider: '#EBEBEB',  // Cor para linhas divisórias no tema claro
+    hover: '#00000008', // Cor do hover no tema claro
   },
   dark: {
     primary: '#0a7ea4', // Cor principal do projeto
@@ -17,6 +19,8 @@ export const COLORS = {
     icon: '#A1A1AA',    // Cor padrão para ícones no tema escuro
     tabIconDefault: '#A1A1AA', // Cor dos ícones inativos na tab no tema escuro
     tabIconSelected: '#fff', // Cor dos ícones ativos na tab no tema escuro
+    divider: '#292929',  // Cor para linhas divisórias no tema escuro
+    hover: '#FFFFFF08', // Cor do hover no tema escuro
   },
 } as const;
 

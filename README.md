@@ -29,6 +29,10 @@ O projeto se adapta automaticamente a três tipos de tela:
 Na tela de Design System você encontra:
 
 - 🎨 Cores do Sistema
+  - Cores Primárias
+  - Cores Base (texto e fundo)
+  - Cores de Interface (ícones e navegação)
+  - Cores de Divisão (claro: #EBEBEB, escuro: #292929)
 - 📝 Tipografia
 - 📏 Breakpoints
 - ⚡ Feedback Visual
