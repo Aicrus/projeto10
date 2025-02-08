@@ -86,13 +86,13 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
   const themeColors = COLORS[currentTheme as keyof typeof COLORS];
 
   const menuItems = [
-    { icon: 'LayoutDashboard', label: 'Dash', route: '/', isActive: true },
+    { icon: 'LayoutDashboard', label: 'Dashboard', route: '/', isActive: true },
     { icon: 'RotateCw', label: 'Transações', route: '/transactions' },
     { icon: 'Wallet', label: 'Carteira', route: '/wallet' },
     { icon: 'Target', label: 'Objetivos', route: '/goals' },
     { icon: 'CircleDollarSign', label: 'Orçamento', route: '/budget' },
     { icon: 'LineChart', label: 'Análises', route: '/analytics' },
-    { icon: 'Settings', label: 'Config', route: '/config' }
+    { icon: 'Settings', label: 'Configurações', route: '/config' }
   ];
 
   return (
