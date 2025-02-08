@@ -1,13 +1,23 @@
 import { StyleSheet, Platform, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Sidebar } from '@/components/Sidebar';
+import { Header } from '@/components/Header';
 import { SPACING } from '@/constants/DesignSystem';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { HelloWave } from '@/components/HelloWave';
+import { ThemeSelector } from '@/components/ThemeSelector';
+
+const EXPANDED_WIDTH = 240;
+const COLLAPSED_WIDTH = 68;
 
 export default function ConfigScreen() {
   const router = useRouter();
+  const { isMobile } = useBreakpoints();
+  const [isExpanded, setIsExpanded] = useState(true);
 
   const handleNavigation = (route: string) => {
     if (route === '/dash') {
@@ -17,18 +27,43 @@ export default function ConfigScreen() {
     }
   };
 
+  const handleSidebarToggle = (expanded: boolean) => {
+    setIsExpanded(expanded);
+  };
+
+  const currentSidebarWidth = isMobile ? 0 : (isExpanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH);
+
   return (
     <ThemedView style={styles.container}>
-      <Sidebar onNavigate={handleNavigation} currentPath="/config" />
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}>
-        <ThemedView style={styles.content}>
-          <ThemedView style={styles.titleContainer}>
-            <ThemedText type="title">Configurações</ThemedText>
+      {!isMobile && (
+        <Sidebar 
+          onNavigate={handleNavigation} 
+          currentPath="/config"
+          onToggle={handleSidebarToggle}
+        />
+      )}
+      <ThemedView style={[
+        styles.mainContent,
+        { marginLeft: currentSidebarWidth }
+      ]}>
+        <Header sidebarWidth={currentSidebarWidth} />
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}>
+          <ThemedView style={styles.content}>
+            <ThemedView style={styles.titleContainer}>
+              <ThemedText type="title">Configurações</ThemedText>
+              <HelloWave />
+            </ThemedView>
+
+            <ThemedView style={styles.themeContainer}>
+              <ThemedText type="subtitle">Tema do Aplicativo</ThemedText>
+              <ThemeSelector />
+            </ThemedView>
           </ThemedView>
-        </ThemedView>
-      </ScrollView>
+        </ScrollView>
+      </ThemedView>
     </ThemedView>
   );
 }
@@ -37,6 +72,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
+  },
+  mainContent: {
+    flex: 1,
+    ...Platform.select({
+      web: {
+        transition: 'margin-left 0.3s ease',
+      },
+    }),
+  },
+  scrollView: {
+    flex: 1,
+    marginTop: 64, // Altura do header
   },
   content: {
     flex: 1,
@@ -49,6 +96,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.sm,
+    marginBottom: SPACING.xl,
+  },
+  themeContainer: {
     marginBottom: SPACING.xl,
   },
 });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Animated, Platform, Pressable, useColorScheme, useWindowDimensions, TextStyle, ScrollView } from 'react-native';
+import { View, StyleSheet, Animated, Easing, Platform, Pressable, useColorScheme, useWindowDimensions, TextStyle, ScrollView } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { HoverableView } from './HoverableView';
@@ -8,6 +8,7 @@ import * as Icons from 'lucide-react-native';
 import { useTheme } from '@/hooks/ThemeContext';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import type { Theme } from '@/src/hooks/useTheme';
+import { Header } from './Header';
 
 interface SidebarProps {
   onNavigate?: (route: string) => void;
@@ -110,13 +111,15 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
     Animated.parallel([
       Animated.timing(animatedWidth, {
         toValue,
-        duration: 300,
+        duration: 200,
         useNativeDriver: false,
+        easing: Easing.inOut(Easing.cubic),
       }),
       Animated.timing(fadeAnim, {
         toValue: isExpanded ? 0 : 1,
         duration: 200,
         useNativeDriver: true,
+        easing: Easing.inOut(Easing.cubic),
       }),
     ]).start();
     setIsExpanded(!isExpanded);
@@ -141,178 +144,181 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
   };
 
   return (
-    <Animated.View style={[
-      styles.container,
-      {
-        width: animatedWidth,
-        backgroundColor: currentTheme === 'dark' ? '#151718' : 'white',
-        borderRightWidth: 0.5,
-        borderRightColor: themeColors.divider,
-      }
-    ]}>
-      <ThemedView style={styles.content}>
-        <ThemedView style={[styles.header, { backgroundColor: 'transparent' }]}>
-          <View style={[
-            styles.logoContainer,
-            { backgroundColor: themeColors.primary }
-          ]}>
-            <ThemedText style={[
-              styles.logoText,
-              typography.title,
-              { fontSize: typography.title.fontSize * 0.8 }
-            ]} type="title">A</ThemedText>
-          </View>
-          <Animated.View style={{
-            opacity: fadeAnim,
-            transform: [{ translateX: fadeAnim.interpolate({
-              inputRange: [0, 1],
-              outputRange: [-20, 0]
-            })}]
-          }}>
-            {isExpanded && (
-              <ThemedText type="subtitle" style={[styles.brandText, typography.subtitle]}>
-                Aicrus Tech
-              </ThemedText>
-            )}
-          </Animated.View>
-          <HoverableView
-            onPress={toggleSidebar}
-            style={[
-              styles.toggleButton,
-              {
-                backgroundColor: currentTheme === 'dark' ? '#222' : 'white',
-                right: -8,
-                top: 56,
-                borderColor: themeColors.divider,
-                borderWidth: 1,
-              }
-            ]}
-            hoverScale={1.02}
+    <>
+      <Header sidebarWidth={animatedWidth} />
+      <Animated.View style={[
+        styles.container,
+        {
+          width: animatedWidth,
+          backgroundColor: currentTheme === 'dark' ? '#151718' : 'white',
+          borderRightWidth: 0.5,
+          borderRightColor: themeColors.divider,
+        }
+      ]}>
+        <ThemedView style={styles.content}>
+          <ThemedView style={[styles.header, { backgroundColor: 'transparent' }]}>
+            <View style={[
+              styles.logoContainer,
+              { backgroundColor: themeColors.primary }
+            ]}>
+              <ThemedText style={[
+                styles.logoText,
+                typography.title,
+                { fontSize: typography.title.fontSize * 0.8 }
+              ]} type="title">A</ThemedText>
+            </View>
+            <Animated.View style={{
+              opacity: fadeAnim,
+              transform: [{ translateX: fadeAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [-20, 0]
+              })}]
+            }}>
+              {isExpanded && (
+                <ThemedText type="subtitle" style={[styles.brandText, typography.subtitle]}>
+                  Aicrus Tech
+                </ThemedText>
+              )}
+            </Animated.View>
+            <HoverableView
+              onPress={toggleSidebar}
+              style={[
+                styles.toggleButton,
+                {
+                  backgroundColor: currentTheme === 'dark' ? '#222' : 'white',
+                  right: -8,
+                  top: 56,
+                  borderColor: themeColors.divider,
+                  borderWidth: 1,
+                }
+              ]}
+              hoverScale={1.02}
+            >
+              {isExpanded ? (
+                <Icons.ChevronLeft 
+                  color={currentTheme === 'dark' ? '#fff' : themeColors.primary} 
+                  size={16} 
+                  strokeWidth={2} 
+                />
+              ) : (
+                <Icons.ChevronRight 
+                  color={currentTheme === 'dark' ? '#fff' : themeColors.primary} 
+                  size={16} 
+                  strokeWidth={2} 
+                />
+              )}
+            </HoverableView>
+          </ThemedView>
+
+          <ScrollView 
+            style={styles.scrollContainer}
+            showsVerticalScrollIndicator={Platform.OS === 'web'}
+            scrollIndicatorInsets={{ right: 2 }}
+            contentContainerStyle={styles.scrollContent}
           >
-            {isExpanded ? (
-              <Icons.ChevronLeft 
-                color={currentTheme === 'dark' ? '#fff' : themeColors.primary} 
-                size={16} 
-                strokeWidth={2} 
-              />
-            ) : (
-              <Icons.ChevronRight 
-                color={currentTheme === 'dark' ? '#fff' : themeColors.primary} 
-                size={16} 
-                strokeWidth={2} 
-              />
-            )}
-          </HoverableView>
+            <View style={styles.menuContainer}>
+              {menuItems.map((item, index) => {
+                const IconComponent = (Icons as any)[item.icon];
+                const isActive = currentPath === item.route;
+                
+                return (
+                  <HoverableView
+                    key={index}
+                    onPress={() => handleNavigation(item.route, item.canNavigate)}
+                    style={styles.menuItem}
+                    isActive={isActive}
+                    activeBackgroundColor={themeColors.primary + '15'}
+                    hoverTranslateX={4}
+                  >
+                    <View style={styles.menuIconContainer}>
+                      <IconComponent
+                        size={20}
+                        color={isActive ? themeColors.primary : currentTheme === 'dark' ? '#fff' : themeColors.text}
+                        strokeWidth={2}
+                      />
+                    </View>
+                    {isExpanded && (
+                      <Animated.View style={{
+                        opacity: fadeAnim,
+                        transform: [{ translateX: fadeAnim.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [-20, 0]
+                        })}]
+                      }}>
+                        <ThemedText
+                          style={[
+                            styles.menuItemText,
+                            typography.body,
+                            isActive && { color: themeColors.primary }
+                          ]}
+                        >
+                          {item.label}
+                        </ThemedText>
+                      </Animated.View>
+                    )}
+                    {isActive && (
+                      <View style={[
+                        styles.activeIndicator,
+                        { backgroundColor: themeColors.primary }
+                      ]} />
+                    )}
+                  </HoverableView>
+                );
+              })}
+            </View>
+
+            <View style={[
+              styles.footer,
+              { 
+                borderTopColor: themeColors.divider,
+                marginTop: 'auto',
+                paddingTop: SPACING.lg,
+                borderTopWidth: 1,
+                marginBottom: SPACING.xl,
+              }
+            ]}>
+              {['Ajuda', 'Sair'].map((label, index) => {
+                const IconComponent = index === 0 ? Icons.HelpCircle : Icons.LogOut;
+                return (
+                  <HoverableView
+                    key={label}
+                    style={styles.menuItem}
+                    hoverTranslateX={4}
+                    activeBackgroundColor={themeColors.hover}
+                  >
+                    <View style={styles.menuIconContainer}>
+                      <IconComponent
+                        size={20}
+                        color={currentTheme === 'dark' ? '#fff' : themeColors.text}
+                        strokeWidth={2}
+                      />
+                    </View>
+                    {isExpanded && (
+                      <Animated.View style={{
+                        opacity: fadeAnim,
+                        transform: [{ translateX: fadeAnim.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [-20, 0]
+                        })}]
+                      }}>
+                        <ThemedText
+                          style={[
+                            styles.menuItemText,
+                            typography.body
+                          ]}
+                        >
+                          {label}
+                        </ThemedText>
+                      </Animated.View>
+                    )}
+                  </HoverableView>
+                );
+              })}
+            </View>
+          </ScrollView>
         </ThemedView>
-
-        <ScrollView 
-          style={styles.scrollContainer}
-          showsVerticalScrollIndicator={Platform.OS === 'web'}
-          scrollIndicatorInsets={{ right: 2 }}
-          contentContainerStyle={styles.scrollContent}
-        >
-          <View style={styles.menuContainer}>
-            {menuItems.map((item, index) => {
-              const IconComponent = (Icons as any)[item.icon];
-              const isActive = currentPath === item.route;
-              
-              return (
-                <HoverableView
-                  key={index}
-                  onPress={() => handleNavigation(item.route, item.canNavigate)}
-                  style={styles.menuItem}
-                  isActive={isActive}
-                  activeBackgroundColor={themeColors.primary + '15'}
-                  hoverTranslateX={4}
-                >
-                  <View style={styles.menuIconContainer}>
-                    <IconComponent
-                      size={20}
-                      color={isActive ? themeColors.primary : currentTheme === 'dark' ? '#fff' : themeColors.text}
-                      strokeWidth={2}
-                    />
-                  </View>
-                  {isExpanded && (
-                    <Animated.View style={{
-                      opacity: fadeAnim,
-                      transform: [{ translateX: fadeAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [-20, 0]
-                      })}]
-                    }}>
-                      <ThemedText
-                        style={[
-                          styles.menuItemText,
-                          typography.body,
-                          isActive && { color: themeColors.primary }
-                        ]}
-                      >
-                        {item.label}
-                      </ThemedText>
-                    </Animated.View>
-                  )}
-                  {isActive && (
-                    <View style={[
-                      styles.activeIndicator,
-                      { backgroundColor: themeColors.primary }
-                    ]} />
-                  )}
-                </HoverableView>
-              );
-            })}
-          </View>
-
-          <View style={[
-            styles.footer,
-            { 
-              borderTopColor: themeColors.divider,
-              marginTop: 'auto',
-              paddingTop: SPACING.lg,
-              borderTopWidth: 1,
-              marginBottom: SPACING.xl,
-            }
-          ]}>
-            {['Ajuda', 'Sair'].map((label, index) => {
-              const IconComponent = index === 0 ? Icons.HelpCircle : Icons.LogOut;
-              return (
-                <HoverableView
-                  key={label}
-                  style={styles.menuItem}
-                  hoverTranslateX={4}
-                  activeBackgroundColor={themeColors.hover}
-                >
-                  <View style={styles.menuIconContainer}>
-                    <IconComponent
-                      size={20}
-                      color={currentTheme === 'dark' ? '#fff' : themeColors.text}
-                      strokeWidth={2}
-                    />
-                  </View>
-                  {isExpanded && (
-                    <Animated.View style={{
-                      opacity: fadeAnim,
-                      transform: [{ translateX: fadeAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [-20, 0]
-                      })}]
-                    }}>
-                      <ThemedText
-                        style={[
-                          styles.menuItemText,
-                          typography.body
-                        ]}
-                      >
-                        {label}
-                      </ThemedText>
-                    </Animated.View>
-                  )}
-                </HoverableView>
-              );
-            })}
-          </View>
-        </ScrollView>
-      </ThemedView>
-    </Animated.View>
+      </Animated.View>
+    </>
   );
 };
 
