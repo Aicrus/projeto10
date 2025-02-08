@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import { Home, Compass } from 'lucide-react-native';
+import { LayoutDashboard, Settings } from 'lucide-react-native';
 
 import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
@@ -86,15 +86,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <Home size={ICONS.sizes.md} color={color} strokeWidth={1.5} />,
+          title: 'Dash',
+          tabBarIcon: ({ color }) => <LayoutDashboard size={ICONS.sizes.md} color={color} strokeWidth={1.5} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <Compass size={ICONS.sizes.md} color={color} strokeWidth={1.5} />,
+          title: 'Config',
+          tabBarIcon: ({ color }) => <Settings size={ICONS.sizes.md} color={color} strokeWidth={1.5} />,
         }}
       />
     </Tabs>

@@ -86,13 +86,13 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
   const themeColors = COLORS[currentTheme as keyof typeof COLORS];
 
   const menuItems = [
-    { icon: 'LayoutDashboard', label: 'Dashboard', isActive: true },
-    { icon: 'RotateCw', label: 'Transações' },
-    { icon: 'Wallet', label: 'Carteira' },
-    { icon: 'Target', label: 'Objetivos' },
-    { icon: 'CircleDollarSign', label: 'Orçamento' },
-    { icon: 'LineChart', label: 'Análises' },
-    { icon: 'Settings', label: 'Configurações' }
+    { icon: 'LayoutDashboard', label: 'Dash', route: '/', isActive: true },
+    { icon: 'RotateCw', label: 'Transações', route: '/transactions' },
+    { icon: 'Wallet', label: 'Carteira', route: '/wallet' },
+    { icon: 'Target', label: 'Objetivos', route: '/goals' },
+    { icon: 'CircleDollarSign', label: 'Orçamento', route: '/budget' },
+    { icon: 'LineChart', label: 'Análises', route: '/analytics' },
+    { icon: 'Settings', label: 'Config', route: '/config' }
   ];
 
   return (
@@ -171,7 +171,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
               return (
                 <HoverableView
                   key={index}
-                  onPress={() => onNavigate?.(item.label)}
+                  onPress={() => onNavigate?.(item.route)}
                   style={styles.menuItem}
                   isActive={item.isActive}
                   activeBackgroundColor={themeColors.primary + '15'}
