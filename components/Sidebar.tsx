@@ -158,8 +158,9 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
           ]}>
             <ThemedText style={[
               styles.logoText,
-              typography.title
-            ]} type="title">F</ThemedText>
+              typography.title,
+              { fontSize: typography.title.fontSize * 0.8 }
+            ]} type="title">A</ThemedText>
           </View>
           <Animated.View style={{
             opacity: fadeAnim,
@@ -170,7 +171,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
           }}>
             {isExpanded && (
               <ThemedText type="subtitle" style={[styles.brandText, typography.subtitle]}>
-                FinSet
+                Aicrus Tech
               </ThemedText>
             )}
           </Animated.View>
