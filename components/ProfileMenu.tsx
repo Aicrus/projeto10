@@ -99,7 +99,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
             transform: [{ translateY: translateYAnim }],
             ...Platform.select({
               native: {
-                top: SPACING.xs + 52 + 35
+                top: 55
               }
             })
           },

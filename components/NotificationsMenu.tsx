@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Animated, Pressable, Platform, Dimensions } from 'react-native';
+import { StyleSheet, View, Animated, Pressable, Platform, Dimensions, ScrollView } from 'react-native';
 import { Clock, DollarSign, Bell, ArrowUpRight } from 'lucide-react-native';
 import { ThemedText } from './ThemedText';
 import { HoverableView } from './HoverableView';
@@ -116,7 +116,7 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
             transform: [{ translateY: translateYAnim }],
             ...Platform.select({
               native: {
-                top: SPACING.xs + 52 + 35
+                top: 55
               }
             })
           },
@@ -129,7 +129,7 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
 
         <View style={[styles.divider, { backgroundColor: themeColors.divider }]} />
 
-        <View style={styles.notificationsList}>
+        <ScrollView style={styles.notificationsList} showsVerticalScrollIndicator={false}>
           {NOTIFICATIONS.map((notification) => (
             <HoverableView
               key={notification.id}
@@ -172,7 +172,7 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
               )}
             </HoverableView>
           ))}
-        </View>
+        </ScrollView>
 
         <View style={[styles.divider, { backgroundColor: themeColors.divider }]} />
 
@@ -214,7 +214,8 @@ const styles = StyleSheet.create({
       },
       default: {
         position: 'absolute',
-        right: SPACING.lg + 60,
+        right: SPACING.lg + 50,
+        top: -5,
       }
     }),
     width: 320,
