@@ -11,9 +11,12 @@ interface PageContainerProps {
 export function PageContainer({ children, style }: PageContainerProps) {
   const { isMobile, isTablet, isDesktop } = useBreakpoints();
 
-  const nativePadding = {
-    bottom: Platform.OS !== 'web' ? 75 : undefined,
-    top: Platform.OS !== 'web' ? 35 : undefined,
+  const nativePadding = Platform.OS !== 'web' ? {
+    paddingBottom: 75,
+    paddingTop: 45,
+  } : {
+    paddingBottom: undefined,
+    paddingTop: undefined,
   };
 
   return (
@@ -23,8 +26,7 @@ export function PageContainer({ children, style }: PageContainerProps) {
         maxWidth: isDesktop ? 1200 : 800,
         paddingHorizontal: isMobile ? SPACING.md : isTablet ? SPACING.xl : SPACING.xxl,
         paddingVertical: isMobile ? SPACING.md : isTablet ? SPACING.xl : SPACING.xxl,
-        paddingBottom: nativePadding.bottom,
-        paddingTop: nativePadding.top,
+        ...nativePadding,
       },
       style
     ]}>

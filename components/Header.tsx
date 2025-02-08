@@ -108,7 +108,10 @@ export function Header({ sidebarWidth, onNavigate }: HeaderProps) {
 const styles = StyleSheet.create({
   header: {
     height: 64,
-    position: 'fixed',
+    position: Platform.select({
+      web: 'fixed',
+      default: 'absolute'
+    }) as 'fixed' | 'absolute',
     top: 0,
     backgroundColor: 'transparent',
     borderBottomWidth: 1,
