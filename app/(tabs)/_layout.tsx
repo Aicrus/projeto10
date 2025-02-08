@@ -52,8 +52,8 @@ export default function TabLayout() {
             web: {
               ...styles.webTabBar,
               backgroundColor: currentTheme === 'dark' 
-                ? 'rgba(0, 0, 0, 0.25)' 
-                : 'rgba(255, 255, 255, 0.25)',
+                ? 'rgba(0, 0, 0, 0.75)' 
+                : 'rgba(255, 255, 255, 0.75)',
               backdropFilter: 'blur(12px)',
               WebkitBackdropFilter: 'blur(12px)',
             },
