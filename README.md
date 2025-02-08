@@ -35,19 +35,42 @@ Na tela de Design System você encontra:
 - 📐 Sistema de Espaçamento
 - 🔲 Sistema de Elevação (Sombras)
 - 🧩 Biblioteca de Componentes
-- 🎭 Sistema de Ícones (SF Symbols via Expo)
+- 🎭 Sistema de Ícones (Lucide React)
 
 ### 🎯 Barra de Navegação (Tab Bar)
 
 Nossa Tab Bar é adaptativa e oferece uma experiência consistente em todas as plataformas:
 
-#### 🌐 Diferenças Web vs. Nativo:
-- **Web**: Ícones ficam acima do texto com efeito de vidro (blur)
-- **Nativo**: Ícones ficam ao lado do texto com background semi-transparente
-
 #### 🎨 Personalizando a Tab Bar:
 
-1. **Cores dos Ícones e Textos**:
+1. **Trocando os Ícones**:
+   ```typescript
+   // Em app/(tabs)/_layout.tsx, importe os ícones que deseja usar:
+   import { Home, Search, User, Palette } from 'lucide-react-native';
+   
+   // Use nas Tab Screens:
+   <Tabs.Screen
+     name="index"
+     options={{
+       title: 'Home',
+       tabBarIcon: ({ color }) => (
+         <Home 
+           size={ICONS.sizes.md}
+           color={color} 
+           strokeWidth={1.5}
+         />
+       ),
+     }}
+   />
+   ```
+
+   > 💡 **Dica**: Veja todos os ícones disponíveis em [lucide.dev/icons](https://lucide.dev/icons)
+   > - Para ícones de home: `Home`, `LayoutDashboard`, `LayoutGrid`
+   > - Para explorar: `Compass`, `Search`, `Globe`
+   > - Para perfil: `User`, `UserCircle`
+   > - Para configurações: `Settings`, `Sliders`
+
+2. **Cores dos Ícones**:
    - Edite em `constants/DesignSystem.ts`:
    ```typescript
    COLORS: {
@@ -58,7 +81,7 @@ Nossa Tab Bar é adaptativa e oferece uma experiência consistente em todas as p
    }
    ```
 
-2. **Background**:
+3. **Background**:
    - **Web**: Em `app/(tabs)/_layout.tsx`, ajuste:
      ```typescript
      backgroundColor: currentTheme === 'dark' 
@@ -68,13 +91,6 @@ Nossa Tab Bar é adaptativa e oferece uma experiência consistente em todas as p
    - **iOS**: Em `components/ui/TabBarBackground.ios.tsx`, ajuste a `intensity` do blur
    - **Android**: Em `components/ui/TabBarBackground.tsx`, ajuste a opacidade do rgba
 
-3. **Ícones**:
-   - Troque os ícones em `app/(tabs)/_layout.tsx`:
-   ```typescript
-   tabBarIcon: ({ color }) => <IconSymbol name="seu-icone" size={28} color={color} />
-   ```
-   - Lista completa de ícones: [SF Symbols via Expo](https://icons.expo.fyi/Index)
-
 4. **Espaçamentos**:
    - Ajuste no StyleSheet em `app/(tabs)/_layout.tsx`:
      ```typescript
@@ -83,7 +99,7 @@ Nossa Tab Bar é adaptativa e oferece uma experiência consistente em todas as p
      tabItem: { paddingTop, gap }
      ```
 
-> 💡 **Dica**: Todas as configurações da Tab Bar estão centralizadas em `app/(tabs)/_layout.tsx` com comentários explicativos!
+> 💡 **Dica**: O Lucide React oferece uma grande variedade de ícones modernos e consistentes. Consulte a documentação em [lucide.dev](https://lucide.dev) para ver todos os ícones disponíveis!
 
 ### 🛠️ Personalizando
 

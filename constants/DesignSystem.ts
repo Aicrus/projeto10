@@ -233,25 +233,28 @@ export const SHADOWS = {
 
 // Sistema de Ícones
 export const ICONS = {
-  // Ícones do SF Symbols via Expo
-  // Para usar: <IconSymbol name="icon.name" size={28} color={COLORS[currentTheme].text} />
+  // Ícones do Lucide React
+  // Para Web: import { Home } from 'lucide-react';
+  // Para Native: import { Home } from 'lucide-react-native';
+  // Exemplo Web/Native: <Home size={ICONS.sizes.md} color={COLORS[currentTheme].text} />
   types: {
     navigation: {
-      home: 'house.fill',
-      explore: 'paperplane.fill',
-      profile: 'person.fill',
+      home: 'LayoutDashboard',
+      explore: 'Compass',
+      profile: 'User',
+      designSystem: 'Palette',
     },
     interface: {
-      chevronDown: 'chevron.down',
-      chevronRight: 'chevron.right',
-      close: 'xmark',
-      menu: 'line.3.horizontal',
+      chevronDown: 'ChevronDown',
+      chevronRight: 'ChevronRight',
+      close: 'X',
+      menu: 'Menu',
     },
     feedback: {
-      success: 'checkmark.circle.fill',
-      warning: 'exclamationmark.triangle.fill',
-      error: 'xmark.circle.fill',
-      info: 'info.circle.fill',
+      success: 'CheckCircle',
+      warning: 'AlertTriangle',
+      error: 'XCircle',
+      info: 'Info',
     },
   },
   sizes: {

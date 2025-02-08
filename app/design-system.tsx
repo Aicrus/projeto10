@@ -6,9 +6,9 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { useTheme } from '@/hooks/ThemeContext';
 import { HelloWave } from '@/components/HelloWave';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { FeedbackMessage } from '@/components/FeedbackMessage';
-import { COLORS, FEEDBACK_COLORS, SPACING, SHADOWS } from '@/constants/DesignSystem';
+import { COLORS, FEEDBACK_COLORS, SPACING, SHADOWS, ICONS } from '@/constants/DesignSystem';
+import { Home, Search, User } from 'lucide-react-native';
 
 export default function DesignSystemScreen() {
   const { currentTheme } = useTheme();
@@ -310,119 +310,31 @@ export default function DesignSystemScreen() {
           </ThemedView>
 
           <ThemedView style={[styles.componentGroup, SHADOWS[currentTheme].sm]}>
-            <ThemedText type="defaultSemiBold">IconSymbol</ThemedText>
+            <ThemedText type="defaultSemiBold">Sistema de Ícones</ThemedText>
             <ThemedText style={styles.componentDescription}>
-              Sistema de ícones baseado no SF Symbols via Expo. Oferece uma biblioteca completa de ícones consistentes e personalizáveis.
+              Sistema de ícones baseado no Lucide React. Oferece uma biblioteca completa de ícones consistentes e personalizáveis.
             </ThemedText>
             <ThemedText style={[styles.componentDescription, { marginTop: -8 }]}>
-              Importar de: @/components/ui/IconSymbol
+              Importar de: lucide-react-native
             </ThemedText>
             <View style={styles.iconGrid}>
               <View style={styles.iconItem}>
-                <IconSymbol name="house.fill" size={28} color={COLORS[currentTheme].text} />
-                <ThemedText style={styles.iconLabel}>house.fill</ThemedText>
+                <Home size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
+                <ThemedText style={styles.iconLabel}>Home</ThemedText>
               </View>
               <View style={styles.iconItem}>
-                <IconSymbol name="paperplane.fill" size={28} color={COLORS[currentTheme].text} />
-                <ThemedText style={styles.iconLabel}>paperplane.fill</ThemedText>
+                <Search size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
+                <ThemedText style={styles.iconLabel}>Search</ThemedText>
               </View>
               <View style={styles.iconItem}>
-                <IconSymbol name="person.fill" size={28} color={COLORS[currentTheme].text} />
-                <ThemedText style={styles.iconLabel}>person.fill</ThemedText>
+                <User size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
+                <ThemedText style={styles.iconLabel}>User</ThemedText>
               </View>
             </View>
             <ThemedText style={[styles.componentDescription, { marginTop: 8 }]}>
-              Tamanhos disponíveis: sm (16), md (24), lg (32), xl (40)
+              Personalize com: size, color, strokeWidth
             </ThemedText>
           </ThemedView>
-        </ThemedView>
-
-        {/* Navegação */}
-        <ThemedView style={styles.section}>
-          <SectionTitle>Navegação</SectionTitle>
-          <ThemedText style={styles.sectionDescription}>
-            Componentes de navegação e interação
-          </ThemedText>
-          
-          <ComponentShowcase title="Barra de Navegação (Tabs)">
-            <ThemedText style={styles.componentDescription}>
-              Barra de navegação adaptativa com efeito de vidro e suporte a temas claro/escuro.
-              Na versão web, os ícones ficam em cima do texto, enquanto no mobile ficam ao lado.
-            </ThemedText>
-            {/* 
-              Guia de Personalização:
-              1. Cores:
-                 - Altere as cores em constants/DesignSystem.ts
-                 - COLORS[currentTheme].primary: cor do item selecionado
-                 - COLORS[currentTheme].tabIconDefault: cor dos itens não selecionados
-              
-              2. Background:
-                 - Ajuste a opacidade nos valores de rgba abaixo
-                 - Dark: rgba(0, 0, 0, 0.25)
-                 - Light: rgba(255, 255, 255, 0.25)
-                 
-              3. Blur:
-                 - Ajuste a intensidade no backdropFilter: 'blur(12px)'
-            */}
-            <ThemedView 
-              style={[
-                styles.tabBarDemo,
-                {
-                  backgroundColor: currentTheme === 'dark' 
-                    ? 'rgba(0, 0, 0, 0.25)' 
-                    : 'rgba(255, 255, 255, 0.25)',
-                  backdropFilter: Platform.OS === 'web' ? 'blur(12px)' : undefined,
-                },
-                SHADOWS[currentTheme].sm
-              ]}>
-              <View style={[
-                styles.tabItem,
-                Platform.select({
-                  web: {
-                    ...styles.tabItemWeb,
-                    paddingTop: 0,
-                    marginTop: -4,
-                    height: '100%',
-                    gap: 2,
-                  },
-                  ios: {
-                    ...styles.tabItemMobile,
-                    marginTop: -6,
-                  },
-                  android: {
-                    ...styles.tabItemMobile,
-                    marginTop: -6,
-                  },
-                })
-              ]}>
-                <IconSymbol size={28} name="house.fill" color={COLORS[currentTheme].primary} />
-                <ThemedText style={styles.tabLabel}>Home</ThemedText>
-              </View>
-              <View style={[
-                styles.tabItem,
-                Platform.select({
-                  web: {
-                    ...styles.tabItemWeb,
-                    paddingTop: 0,
-                    marginTop: -4,
-                    height: '100%',
-                    gap: 2,
-                  },
-                  ios: {
-                    ...styles.tabItemMobile,
-                    marginTop: -6,
-                  },
-                  android: {
-                    ...styles.tabItemMobile,
-                    marginTop: -6,
-                  },
-                })
-              ]}>
-                <IconSymbol size={28} name="paperplane.fill" color={COLORS[currentTheme].tabIconDefault} />
-                <ThemedText style={styles.tabLabel}>Explore</ThemedText>
-              </View>
-            </ThemedView>
-          </ComponentShowcase>
         </ThemedView>
 
       </ScrollView>
@@ -637,42 +549,5 @@ const styles = StyleSheet.create({
   colorSectionDescription: {
     opacity: 0.7,
     marginBottom: 16,
-  },
-  tabBarDemo: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    padding: 16,
-    borderRadius: 8,
-    width: '100%',
-    marginTop: 16,
-    backdropFilter: 'blur(10px)',
-  },
-  tabItem: {
-    alignItems: 'center',
-    gap: 8,
-  },
-  tabItemWeb: {
-    flexDirection: 'column',
-  },
-  tabItemMobile: {
-    flexDirection: 'row',
-  },
-  tabLabel: {
-    fontSize: 14,
-  },
-  webTabLabel: {
-    fontSize: 12,
-    lineHeight: 16,
-    marginTop: -2,
-  },
-  tabBarLabelStyle: {
-    fontSize: 12,
-    lineHeight: 16,
-    marginTop: Platform.select({
-      web: -2,
-      ios: -2,
-      android: -2,
-    }),
   },
 }); 

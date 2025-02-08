@@ -1,13 +1,13 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
+import { Home, Compass } from 'lucide-react-native';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { useTheme } from '@/hooks/ThemeContext';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { COLORS } from '@/constants/DesignSystem';
+import { COLORS, ICONS } from '@/constants/DesignSystem';
 
 /**
  * Guia de Personalização da Tab Bar:
@@ -87,14 +87,14 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Home size={ICONS.sizes.md} color={color} strokeWidth={1.5} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Compass size={ICONS.sizes.md} color={color} strokeWidth={1.5} />,
         }}
       />
     </Tabs>
