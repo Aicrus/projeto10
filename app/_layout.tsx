@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 
 import { useTheme } from '@/hooks/ThemeContext';
 import { ThemeProvider } from '@/hooks/ThemeContext';
+import { ToastProvider } from '@/hooks/useToast';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -29,7 +30,9 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      <RootLayoutNav />
+      <ToastProvider>
+        <RootLayoutNav />
+      </ToastProvider>
     </ThemeProvider>
   );
 }

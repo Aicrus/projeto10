@@ -100,13 +100,13 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
       styles.container,
       {
         width: animatedWidth,
-        backgroundColor: currentTheme === 'dark' ? '#111' : 'white',
+        backgroundColor: currentTheme === 'dark' ? '#151718' : 'white',
         borderRightWidth: 0.5,
         borderRightColor: themeColors.divider,
       }
     ]}>
       <ThemedView style={styles.content}>
-        <ThemedView style={[styles.header, { backgroundColor: currentTheme === 'dark' ? '#111' : 'white' }]}>
+        <ThemedView style={[styles.header, { backgroundColor: 'transparent' }]}>
           <View style={[
             styles.logoContainer,
             { backgroundColor: themeColors.primary }

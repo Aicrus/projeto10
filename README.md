@@ -246,3 +246,122 @@ git push
 ---
 
 Feito com ❤️ pela [Aicrus Tech](https://www.aicrustech.com/) para tornar o desenvolvimento mais fácil e divertido!
+
+## 📦 Componentes
+
+### Toast
+
+Sistema de notificações com diferentes tipos de feedback e posições na tela.
+
+```typescript
+import { useToast } from '@/hooks/useToast';
+
+function MeuComponente() {
+  const { showToast } = useToast();
+
+  // Exemplo de uso
+  const mostrarSucesso = () => {
+    showToast({
+      type: 'success', // 'success' | 'warning' | 'error' | 'info'
+      message: 'Operação realizada!',
+      description: 'Os dados foram salvos com sucesso.', // Opcional
+      position: 'top', // Opcional - Padrão: 'top'
+      duration: 5000, // Opcional - Padrão: 5000ms (5 segundos)
+    });
+  };
+}
+```
+
+#### Posições disponíveis
+- `top` (padrão)
+- `bottom`
+- `top-left`
+- `top-right`
+- `bottom-left`
+- `bottom-right`
+
+#### Tipos de Toast
+- `success`: Para operações bem-sucedidas
+- `warning`: Para alertas e avisos
+- `error`: Para erros e falhas
+- `info`: Para informações gerais
+
+#### Características
+- Design consistente com o Design System
+- Animações suaves de entrada e saída
+- Pausa automática ao passar o mouse (web)
+- Pausa ao pressionar (mobile)
+- Responsivo e adaptável a diferentes tamanhos de tela
+- Ícones específicos para cada tipo de feedback
+- Suporte a temas claro e escuro
+
+### Sidebar
+
+Menu lateral responsivo com suporte a navegação.
+
+```typescript
+import { Sidebar } from '@/components/Sidebar';
+
+function App() {
+  return (
+    <Sidebar 
+      onNavigate={(route) => {
+        // Lógica de navegação
+      }} 
+    />
+  );
+}
+```
+
+### ThemeSelector
+
+Componente para alternar entre temas claro, escuro e do sistema.
+
+```typescript
+import { ThemeSelector } from '@/components/ThemeSelector';
+
+function App() {
+  return <ThemeSelector />;
+}
+```
+
+## 🎯 Estrutura do Projeto
+
+```
+projeto-base/
+├── app/                    # Páginas e navegação
+├── components/             # Componentes reutilizáveis
+├── constants/             
+│   └── DesignSystem.ts    # Configurações do Design System
+├── hooks/                 
+│   ├── ThemeContext.tsx   # Contexto de tema
+│   └── useToast.tsx       # Hook do sistema de Toast
+└── assets/                # Recursos estáticos
+```
+
+## 🚀 Começando
+
+1. Clone o repositório
+2. Instale as dependências:
+```bash
+npm install
+```
+
+3. Inicie o projeto:
+```bash
+npm start
+```
+
+## 📱 Plataformas Suportadas
+
+- iOS
+- Android
+- Web
+
+## 🛠️ Tecnologias
+
+- React Native
+- Expo
+- TypeScript
+- React Navigation
+- Reanimated

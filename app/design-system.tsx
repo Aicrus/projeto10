@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, useWindowDimensions, Platform } from 'react-native';
+import { StyleSheet, ScrollView, View, useWindowDimensions, Platform, Pressable } from 'react-native';
 import { useBreakpoints, BREAKPOINTS } from '@/hooks/useBreakpoints';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
@@ -7,13 +7,55 @@ import { ThemeSelector } from '@/components/ThemeSelector';
 import { useTheme } from '@/hooks/ThemeContext';
 import { HelloWave } from '@/components/HelloWave';
 import { FeedbackMessage } from '@/components/FeedbackMessage';
-import { COLORS, FEEDBACK_COLORS, SPACING, SHADOWS, ICONS } from '@/constants/DesignSystem';
+import { Sidebar } from '@/components/Sidebar';
+import { COLORS, FEEDBACK_COLORS, SPACING, SHADOWS, ICONS, BORDER_RADIUS } from '@/constants/DesignSystem';
 import { Home, Search, User } from 'lucide-react-native';
+import { useToast } from '@/hooks/useToast';
 
 export default function DesignSystemScreen() {
   const { currentTheme } = useTheme();
   const breakpoints = useBreakpoints();
   const { width } = useWindowDimensions();
+  const { showToast } = useToast();
+
+  const testToasts = [
+    {
+      type: 'success',
+      message: 'Operação finalizada com sucesso!',
+      description: 'Tudo ocorreu conforme esperado.',
+      position: 'top',
+      color: FEEDBACK_COLORS[currentTheme].success.background,
+      borderColor: FEEDBACK_COLORS[currentTheme].success.border,
+      textColor: FEEDBACK_COLORS[currentTheme].success.text,
+    },
+    {
+      type: 'warning',
+      message: 'Atenção necessária',
+      description: 'Verifique algumas pendências.',
+      position: 'bottom',
+      color: FEEDBACK_COLORS[currentTheme].warning.background,
+      borderColor: FEEDBACK_COLORS[currentTheme].warning.border,
+      textColor: FEEDBACK_COLORS[currentTheme].warning.text,
+    },
+    {
+      type: 'error',
+      message: 'Erro encontrado',
+      description: 'Algo deu errado na operação.',
+      position: 'top-right',
+      color: FEEDBACK_COLORS[currentTheme].error.background,
+      borderColor: FEEDBACK_COLORS[currentTheme].error.border,
+      textColor: FEEDBACK_COLORS[currentTheme].error.text,
+    },
+    {
+      type: 'info',
+      message: 'Informação importante',
+      description: 'Aqui está uma informação relevante.',
+      position: 'bottom-left',
+      color: FEEDBACK_COLORS[currentTheme].info.background,
+      borderColor: FEEDBACK_COLORS[currentTheme].info.border,
+      textColor: FEEDBACK_COLORS[currentTheme].info.text,
+    },
+  ] as const;
 
   const ColorBox = ({ color, name }: { color: string; name: string }) => (
     <ThemedView style={[styles.colorBox, SHADOWS[currentTheme].sm]}>
@@ -284,31 +326,68 @@ export default function DesignSystemScreen() {
             Componentes reutilizáveis que seguem o design system
           </ThemedText>
           
-          <ThemedView style={[styles.componentGroup, SHADOWS[currentTheme].sm]}>
-            <ThemedText type="defaultSemiBold">ThemeSelector</ThemedText>
+          <ComponentShowcase title="Sidebar">
+            <ThemedText style={styles.componentDescription}>
+              Menu lateral responsivo com suporte a temas e animações
+            </ThemedText>
+            <ThemedView style={[
+              styles.sidebarDemo,
+              { 
+                height: 500,
+                borderColor: COLORS[currentTheme].divider
+              }
+            ]}>
+              <Sidebar onNavigate={(route) => console.log('Demo:', route)} />
+            </ThemedView>
+          </ComponentShowcase>
+
+          <ComponentShowcase title="ThemeSelector">
             <ThemedText style={styles.componentDescription}>
               Controle para alternar entre temas claro, escuro e do sistema
             </ThemedText>
             <ThemeSelector />
-          </ThemedView>
+          </ComponentShowcase>
 
-          <ThemedView style={[styles.componentGroup, SHADOWS[currentTheme].sm]}>
-            <ThemedText type="defaultSemiBold">ThemedView</ThemedText>
-            <ThemedText style={styles.componentDescription}>
-              Container que se adapta automaticamente ao tema atual
-            </ThemedText>
-            <ThemedView style={styles.demoThemedView}>
-              <ThemedText>Conteúdo do ThemedView</ThemedText>
-            </ThemedView>
-          </ThemedView>
-
-          <ThemedView style={[styles.componentGroup, SHADOWS[currentTheme].sm]}>
-            <ThemedText type="defaultSemiBold">HelloWave</ThemedText>
+          <ComponentShowcase title="HelloWave">
             <ThemedText style={styles.componentDescription}>
               Animação de onda para elementos interativos
             </ThemedText>
             <HelloWave />
-          </ThemedView>
+          </ComponentShowcase>
+
+          <ComponentShowcase title="Toast">
+            <ThemedText style={styles.componentDescription}>
+              Sistema de notificações com diferentes tipos de feedback e posições na tela
+            </ThemedText>
+            <View style={styles.toastButtons}>
+              {testToasts.map((toast) => (
+                <Pressable
+                  key={toast.type}
+                  style={({ pressed }) => [
+                    styles.toastTestButton,
+                    {
+                      backgroundColor: toast.color,
+                      borderColor: toast.borderColor,
+                      opacity: pressed ? 0.8 : 1,
+                      transform: [{ scale: pressed ? 0.98 : 1 }],
+                    },
+                  ]}
+                  onPress={() => showToast({
+                    type: toast.type,
+                    message: toast.message,
+                    description: toast.description,
+                    position: toast.position,
+                  })}>
+                  <ThemedText style={[styles.toastButtonText, { color: toast.textColor }]}>
+                    {toast.type.charAt(0).toUpperCase() + toast.type.slice(1)}
+                  </ThemedText>
+                </Pressable>
+              ))}
+            </View>
+            <ThemedText style={[styles.componentDescription, { marginTop: 16 }]}>
+              Clique nos botões para testar os diferentes tipos de toast em diferentes posições
+            </ThemedText>
+          </ComponentShowcase>
 
           <ThemedView style={[styles.componentGroup, SHADOWS[currentTheme].sm]}>
             <ThemedText type="defaultSemiBold">Sistema de Ícones</ThemedText>
@@ -550,5 +629,35 @@ const styles = StyleSheet.create({
   colorSectionDescription: {
     opacity: 0.7,
     marginBottom: 16,
+  },
+  sidebarDemo: {
+    overflow: 'hidden',
+    borderRadius: BORDER_RADIUS.lg,
+    borderWidth: 1,
+    marginTop: SPACING.md,
+  },
+  toastButtons: {
+    flexDirection: 'row',
+    gap: SPACING.sm,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: SPACING.md,
+  },
+  toastTestButton: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: BORDER_RADIUS.lg,
+    borderWidth: 1,
+    minWidth: 100,
+    alignItems: 'center',
+    ...Platform.select({
+      web: {
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+      },
+    }),
+  },
+  toastButtonText: {
+    fontWeight: '600',
   },
 }); 
