@@ -111,6 +111,37 @@ Quer mudar as cores, tamanhos ou estilos? É super fácil!
 
 > 🎯 Todas as alterações serão refletidas automaticamente em todo o projeto!
 
+## 📁 Estrutura do Projeto
+
+Nossa estrutura de arquivos foi cuidadosamente organizada para máxima produtividade:
+
+### 📱 App
+- `/app` - Contém todas as telas e rotas da aplicação
+  - `_layout.tsx` - Layout principal da aplicação
+  - `+not-found.tsx` - Página personalizada para rotas não encontradas (404)
+  - `/(tabs)` - Páginas que aparecem na navegação por tabs
+  - `/modal` - Telas que aparecem como modal
+
+### 🎨 Design e UI
+- `/assets` - Recursos estáticos como imagens, fontes e ícones
+- `/components` - Componentes reutilizáveis
+  - `/ui` - Componentes básicos de interface (botões, inputs, etc)
+    - Arquivos com extensões `.ios.tsx`, `.android.tsx` e `.web.tsx` são específicos para cada plataforma
+- `/constants` - Configurações do Design System, temas e constantes globais
+
+### 🛠️ Lógica e Utilidades
+- `/hooks` - Hooks personalizados do React para lógica reutilizável
+- `/scripts` - Scripts de utilidade e automação
+- `/types` - Definições de tipos TypeScript
+
+### 📱 Navegação por Tabs
+Nossa navegação mantém consistência visual em todas as plataformas (iOS, Android e Web), com adaptações nativas para garantir a melhor experiência em cada ambiente:
+- Blur nativo no iOS
+- Elevação material no Android
+- Backdrop filter na Web
+
+> 💡 **Dica**: A estrutura modular permite adicionar novas funcionalidades sem afetar o código existente!
+
 ## 🚀 Começando
 
 ### 📋 Pré-requisitos
