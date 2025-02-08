@@ -1,3 +1,7 @@
+---
+description: Este documento é o guia mestre do projeto. Ele contém todas as regras e padrões que DEVEM ser seguidos em TODAS as modificações.
+globs: 
+---
 # 🔒 REGRAS_FUNDAMENTAIS.md
 
 ## 🎯 Propósito

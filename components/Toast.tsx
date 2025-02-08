@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     ...Platform.select({
       web: {
-        cursor: 'default' as const,
+        cursor: 'pointer' as const,
       },
     }),
   },
