@@ -8,11 +8,11 @@ import * as Icons from 'lucide-react-native';
 import { useTheme } from '@/hooks/ThemeContext';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import type { Theme } from '@/src/hooks/useTheme';
-import { Header } from './Header';
 
 interface SidebarProps {
   onNavigate?: (route: string) => void;
   currentPath?: string;
+  onToggle?: (expanded: boolean) => void;
 }
 
 interface TypographyStyle {
@@ -39,7 +39,7 @@ const getFontWeight = (weight?: string): TextStyle['fontWeight'] => {
   }
 };
 
-export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => {
+export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: SidebarProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { currentTheme } = useTheme();
   const { width: windowWidth } = useWindowDimensions();
@@ -77,32 +77,38 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
       Animated.parallel([
         Animated.timing(animatedWidth, {
           toValue,
-          duration: 300,
+          duration: 200,
           useNativeDriver: false,
+          easing: Easing.inOut(Easing.cubic),
         }),
         Animated.timing(fadeAnim, {
           toValue: 0,
           duration: 200,
           useNativeDriver: true,
+          easing: Easing.inOut(Easing.cubic),
         }),
       ]).start();
       setIsExpanded(false);
+      onToggle?.(false);
     } else if (isDesktop && !isExpanded) {
       // Expande no desktop
       const toValue = EXPANDED_WIDTH;
       Animated.parallel([
         Animated.timing(animatedWidth, {
           toValue,
-          duration: 300,
+          duration: 200,
           useNativeDriver: false,
+          easing: Easing.inOut(Easing.cubic),
         }),
         Animated.timing(fadeAnim, {
           toValue: 1,
           duration: 200,
           useNativeDriver: true,
+          easing: Easing.inOut(Easing.cubic),
         }),
       ]).start();
       setIsExpanded(true);
+      onToggle?.(true);
     }
   }, [isTablet, isDesktop]);
 
@@ -123,6 +129,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
       }),
     ]).start();
     setIsExpanded(!isExpanded);
+    onToggle?.(!isExpanded);
   };
 
   const themeColors = COLORS[currentTheme as keyof typeof COLORS];
@@ -145,7 +152,6 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
 
   return (
     <>
-      <Header sidebarWidth={animatedWidth} />
       <Animated.View style={[
         styles.container,
         {
@@ -187,7 +193,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
                 {
                   backgroundColor: currentTheme === 'dark' ? '#222' : 'white',
                   right: -8,
-                  top: 56,
+                  top: 62,
                   borderColor: themeColors.divider,
                   borderWidth: 1,
                 }
@@ -385,6 +391,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
+    right: -8,
+    top: 64,
     ...Platform.select({
       web: {
         cursor: 'pointer',

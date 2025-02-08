@@ -1,21 +1,27 @@
-import React from 'react';
-import { StyleSheet, View, Platform, Pressable, Animated } from 'react-native';
-import { Bell, Search, MessageSquare, Settings } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Platform, Pressable, Animated, Image } from 'react-native';
+import { Bell, Search } from 'lucide-react-native';
 import { ThemedView } from './ThemedView';
 import { ThemedText } from './ThemedText';
 import { HoverableView } from './HoverableView';
-import { COLORS, SPACING, BORDER_RADIUS } from '@/constants/DesignSystem';
+import { ProfileMenu } from './ProfileMenu';
+import { NotificationsMenu } from './NotificationsMenu';
+import { COLORS, SPACING, BORDER_RADIUS, getTypographyForBreakpoint } from '@/constants/DesignSystem';
 import { useTheme } from '@/hooks/ThemeContext';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 interface HeaderProps {
   sidebarWidth: Animated.Value;
+  onNavigate?: (route: string) => void;
 }
 
-export function Header({ sidebarWidth }: HeaderProps) {
+export function Header({ sidebarWidth, onNavigate }: HeaderProps) {
+  const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
+  const [isNotificationsMenuVisible, setIsNotificationsMenuVisible] = useState(false);
   const { currentTheme } = useTheme();
   const { isMobile } = useBreakpoints();
   const themeColors = COLORS[currentTheme];
+  const typography = getTypographyForBreakpoint(Platform.OS === 'web' ? window.innerWidth : 0);
 
   return (
     <Animated.View 
@@ -31,7 +37,15 @@ export function Header({ sidebarWidth }: HeaderProps) {
     >
       <View style={styles.content}>
         <View style={styles.leftContent}>
-          <ThemedText type="subtitle">Dashboard</ThemedText>
+          <ThemedText 
+            type="subtitle" 
+            style={[
+              styles.pageTitle,
+              { fontWeight: '600' }
+            ]}
+          >
+            Dashboard
+          </ThemedText>
         </View>
 
         <View style={styles.rightContent}>
@@ -51,16 +65,7 @@ export function Header({ sidebarWidth }: HeaderProps) {
               { backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.background }
             ]}
             hoverScale={1.02}
-          >
-            <MessageSquare size={20} color={themeColors.icon} strokeWidth={1.5} />
-          </HoverableView>
-
-          <HoverableView
-            style={[
-              styles.iconButton,
-              { backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.background }
-            ]}
-            hoverScale={1.02}
+            onPress={() => setIsNotificationsMenuVisible(true)}
           >
             <Bell size={20} color={themeColors.icon} strokeWidth={1.5} />
             <View style={[styles.notificationBadge, { backgroundColor: themeColors.primary }]} />
@@ -68,15 +73,34 @@ export function Header({ sidebarWidth }: HeaderProps) {
 
           <HoverableView
             style={[
-              styles.iconButton,
-              { backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.background }
+              styles.avatarButton,
+              { 
+                backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.background,
+                borderWidth: 2,
+                borderColor: currentTheme === 'dark' ? '#333' : '#f0f0f0'
+              }
             ]}
             hoverScale={1.02}
+            onPress={() => setIsProfileMenuVisible(true)}
           >
-            <Settings size={20} color={themeColors.icon} strokeWidth={1.5} />
+            <Image 
+              source={{ uri: 'https://pbs.twimg.com/profile_images/1506266082453172227/XqK8i7Zc_400x400.jpg' }}
+              style={styles.avatarImage}
+            />
           </HoverableView>
         </View>
       </View>
+
+      <ProfileMenu 
+        isVisible={isProfileMenuVisible}
+        onClose={() => setIsProfileMenuVisible(false)}
+        onNavigate={onNavigate}
+      />
+
+      <NotificationsMenu 
+        isVisible={isNotificationsMenuVisible}
+        onClose={() => setIsNotificationsMenuVisible(false)}
+      />
     </Animated.View>
   );
 }
@@ -133,5 +157,31 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.pill,
     borderWidth: 2,
     borderColor: 'white',
+  },
+  pageTitle: {
+    fontSize: 18,
+    letterSpacing: -0.5,
+    ...Platform.select({
+      web: {
+        userSelect: 'none',
+      },
+    }),
+  },
+  avatarButton: {
+    width: 40,
+    height: 40,
+    borderRadius: BORDER_RADIUS.pill,
+    overflow: 'hidden',
+    ...Platform.select({
+      web: {
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+      },
+    }),
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: BORDER_RADIUS.pill,
   },
 }); 

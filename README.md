@@ -325,6 +325,42 @@ function App() {
 }
 ```
 
+### 🎯 Componentes Principais
+
+#### 🧭 Sidebar
+A Sidebar é um componente opcional que pode ser adicionado a qualquer tela. Ela oferece navegação lateral e pode ser expandida ou recolhida:
+
+```typescript
+import { Sidebar } from '@/components/Sidebar';
+
+// Na sua tela:
+<Sidebar 
+  onNavigate={handleNavigation} 
+  currentPath="/sua-rota"
+  onToggle={handleSidebarToggle}
+/>
+```
+
+#### 🔝 Header
+O Header é um componente opcional que pode ser adicionado a qualquer tela. Ele inclui:
+- Título da página
+- Barra de pesquisa
+- Notificações
+- Menu de perfil com seletor de tema
+
+Para usar o Header:
+```typescript
+import { Header } from '@/components/Header';
+
+// Na sua tela:
+<Header 
+  sidebarWidth={currentSidebarWidth} 
+  onNavigate={handleNavigation}
+/>
+```
+
+> 💡 **Dica**: Tanto a Sidebar quanto o Header são componentes opcionais. Você pode escolher usar um, ambos ou nenhum em cada tela da sua aplicação!
+
 ## 🎯 Estrutura do Projeto
 
 ```

@@ -5,7 +5,6 @@ import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { useTheme } from '@/hooks/ThemeContext';
-import { HelloWave } from '@/components/HelloWave';
 import { FeedbackMessage } from '@/components/FeedbackMessage';
 import { Sidebar } from '@/components/Sidebar';
 import { COLORS, FEEDBACK_COLORS, SPACING, SHADOWS, ICONS, BORDER_RADIUS } from '@/constants/DesignSystem';
@@ -94,24 +93,6 @@ export default function DesignSystemScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
         
-        {/* Cabeçalho com Informações do Tema */}
-        <ThemedView style={[styles.header, SHADOWS[currentTheme].sm]}>
-          <ThemedText type="title">Design System</ThemedText>
-          <ThemedText type="small" style={styles.deviceInfo}>
-            Tema Atual: {currentTheme === 'dark' ? 'Escuro' : 'Claro'} • Largura: {width}px
-          </ThemedText>
-          <ThemedText type="small" style={styles.deviceInfo}>
-            Dispositivo: {
-              width < BREAKPOINTS.tablet ? 'Mobile' :
-              width < BREAKPOINTS.desktop ? 'Tablet' : 'Desktop'
-            }
-          </ThemedText>
-          <ThemedView style={styles.themeControl}>
-            <ThemedText type="defaultSemiBold">Alterar Tema</ThemedText>
-            <ThemeSelector />
-          </ThemedView>
-        </ThemedView>
-
         {/* Guia de Cores */}
         <ThemedView style={styles.section}>
           <SectionTitle>Guia de Cores</SectionTitle>
@@ -348,13 +329,6 @@ export default function DesignSystemScreen() {
             <ThemeSelector />
           </ComponentShowcase>
 
-          <ComponentShowcase title="HelloWave">
-            <ThemedText style={styles.componentDescription}>
-              Animação de onda para elementos interativos
-            </ThemedText>
-            <HelloWave />
-          </ComponentShowcase>
-
           <ComponentShowcase title="Toast">
             <ThemedText style={styles.componentDescription}>
               Sistema de notificações com diferentes tipos de feedback e posições na tela
@@ -427,19 +401,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: 16,
-    gap: 32,
-  },
-  header: {
-    gap: 16,
-    alignItems: 'center',
-    paddingVertical: 24,
-    paddingHorizontal: 16,
-    borderRadius: 16,
-    marginBottom: 16,
-  },
-  deviceInfo: {
-    opacity: 0.7,
+    padding: SPACING.lg,
   },
   section: {
     gap: 24,
@@ -581,10 +543,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     minWidth: 120,
-  },
-  themeControl: {
-    gap: 8,
-    alignItems: 'center',
   },
   sectionDescription: {
     opacity: 0.7,

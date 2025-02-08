@@ -23,7 +23,7 @@ const PADDING = 2;
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const getInitialPosition = (mode: 'system' | 'light' | 'dark') => {
-  return mode === 'system' ? 0 : mode === 'light' ? 1 : 2;
+  return mode === 'light' ? 0 : mode === 'dark' ? 1 : 2;
 };
 
 // Configurações específicas para cada plataforma
@@ -78,7 +78,7 @@ export function ThemeSelector() {
             { backgroundColor: '#0a7ea4' }
           ]} 
         />
-        {(['system', 'light', 'dark'] as const).map((mode, index) => (
+        {(['light', 'dark', 'system'] as const).map((mode, index) => (
           <Pressable
             key={mode}
             style={[
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     height: 32,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: PADDING,
     zIndex: 1,
   },
   slider: {

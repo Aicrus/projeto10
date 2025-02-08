@@ -8,7 +8,6 @@ import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { SPACING } from '@/constants/DesignSystem';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { HelloWave } from '@/components/HelloWave';
 import { ThemeSelector } from '@/components/ThemeSelector';
 
 const EXPANDED_WIDTH = 240;
@@ -46,21 +45,13 @@ export default function ConfigScreen() {
         styles.mainContent,
         { marginLeft: currentSidebarWidth }
       ]}>
-        <Header sidebarWidth={currentSidebarWidth} />
+        <Header sidebarWidth={currentSidebarWidth} onNavigate={handleNavigation} />
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}>
           <ThemedView style={styles.content}>
-            <ThemedView style={styles.titleContainer}>
-              <ThemedText type="title">Configurações</ThemedText>
-              <HelloWave />
-            </ThemedView>
-
-            <ThemedView style={styles.themeContainer}>
-              <ThemedText type="subtitle">Tema do Aplicativo</ThemedText>
-              <ThemeSelector />
-            </ThemedView>
+            {/* Área livre para novos textos */}
           </ThemedView>
         </ScrollView>
       </ThemedView>

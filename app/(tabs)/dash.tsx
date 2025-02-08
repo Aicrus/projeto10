@@ -1,8 +1,7 @@
-import { StyleSheet, Platform, ScrollView } from 'react-native';
+import { StyleSheet, Platform, ScrollView, Animated } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
-import { HelloWave } from '@/components/HelloWave';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemeSelector } from '@/components/ThemeSelector';
@@ -18,6 +17,7 @@ export default function DashScreen() {
   const router = useRouter();
   const { isMobile } = useBreakpoints();
   const [isExpanded, setIsExpanded] = useState(true);
+  const animatedWidth = useRef(new Animated.Value(isMobile ? 0 : EXPANDED_WIDTH)).current;
 
   const handleNavigation = (route: string) => {
     if (route === '/dash') {
@@ -29,9 +29,12 @@ export default function DashScreen() {
 
   const handleSidebarToggle = (expanded: boolean) => {
     setIsExpanded(expanded);
+    Animated.timing(animatedWidth, {
+      toValue: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
   };
-
-  const currentSidebarWidth = isMobile ? 0 : (isExpanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH);
 
   return (
     <ThemedView style={styles.container}>
@@ -42,28 +45,20 @@ export default function DashScreen() {
           onToggle={handleSidebarToggle}
         />
       )}
-      <ThemedView style={[
+      <Animated.View style={[
         styles.mainContent,
-        { marginLeft: currentSidebarWidth }
+        { marginLeft: animatedWidth }
       ]}>
-        <Header sidebarWidth={currentSidebarWidth} />
+        <Header sidebarWidth={animatedWidth} onNavigate={handleNavigation} />
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}>
           <ThemedView style={styles.content}>
-            <ThemedView style={styles.titleContainer}>
-              <ThemedText type="title">Dashboard</ThemedText>
-              <HelloWave />
-            </ThemedView>
-
-            <ThemedView style={styles.themeContainer}>
-              <ThemedText type="subtitle">Tema do Aplicativo</ThemedText>
-              <ThemeSelector />
-            </ThemedView>
+            {/* Área livre para novos textos */}
           </ThemedView>
         </ScrollView>
-      </ThemedView>
+      </Animated.View>
     </ThemedView>
   );
 }
