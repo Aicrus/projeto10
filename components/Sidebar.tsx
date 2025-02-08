@@ -6,6 +6,7 @@ import { HoverableView } from './HoverableView';
 import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY, getTypographyForBreakpoint } from '@/constants/DesignSystem';
 import * as Icons from 'lucide-react-native';
 import { useTheme } from '@/hooks/ThemeContext';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import type { Theme } from '@/src/hooks/useTheme';
 
 interface SidebarProps {
@@ -41,6 +42,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
   const [isExpanded, setIsExpanded] = useState(true);
   const { currentTheme } = useTheme();
   const { width: windowWidth } = useWindowDimensions();
+  const { isTablet, isDesktop } = useBreakpoints();
   const typographyBase = getTypographyForBreakpoint(windowWidth);
   
   // Convertendo a tipografia para o formato correto do React Native
@@ -66,6 +68,42 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
   const fadeAnim = React.useRef(new Animated.Value(1)).current;
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [isToggleHovered, setIsToggleHovered] = useState(false);
+
+  useEffect(() => {
+    if (isTablet && isExpanded) {
+      // Colapsa no tablet
+      const toValue = COLLAPSED_WIDTH;
+      Animated.parallel([
+        Animated.timing(animatedWidth, {
+          toValue,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start();
+      setIsExpanded(false);
+    } else if (isDesktop && !isExpanded) {
+      // Expande no desktop
+      const toValue = EXPANDED_WIDTH;
+      Animated.parallel([
+        Animated.timing(animatedWidth, {
+          toValue,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start();
+      setIsExpanded(true);
+    }
+  }, [isTablet, isDesktop]);
 
   const toggleSidebar = () => {
     const toValue = isExpanded ? COLLAPSED_WIDTH : EXPANDED_WIDTH;
@@ -143,7 +181,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => 
               {
                 backgroundColor: currentTheme === 'dark' ? '#222' : 'white',
                 right: -8,
-                top: 40,
+                top: 56,
                 borderColor: themeColors.divider,
                 borderWidth: 1,
               }
