@@ -33,6 +33,12 @@ export function Toast({
   const { width: screenWidth } = Dimensions.get('window');
   const hideTimeoutRef = useRef<NodeJS.Timeout>();
 
+  const nativePadding = Platform.select({
+    ios: 35,
+    android: 35,
+    default: 0
+  });
+
   const startHideTimer = () => {
     if (hideTimeoutRef.current) {
       clearTimeout(hideTimeoutRef.current);
@@ -138,41 +144,44 @@ export function Toast({
       }
     };
 
+    const topPadding = Platform.OS !== 'web' ? nativePadding : SPACING.lg;
+    const bottomPadding = Platform.OS !== 'web' ? nativePadding : SPACING.lg;
+
     switch (position) {
       case 'top':
         return {
           ...baseStyle,
-          top: SPACING.lg,
+          top: topPadding,
           ...getHorizontalPosition('center'),
         };
       case 'bottom':
         return {
           ...baseStyle,
-          bottom: SPACING.lg,
+          bottom: bottomPadding,
           ...getHorizontalPosition('center'),
         };
       case 'top-left':
         return {
           ...baseStyle,
-          top: SPACING.lg,
+          top: topPadding,
           ...getHorizontalPosition('left'),
         };
       case 'top-right':
         return {
           ...baseStyle,
-          top: SPACING.lg,
+          top: topPadding,
           ...getHorizontalPosition('right'),
         };
       case 'bottom-left':
         return {
           ...baseStyle,
-          bottom: SPACING.lg,
+          bottom: bottomPadding,
           ...getHorizontalPosition('left'),
         };
       case 'bottom-right':
         return {
           ...baseStyle,
-          bottom: SPACING.lg,
+          bottom: bottomPadding,
           ...getHorizontalPosition('right'),
         };
       default:

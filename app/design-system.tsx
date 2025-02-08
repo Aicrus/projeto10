@@ -10,6 +10,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { COLORS, FEEDBACK_COLORS, SPACING, SHADOWS, ICONS, BORDER_RADIUS } from '@/constants/DesignSystem';
 import { Home, Search, User } from 'lucide-react-native';
 import { useToast } from '@/hooks/useToast';
+import { PageContainer } from '@/components/PageContainer';
 
 export default function DesignSystemScreen() {
   const { currentTheme } = useTheme();
@@ -92,305 +93,305 @@ export default function DesignSystemScreen() {
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
-        
-        {/* Guia de Cores */}
-        <ThemedView style={styles.section}>
-          <SectionTitle>Guia de Cores</SectionTitle>
-          <ThemedText style={styles.sectionDescription}>
-            Cores principais do sistema que definem a identidade visual da aplicação
-          </ThemedText>
-
-          <ThemedView style={styles.colorSection}>
-            <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cor Primária</ThemedText>
-            <ThemedText style={styles.colorSectionDescription}>
-              Usada para destacar elementos importantes, ações principais e indicar interatividade
+        <PageContainer>
+          {/* Guia de Cores */}
+          <ThemedView style={styles.section}>
+            <SectionTitle>Guia de Cores</SectionTitle>
+            <ThemedText style={styles.sectionDescription}>
+              Cores principais do sistema que definem a identidade visual da aplicação
             </ThemedText>
-            <View style={styles.colorsGrid}>
-              <ColorBox color={COLORS[currentTheme].primary} name="Primary" />
+
+            <ThemedView style={styles.colorSection}>
+              <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cor Primária</ThemedText>
+              <ThemedText style={styles.colorSectionDescription}>
+                Usada para destacar elementos importantes, ações principais e indicar interatividade
+              </ThemedText>
+              <View style={styles.colorsGrid}>
+                <ColorBox color={COLORS[currentTheme].primary} name="Primary" />
+              </View>
+            </ThemedView>
+
+            <ThemedView style={styles.colorSection}>
+              <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores Base</ThemedText>
+              <ThemedText style={styles.colorSectionDescription}>
+                Cores fundamentais para textos e fundos
+              </ThemedText>
+              <View style={styles.colorsGrid}>
+                <ColorBox color={COLORS[currentTheme].text} name="Text" />
+                <ColorBox color={COLORS[currentTheme].background} name="Background" />
+              </View>
+            </ThemedView>
+
+            <ThemedView style={styles.colorSection}>
+              <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores de Interface</ThemedText>
+              <ThemedText style={styles.colorSectionDescription}>
+                Utilizadas em ícones, elementos de navegação e divisórias
+              </ThemedText>
+              <View style={styles.colorsGrid}>
+                <ColorBox color={COLORS[currentTheme].icon} name="Icon" />
+                <ColorBox color={COLORS[currentTheme].tabIconDefault} name="Tab Icon" />
+                <ColorBox color={COLORS[currentTheme].tabIconSelected} name="Tab Selected" />
+                <ColorBox color={COLORS[currentTheme].divider} name="Divider" />
+              </View>
+            </ThemedView>
+
+            <ThemedText style={[styles.componentDescription, { textAlign: 'left', marginTop: 16 }]}>
+              💡 Para modificar as cores, edite o arquivo:
+              <ThemedText style={{ fontFamily: 'SpaceMono' }}> constants/DesignSystem.ts</ThemedText>
+            </ThemedText>
+          </ThemedView>
+
+          {/* Tipografia */}
+          <ThemedView style={[styles.section, styles.typographySection]}>
+            <SectionTitle>Tipografia</SectionTitle>
+            <ThemedText style={styles.sectionDescription}>
+              Sistema de textos responsivo que se adapta ao tamanho da tela
+            </ThemedText>
+            <ThemedView style={[styles.typographyContainer, SHADOWS[currentTheme].sm]}>
+              <View style={styles.typographyItem}>
+                <ThemedText type="title">Título</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '28px' : width < BREAKPOINTS.desktop ? '32px' : '36px'} • Bold
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText type="subtitle">Subtítulo</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '18px' : width < BREAKPOINTS.desktop ? '20px' : '24px'} • Bold
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText type="defaultSemiBold">Texto Semi-Bold</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '14px' : '16px'} • SemiBold
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText>Texto Regular</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '14px' : '16px'} • Regular
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText type="small">Texto Pequeno</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '12px' : '14px'} • Regular
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText type="link">Link</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '14px' : '16px'} • Regular • Underline
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText style={{ fontFamily: 'SpaceMono' }}>SpaceMono Font</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  Fonte especial para código
+                </ThemedText>
+              </View>
+            </ThemedView>
+          </ThemedView>
+
+          {/* Breakpoints */}
+          <ThemedView style={styles.section}>
+            <SectionTitle>Breakpoints</SectionTitle>
+            <ThemedText style={styles.sectionDescription}>
+              Pontos de quebra que definem a adaptação do layout em diferentes tamanhos de tela
+            </ThemedText>
+            <View style={styles.breakpointsContainer}>
+              <ThemedView style={[styles.breakpointBox, SHADOWS[currentTheme].sm, breakpoints.isMobile && styles.activeBreakpoint]}>
+                <ThemedText>Mobile</ThemedText>
+                <ThemedText style={styles.breakpointValue}>{`0-${BREAKPOINTS.tablet-1}px`}</ThemedText>
+                {breakpoints.isMobile && (
+                  <ThemedText type="small" style={styles.activeLabel}>Ativo</ThemedText>
+                )}
+              </ThemedView>
+              <ThemedView style={[styles.breakpointBox, SHADOWS[currentTheme].sm, breakpoints.isTablet && styles.activeBreakpoint]}>
+                <ThemedText>Tablet</ThemedText>
+                <ThemedText style={styles.breakpointValue}>{`${BREAKPOINTS.tablet}-${BREAKPOINTS.desktop-1}px`}</ThemedText>
+                {breakpoints.isTablet && (
+                  <ThemedText type="small" style={styles.activeLabel}>Ativo</ThemedText>
+                )}
+              </ThemedView>
+              <ThemedView style={[styles.breakpointBox, SHADOWS[currentTheme].sm, breakpoints.isDesktop && styles.activeBreakpoint]}>
+                <ThemedText>Desktop</ThemedText>
+                <ThemedText style={styles.breakpointValue}>{`${BREAKPOINTS.desktop}px+`}</ThemedText>
+                {breakpoints.isDesktop && (
+                  <ThemedText type="small" style={styles.activeLabel}>Ativo</ThemedText>
+                )}
+              </ThemedView>
             </View>
           </ThemedView>
 
-          <ThemedView style={styles.colorSection}>
-            <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores Base</ThemedText>
-            <ThemedText style={styles.colorSectionDescription}>
-              Cores fundamentais para textos e fundos
+          {/* Feedback Visual */}
+          <ThemedView style={styles.section}>
+            <SectionTitle>Feedback Visual</SectionTitle>
+            <ThemedText style={styles.sectionDescription}>
+              Mensagens e alertas para comunicação com o usuário
             </ThemedText>
-            <View style={styles.colorsGrid}>
-              <ColorBox color={COLORS[currentTheme].text} name="Text" />
-              <ColorBox color={COLORS[currentTheme].background} name="Background" />
+            <View style={styles.feedbackContainer}>
+              <FeedbackMessage
+                type="success"
+                message="Operação realizada com sucesso!"
+                description="Feedback positivo para ações bem-sucedidas"
+              />
+              <FeedbackMessage
+                type="warning"
+                message="Atenção necessária"
+                description="Alertas para situações que requerem atenção do usuário"
+              />
+              <FeedbackMessage
+                type="error"
+                message="Erro encontrado"
+                description="Mensagens de erro para problemas e falhas"
+              />
+              <FeedbackMessage
+                type="info"
+                message="Informação importante"
+                description="Mensagens informativas e dicas para o usuário"
+              />
             </View>
           </ThemedView>
 
-          <ThemedView style={styles.colorSection}>
-            <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores de Interface</ThemedText>
-            <ThemedText style={styles.colorSectionDescription}>
-              Utilizadas em ícones, elementos de navegação e divisórias
+          {/* Espaçamento */}
+          <ThemedView style={styles.section}>
+            <SectionTitle>Sistema de Espaçamento</SectionTitle>
+            <ThemedText style={styles.sectionDescription}>
+              Escala de espaçamentos para manter consistência no layout
             </ThemedText>
-            <View style={styles.colorsGrid}>
-              <ColorBox color={COLORS[currentTheme].icon} name="Icon" />
-              <ColorBox color={COLORS[currentTheme].tabIconDefault} name="Tab Icon" />
-              <ColorBox color={COLORS[currentTheme].tabIconSelected} name="Tab Selected" />
-              <ColorBox color={COLORS[currentTheme].divider} name="Divider" />
-            </View>
-          </ThemedView>
-
-          <ThemedText style={[styles.componentDescription, { textAlign: 'left', marginTop: 16 }]}>
-            💡 Para modificar as cores, edite o arquivo:
-            <ThemedText style={{ fontFamily: 'SpaceMono' }}> constants/DesignSystem.ts</ThemedText>
-          </ThemedText>
-        </ThemedView>
-
-        {/* Tipografia */}
-        <ThemedView style={[styles.section, styles.typographySection]}>
-          <SectionTitle>Tipografia</SectionTitle>
-          <ThemedText style={styles.sectionDescription}>
-            Sistema de textos responsivo que se adapta ao tamanho da tela
-          </ThemedText>
-          <ThemedView style={[styles.typographyContainer, SHADOWS[currentTheme].sm]}>
-            <View style={styles.typographyItem}>
-              <ThemedText type="title">Título</ThemedText>
-              <ThemedText type="small" style={styles.typographyInfo}>
-                {width < BREAKPOINTS.tablet ? '28px' : width < BREAKPOINTS.desktop ? '32px' : '36px'} • Bold
-              </ThemedText>
-            </View>
-            <View style={styles.typographyItem}>
-              <ThemedText type="subtitle">Subtítulo</ThemedText>
-              <ThemedText type="small" style={styles.typographyInfo}>
-                {width < BREAKPOINTS.tablet ? '18px' : width < BREAKPOINTS.desktop ? '20px' : '24px'} • Bold
-              </ThemedText>
-            </View>
-            <View style={styles.typographyItem}>
-              <ThemedText type="defaultSemiBold">Texto Semi-Bold</ThemedText>
-              <ThemedText type="small" style={styles.typographyInfo}>
-                {width < BREAKPOINTS.tablet ? '14px' : '16px'} • SemiBold
-              </ThemedText>
-            </View>
-            <View style={styles.typographyItem}>
-              <ThemedText>Texto Regular</ThemedText>
-              <ThemedText type="small" style={styles.typographyInfo}>
-                {width < BREAKPOINTS.tablet ? '14px' : '16px'} • Regular
-              </ThemedText>
-            </View>
-            <View style={styles.typographyItem}>
-              <ThemedText type="small">Texto Pequeno</ThemedText>
-              <ThemedText type="small" style={styles.typographyInfo}>
-                {width < BREAKPOINTS.tablet ? '12px' : '14px'} • Regular
-              </ThemedText>
-            </View>
-            <View style={styles.typographyItem}>
-              <ThemedText type="link">Link</ThemedText>
-              <ThemedText type="small" style={styles.typographyInfo}>
-                {width < BREAKPOINTS.tablet ? '14px' : '16px'} • Regular • Underline
-              </ThemedText>
-            </View>
-            <View style={styles.typographyItem}>
-              <ThemedText style={{ fontFamily: 'SpaceMono' }}>SpaceMono Font</ThemedText>
-              <ThemedText type="small" style={styles.typographyInfo}>
-                Fonte especial para código
-              </ThemedText>
-            </View>
-          </ThemedView>
-        </ThemedView>
-
-        {/* Breakpoints */}
-        <ThemedView style={styles.section}>
-          <SectionTitle>Breakpoints</SectionTitle>
-          <ThemedText style={styles.sectionDescription}>
-            Pontos de quebra que definem a adaptação do layout em diferentes tamanhos de tela
-          </ThemedText>
-          <View style={styles.breakpointsContainer}>
-            <ThemedView style={[styles.breakpointBox, SHADOWS[currentTheme].sm, breakpoints.isMobile && styles.activeBreakpoint]}>
-              <ThemedText>Mobile</ThemedText>
-              <ThemedText style={styles.breakpointValue}>{`0-${BREAKPOINTS.tablet-1}px`}</ThemedText>
-              {breakpoints.isMobile && (
-                <ThemedText type="small" style={styles.activeLabel}>Ativo</ThemedText>
-              )}
-            </ThemedView>
-            <ThemedView style={[styles.breakpointBox, SHADOWS[currentTheme].sm, breakpoints.isTablet && styles.activeBreakpoint]}>
-              <ThemedText>Tablet</ThemedText>
-              <ThemedText style={styles.breakpointValue}>{`${BREAKPOINTS.tablet}-${BREAKPOINTS.desktop-1}px`}</ThemedText>
-              {breakpoints.isTablet && (
-                <ThemedText type="small" style={styles.activeLabel}>Ativo</ThemedText>
-              )}
-            </ThemedView>
-            <ThemedView style={[styles.breakpointBox, SHADOWS[currentTheme].sm, breakpoints.isDesktop && styles.activeBreakpoint]}>
-              <ThemedText>Desktop</ThemedText>
-              <ThemedText style={styles.breakpointValue}>{`${BREAKPOINTS.desktop}px+`}</ThemedText>
-              {breakpoints.isDesktop && (
-                <ThemedText type="small" style={styles.activeLabel}>Ativo</ThemedText>
-              )}
-            </ThemedView>
-          </View>
-        </ThemedView>
-
-        {/* Feedback Visual */}
-        <ThemedView style={styles.section}>
-          <SectionTitle>Feedback Visual</SectionTitle>
-          <ThemedText style={styles.sectionDescription}>
-            Mensagens e alertas para comunicação com o usuário
-          </ThemedText>
-          <View style={styles.feedbackContainer}>
-            <FeedbackMessage
-              type="success"
-              message="Operação realizada com sucesso!"
-              description="Feedback positivo para ações bem-sucedidas"
-            />
-            <FeedbackMessage
-              type="warning"
-              message="Atenção necessária"
-              description="Alertas para situações que requerem atenção do usuário"
-            />
-            <FeedbackMessage
-              type="error"
-              message="Erro encontrado"
-              description="Mensagens de erro para problemas e falhas"
-            />
-            <FeedbackMessage
-              type="info"
-              message="Informação importante"
-              description="Mensagens informativas e dicas para o usuário"
-            />
-          </View>
-        </ThemedView>
-
-        {/* Espaçamento */}
-        <ThemedView style={styles.section}>
-          <SectionTitle>Sistema de Espaçamento</SectionTitle>
-          <ThemedText style={styles.sectionDescription}>
-            Escala de espaçamentos para manter consistência no layout
-          </ThemedText>
-          <View style={styles.spacingContainer}>
-            {Object.entries(SPACING).map(([size, value]) => (
-              <SpacingBox key={size} size={size} value={value} />
-            ))}
-          </View>
-        </ThemedView>
-
-        {/* Sombras */}
-        <ThemedView style={styles.section}>
-          <SectionTitle>Sistema de Elevação</SectionTitle>
-          <ThemedText style={styles.sectionDescription}>
-            Sombras para criar hierarquia visual e profundidade
-          </ThemedText>
-          <ThemedView style={[styles.shadowsContainer, SHADOWS[currentTheme].sm]}>
-            <ThemedView style={[
-              styles.shadowBox, 
-              SHADOWS[currentTheme].sm,
-              { backgroundColor: COLORS[currentTheme].background }
-            ]}>
-              <ThemedText>Small</ThemedText>
-              <ThemedText type="small" style={styles.shadowInfo}>Elevação Sutil</ThemedText>
-            </ThemedView>
-            <ThemedView style={[
-              styles.shadowBox, 
-              SHADOWS[currentTheme].md,
-              { backgroundColor: COLORS[currentTheme].background }
-            ]}>
-              <ThemedText>Medium</ThemedText>
-              <ThemedText type="small" style={styles.shadowInfo}>Elevação Média</ThemedText>
-            </ThemedView>
-            <ThemedView style={[
-              styles.shadowBox, 
-              SHADOWS[currentTheme].lg,
-              { backgroundColor: COLORS[currentTheme].background }
-            ]}>
-              <ThemedText>Large</ThemedText>
-              <ThemedText type="small" style={styles.shadowInfo}>Elevação Alta</ThemedText>
-            </ThemedView>
-          </ThemedView>
-        </ThemedView>
-
-        {/* Componentes */}
-        <ThemedView style={styles.section}>
-          <SectionTitle>Biblioteca de Componentes</SectionTitle>
-          <ThemedText style={styles.sectionDescription}>
-            Componentes reutilizáveis que seguem o design system
-          </ThemedText>
-          
-          <ComponentShowcase title="Sidebar">
-            <ThemedText style={styles.componentDescription}>
-              Menu lateral responsivo com suporte a temas e animações
-            </ThemedText>
-            <ThemedView style={[
-              styles.sidebarDemo,
-              { 
-                height: 500,
-                borderColor: COLORS[currentTheme].divider
-              }
-            ]}>
-              <Sidebar onNavigate={(route) => console.log('Demo:', route)} />
-            </ThemedView>
-          </ComponentShowcase>
-
-          <ComponentShowcase title="ThemeSelector">
-            <ThemedText style={styles.componentDescription}>
-              Controle para alternar entre temas claro, escuro e do sistema
-            </ThemedText>
-            <ThemeSelector />
-          </ComponentShowcase>
-
-          <ComponentShowcase title="Toast">
-            <ThemedText style={styles.componentDescription}>
-              Sistema de notificações com diferentes tipos de feedback e posições na tela
-            </ThemedText>
-            <View style={styles.toastButtons}>
-              {testToasts.map((toast) => (
-                <Pressable
-                  key={toast.type}
-                  style={({ pressed }) => [
-                    styles.toastTestButton,
-                    {
-                      backgroundColor: toast.color,
-                      borderColor: toast.borderColor,
-                      opacity: pressed ? 0.8 : 1,
-                      transform: [{ scale: pressed ? 0.98 : 1 }],
-                    },
-                  ]}
-                  onPress={() => showToast({
-                    type: toast.type,
-                    message: toast.message,
-                    description: toast.description,
-                    position: toast.position,
-                  })}>
-                  <ThemedText style={[styles.toastButtonText, { color: toast.textColor }]}>
-                    {toast.type.charAt(0).toUpperCase() + toast.type.slice(1)}
-                  </ThemedText>
-                </Pressable>
+            <View style={styles.spacingContainer}>
+              {Object.entries(SPACING).map(([size, value]) => (
+                <SpacingBox key={size} size={size} value={value} />
               ))}
             </View>
-            <ThemedText style={[styles.componentDescription, { marginTop: 16 }]}>
-              Clique nos botões para testar os diferentes tipos de toast em diferentes posições
-            </ThemedText>
-          </ComponentShowcase>
-
-          <ThemedView style={[styles.componentGroup, SHADOWS[currentTheme].sm]}>
-            <ThemedText type="defaultSemiBold">Sistema de Ícones</ThemedText>
-            <ThemedText style={styles.componentDescription}>
-              Sistema de ícones baseado no Lucide React. Oferece uma biblioteca completa de ícones consistentes e personalizáveis.
-            </ThemedText>
-            <ThemedText style={[styles.componentDescription, { marginTop: -8 }]}>
-              Importar de: lucide-react-native
-            </ThemedText>
-            <View style={styles.iconGrid}>
-              <View style={styles.iconItem}>
-                <Home size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
-                <ThemedText style={styles.iconLabel}>Home</ThemedText>
-              </View>
-              <View style={styles.iconItem}>
-                <Search size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
-                <ThemedText style={styles.iconLabel}>Search</ThemedText>
-              </View>
-              <View style={styles.iconItem}>
-                <User size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
-                <ThemedText style={styles.iconLabel}>User</ThemedText>
-              </View>
-            </View>
-            <ThemedText style={[styles.componentDescription, { marginTop: 8 }]}>
-              Personalize com: size, color, strokeWidth
-            </ThemedText>
           </ThemedView>
-        </ThemedView>
 
+          {/* Sombras */}
+          <ThemedView style={styles.section}>
+            <SectionTitle>Sistema de Elevação</SectionTitle>
+            <ThemedText style={styles.sectionDescription}>
+              Sombras para criar hierarquia visual e profundidade
+            </ThemedText>
+            <ThemedView style={[styles.shadowsContainer, SHADOWS[currentTheme].sm]}>
+              <ThemedView style={[
+                styles.shadowBox, 
+                SHADOWS[currentTheme].sm,
+                { backgroundColor: COLORS[currentTheme].background }
+              ]}>
+                <ThemedText>Small</ThemedText>
+                <ThemedText type="small" style={styles.shadowInfo}>Elevação Sutil</ThemedText>
+              </ThemedView>
+              <ThemedView style={[
+                styles.shadowBox, 
+                SHADOWS[currentTheme].md,
+                { backgroundColor: COLORS[currentTheme].background }
+              ]}>
+                <ThemedText>Medium</ThemedText>
+                <ThemedText type="small" style={styles.shadowInfo}>Elevação Média</ThemedText>
+              </ThemedView>
+              <ThemedView style={[
+                styles.shadowBox, 
+                SHADOWS[currentTheme].lg,
+                { backgroundColor: COLORS[currentTheme].background }
+              ]}>
+                <ThemedText>Large</ThemedText>
+                <ThemedText type="small" style={styles.shadowInfo}>Elevação Alta</ThemedText>
+              </ThemedView>
+            </ThemedView>
+          </ThemedView>
+
+          {/* Componentes */}
+          <ThemedView style={styles.section}>
+            <SectionTitle>Biblioteca de Componentes</SectionTitle>
+            <ThemedText style={styles.sectionDescription}>
+              Componentes reutilizáveis que seguem o design system
+            </ThemedText>
+            
+            <ComponentShowcase title="Sidebar">
+              <ThemedText style={styles.componentDescription}>
+                Menu lateral responsivo com suporte a temas e animações
+              </ThemedText>
+              <ThemedView style={[
+                styles.sidebarDemo,
+                { 
+                  height: 500,
+                  borderColor: COLORS[currentTheme].divider
+                }
+              ]}>
+                <Sidebar onNavigate={(route) => console.log('Demo:', route)} />
+              </ThemedView>
+            </ComponentShowcase>
+
+            <ComponentShowcase title="ThemeSelector">
+              <ThemedText style={styles.componentDescription}>
+                Controle para alternar entre temas claro, escuro e do sistema
+              </ThemedText>
+              <ThemeSelector />
+            </ComponentShowcase>
+
+            <ComponentShowcase title="Toast">
+              <ThemedText style={styles.componentDescription}>
+                Sistema de notificações com diferentes tipos de feedback e posições na tela
+              </ThemedText>
+              <View style={styles.toastButtons}>
+                {testToasts.map((toast) => (
+                  <Pressable
+                    key={toast.type}
+                    style={({ pressed }) => [
+                      styles.toastTestButton,
+                      {
+                        backgroundColor: toast.color,
+                        borderColor: toast.borderColor,
+                        opacity: pressed ? 0.8 : 1,
+                        transform: [{ scale: pressed ? 0.98 : 1 }],
+                      },
+                    ]}
+                    onPress={() => showToast({
+                      type: toast.type,
+                      message: toast.message,
+                      description: toast.description,
+                      position: toast.position,
+                    })}>
+                    <ThemedText style={[styles.toastButtonText, { color: toast.textColor }]}>
+                      {toast.type.charAt(0).toUpperCase() + toast.type.slice(1)}
+                    </ThemedText>
+                  </Pressable>
+                ))}
+              </View>
+              <ThemedText style={[styles.componentDescription, { marginTop: 16 }]}>
+                Clique nos botões para testar os diferentes tipos de toast em diferentes posições
+              </ThemedText>
+            </ComponentShowcase>
+
+            <ThemedView style={[styles.componentGroup, SHADOWS[currentTheme].sm]}>
+              <ThemedText type="defaultSemiBold">Sistema de Ícones</ThemedText>
+              <ThemedText style={styles.componentDescription}>
+                Sistema de ícones baseado no Lucide React. Oferece uma biblioteca completa de ícones consistentes e personalizáveis.
+              </ThemedText>
+              <ThemedText style={[styles.componentDescription, { marginTop: -8 }]}>
+                Importar de: lucide-react-native
+              </ThemedText>
+              <View style={styles.iconGrid}>
+                <View style={styles.iconItem}>
+                  <Home size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
+                  <ThemedText style={styles.iconLabel}>Home</ThemedText>
+                </View>
+                <View style={styles.iconItem}>
+                  <Search size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
+                  <ThemedText style={styles.iconLabel}>Search</ThemedText>
+                </View>
+                <View style={styles.iconItem}>
+                  <User size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
+                  <ThemedText style={styles.iconLabel}>User</ThemedText>
+                </View>
+              </View>
+              <ThemedText style={[styles.componentDescription, { marginTop: 8 }]}>
+                Personalize com: size, color, strokeWidth
+              </ThemedText>
+            </ThemedView>
+          </ThemedView>
+        </PageContainer>
       </ScrollView>
     </ThemedView>
   );

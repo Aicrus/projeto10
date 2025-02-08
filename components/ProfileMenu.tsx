@@ -1,11 +1,19 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Animated, TouchableOpacity, Pressable, Platform } from 'react-native';
+import { StyleSheet, View, Animated, TouchableOpacity, Pressable, Platform, Dimensions, ViewStyle } from 'react-native';
 import { LogOut, Settings, Sun, Moon, Monitor } from 'lucide-react-native';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { HoverableView } from './HoverableView';
 import { COLORS, SPACING, BORDER_RADIUS } from '@/constants/DesignSystem';
 import { useTheme } from '@/hooks/ThemeContext';
+import { LucideIcon } from 'lucide-react-native';
+
+interface MenuItemProps {
+  icon: LucideIcon;
+  label: string;
+  onClick: () => void;
+  color?: string;
+}
 
 interface ProfileMenuProps {
   isVisible: boolean;
@@ -51,7 +59,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
 
   if (!isVisible) return null;
 
-  const MenuItem = ({ icon: Icon, label, onClick, color = themeColors.text }) => (
+  const MenuItem = ({ icon: Icon, label, onClick, color = themeColors.text }: MenuItemProps) => (
     <HoverableView
       style={styles.menuItem}
       onPress={onClick}
@@ -62,9 +70,25 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
     </HoverableView>
   );
 
+  const getThemeOptionStyle = (isSelected: boolean): ViewStyle => ({
+    ...styles.themeOption,
+    ...(isSelected ? { backgroundColor: themeColors.primary + '15' } : {})
+  });
+
   return (
     <>
-      <Pressable style={styles.overlay} onPress={onClose} />
+      <Pressable 
+        style={[
+          styles.overlay,
+          Platform.select({
+            native: {
+              position: 'absolute',
+              backgroundColor: 'rgba(0,0,0,0.1)'
+            }
+          })
+        ]} 
+        onPress={onClose} 
+      />
       <Animated.View
         style={[
           styles.container,
@@ -73,6 +97,11 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
             borderColor: themeColors.divider,
             opacity: fadeAnim,
             transform: [{ translateY: translateYAnim }],
+            ...Platform.select({
+              native: {
+                top: SPACING.xs + 52 + 35
+              }
+            })
           },
         ]}
       >
@@ -89,10 +118,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
           <ThemedText style={styles.sectionTitle}>Tema</ThemedText>
           <View style={styles.themeOptions}>
             <HoverableView
-              style={[
-                styles.themeOption,
-                themeMode === 'light' && { backgroundColor: themeColors.primary + '15' }
-              ]}
+              style={getThemeOptionStyle(themeMode === 'light')}
               onPress={() => setThemeMode('light')}
             >
               <Sun size={16} color={themeMode === 'light' ? themeColors.primary : themeColors.text} />
@@ -103,10 +129,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
             </HoverableView>
 
             <HoverableView
-              style={[
-                styles.themeOption,
-                themeMode === 'dark' && { backgroundColor: themeColors.primary + '15' }
-              ]}
+              style={getThemeOptionStyle(themeMode === 'dark')}
               onPress={() => setThemeMode('dark')}
             >
               <Moon size={16} color={themeMode === 'dark' ? themeColors.primary : themeColors.text} />
@@ -117,10 +140,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
             </HoverableView>
 
             <HoverableView
-              style={[
-                styles.themeOption,
-                themeMode === 'system' && { backgroundColor: themeColors.primary + '15' }
-              ]}
+              style={getThemeOptionStyle(themeMode === 'system')}
               onPress={() => setThemeMode('system')}
             >
               <Monitor size={16} color={themeMode === 'system' ? themeColors.primary : themeColors.text} />
@@ -159,17 +179,37 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
 
 const styles = StyleSheet.create({
   overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 45,
+    ...Platform.select({
+      web: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 45,
+      },
+      default: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        zIndex: 45,
+      }
+    })
   },
   container: {
-    position: 'fixed',
-    top: SPACING.xs + 52, // Aumentado de 48 para 52 para descer um pouquinho
-    right: SPACING.lg,
+    ...Platform.select({
+      web: {
+        position: 'fixed',
+        top: SPACING.xs + 52,
+        right: SPACING.lg,
+      },
+      default: {
+        position: 'absolute',
+        right: SPACING.lg,
+      }
+    }),
     width: 200,
     borderRadius: BORDER_RADIUS.lg,
     borderWidth: 1,
@@ -180,19 +220,26 @@ const styles = StyleSheet.create({
       },
       default: {
         elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
       },
     }),
   },
   profileHeader: {
-    padding: SPACING.sm, // Reduzindo mais o padding
+    padding: SPACING.sm,
   },
   name: {
-    fontSize: 13, // Fonte ainda menor
+    fontSize: 13,
     fontWeight: '600',
-    marginBottom: SPACING.xs / 2, // Reduzindo o espaço entre nome e email
+    marginBottom: SPACING.xs / 2,
   },
   email: {
-    fontSize: 11, // Fonte ainda menor
+    fontSize: 11,
     opacity: 0.8,
   },
   divider: {
@@ -200,7 +247,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   themeSection: {
-    padding: SPACING.xs, // Reduzindo mais o padding
+    padding: SPACING.xs,
     paddingBottom: SPACING.sm,
   },
   sectionTitle: {
@@ -211,7 +258,7 @@ const styles = StyleSheet.create({
   },
   themeOptions: {
     flexDirection: 'row',
-    gap: SPACING.xs / 2, // Reduzindo o gap entre as opções
+    gap: SPACING.xs / 2,
   },
   themeOption: {
     flex: 1,
@@ -229,12 +276,12 @@ const styles = StyleSheet.create({
     }),
   },
   themeText: {
-    fontSize: 10, // Fonte ainda menor
+    fontSize: 10,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: SPACING.xs, // Reduzindo mais o padding
+    padding: SPACING.xs,
     paddingHorizontal: SPACING.sm,
     gap: SPACING.sm,
     ...Platform.select({
@@ -245,6 +292,6 @@ const styles = StyleSheet.create({
     }),
   },
   menuItemText: {
-    fontSize: 12, // Fonte ainda menor
+    fontSize: 12,
   },
 }); 

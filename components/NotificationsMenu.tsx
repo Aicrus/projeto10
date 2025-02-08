@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Animated, Pressable, Platform } from 'react-native';
+import { StyleSheet, View, Animated, Pressable, Platform, Dimensions } from 'react-native';
 import { Clock, DollarSign, Bell, ArrowUpRight } from 'lucide-react-native';
 import { ThemedText } from './ThemedText';
 import { HoverableView } from './HoverableView';
@@ -94,7 +94,18 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
 
   return (
     <>
-      <Pressable style={styles.overlay} onPress={onClose} />
+      <Pressable 
+        style={[
+          styles.overlay,
+          Platform.select({
+            native: {
+              position: 'absolute',
+              backgroundColor: 'rgba(0,0,0,0.1)'
+            }
+          })
+        ]} 
+        onPress={onClose} 
+      />
       <Animated.View
         style={[
           styles.container,
@@ -103,6 +114,11 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
             borderColor: themeColors.divider,
             opacity: fadeAnim,
             transform: [{ translateY: translateYAnim }],
+            ...Platform.select({
+              native: {
+                top: SPACING.xs + 52 + 35
+              }
+            })
           },
         ]}
       >
@@ -119,9 +135,9 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
               key={notification.id}
               style={[
                 styles.notificationItem,
-                notification.isUnread && {
+                notification.isUnread ? {
                   backgroundColor: themeColors.primary + '08',
-                },
+                } : {}
               ]}
               hoverScale={1.01}
             >
@@ -170,17 +186,37 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
 
 const styles = StyleSheet.create({
   overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 45,
+    ...Platform.select({
+      web: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 45,
+      },
+      default: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        zIndex: 45,
+      }
+    })
   },
   container: {
-    position: 'fixed',
-    top: SPACING.xs + 52,
-    right: SPACING.lg + 60,
+    ...Platform.select({
+      web: {
+        position: 'fixed',
+        top: SPACING.xs + 52,
+        right: SPACING.lg + 60,
+      },
+      default: {
+        position: 'absolute',
+        right: SPACING.lg + 60,
+      }
+    }),
     width: 320,
     borderRadius: BORDER_RADIUS.lg,
     borderWidth: 1,
@@ -191,6 +227,13 @@ const styles = StyleSheet.create({
       },
       default: {
         elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
       },
     }),
   },

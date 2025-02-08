@@ -4,8 +4,9 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, Platform } from 'react-native';
 import 'react-native-reanimated';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTheme } from '@/hooks/ThemeContext';
 import { ThemeProvider } from '@/hooks/ThemeContext';
@@ -31,34 +32,41 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <RootLayoutNav />
-      </ToastProvider>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <RootLayoutNav />
+        </ToastProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 
 function RootLayoutNav() {
   const { currentTheme } = useTheme();
 
-  return (
+  const MainContent = (
     <NavigationThemeProvider value={currentTheme === 'dark' ? DarkTheme : DefaultTheme}>
       <ThemedView style={{ flex: 1 }}>
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={{ flexGrow: 1 }}
-          showsVerticalScrollIndicator={false}>
-          <Stack screenOptions={{
-            headerShown: false,
-            contentStyle: { flex: 1 }
-          }}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </ScrollView>
+        <Stack screenOptions={{
+          headerShown: false,
+          contentStyle: { flex: 1 }
+        }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="+not-found" />
+        </Stack>
       </ThemedView>
       <StatusBar style={currentTheme === 'dark' ? 'light' : 'dark'} />
     </NavigationThemeProvider>
+  );
+
+  if (Platform.OS === 'web') {
+    return MainContent;
+  }
+
+  return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'right', 'left']}>
+      {MainContent}
+    </SafeAreaView>
   );
 }
