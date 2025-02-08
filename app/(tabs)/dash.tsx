@@ -8,26 +8,26 @@ import { ThemeSelector } from '@/components/ThemeSelector';
 import { Sidebar } from '@/components/Sidebar';
 import { SPACING } from '@/constants/DesignSystem';
 
-export default function HomeScreen() {
+export default function DashScreen() {
   const router = useRouter();
 
   const handleNavigation = (route: string) => {
-    if (route === '/index') {
-      router.push('/');
-    } else if (route === '/explore') {
-      router.push('/explore');
+    if (route === '/dash') {
+      router.push('/dash');
+    } else if (route === '/config') {
+      router.push('/config');
     }
   };
 
   return (
     <ThemedView style={styles.container}>
-      <Sidebar onNavigate={handleNavigation} />
+      <Sidebar onNavigate={handleNavigation} currentPath="/dash" />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
         <ThemedView style={styles.content}>
           <ThemedView style={styles.titleContainer}>
-            <ThemedText type="title">Welcome!</ThemedText>
+            <ThemedText type="title">Dashboard</ThemedText>
             <HelloWave />
           </ThemedView>
 

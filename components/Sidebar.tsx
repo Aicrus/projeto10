@@ -10,6 +10,7 @@ import type { Theme } from '@/src/hooks/useTheme';
 
 interface SidebarProps {
   onNavigate?: (route: string) => void;
+  currentPath?: string;
 }
 
 interface TypographyStyle {
@@ -36,7 +37,7 @@ const getFontWeight = (weight?: string): TextStyle['fontWeight'] => {
   }
 };
 
-export const Sidebar = ({ onNavigate }: SidebarProps) => {
+export const Sidebar = ({ onNavigate, currentPath = '/dash' }: SidebarProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { currentTheme } = useTheme();
   const { width: windowWidth } = useWindowDimensions();
@@ -85,21 +86,20 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
 
   const themeColors = COLORS[currentTheme as keyof typeof COLORS];
 
-  const [currentRoute, setCurrentRoute] = useState('/dash');
-
   const menuItems = [
-    { icon: 'LayoutDashboard', label: 'Dashboard', route: '/dash', isActive: currentRoute === '/dash' },
-    { icon: 'RotateCw', label: 'Transações', route: '/transactions' },
-    { icon: 'Wallet', label: 'Carteira', route: '/wallet' },
-    { icon: 'Target', label: 'Objetivos', route: '/goals' },
-    { icon: 'CircleDollarSign', label: 'Orçamento', route: '/budget' },
-    { icon: 'LineChart', label: 'Análises', route: '/analytics' },
-    { icon: 'Settings', label: 'Configurações', route: '/config', isActive: currentRoute === '/config' }
+    { icon: 'LayoutDashboard', label: 'Dashboard', route: '/dash', canNavigate: true },
+    { icon: 'RotateCw', label: 'Transações', route: '/transactions', canNavigate: false },
+    { icon: 'Wallet', label: 'Carteira', route: '/wallet', canNavigate: false },
+    { icon: 'Target', label: 'Objetivos', route: '/goals', canNavigate: false },
+    { icon: 'CircleDollarSign', label: 'Orçamento', route: '/budget', canNavigate: false },
+    { icon: 'LineChart', label: 'Análises', route: '/analytics', canNavigate: false },
+    { icon: 'Settings', label: 'Configurações', route: '/config', canNavigate: true }
   ];
 
-  const handleNavigation = (route: string) => {
-    setCurrentRoute(route);
-    onNavigate?.(route);
+  const handleNavigation = (route: string, canNavigate: boolean) => {
+    if (canNavigate) {
+      onNavigate?.(route);
+    }
   };
 
   return (
@@ -143,7 +143,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
               {
                 backgroundColor: currentTheme === 'dark' ? '#222' : 'white',
                 right: -8,
-                top: 32,
+                top: 40,
                 borderColor: themeColors.divider,
                 borderWidth: 1,
               }
@@ -175,12 +175,12 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
           <View style={styles.menuContainer}>
             {menuItems.map((item, index) => {
               const IconComponent = (Icons as any)[item.icon];
-              const isActive = currentRoute === item.route;
+              const isActive = currentPath === item.route;
               
               return (
                 <HoverableView
                   key={index}
-                  onPress={() => handleNavigation(item.route)}
+                  onPress={() => handleNavigation(item.route, item.canNavigate)}
                   style={styles.menuItem}
                   isActive={isActive}
                   activeBackgroundColor={themeColors.primary + '15'}
@@ -230,6 +230,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
               marginTop: 'auto',
               paddingTop: SPACING.lg,
               borderTopWidth: 1,
+              marginBottom: SPACING.xl,
             }
           ]}>
             {['Ajuda', 'Sair'].map((label, index) => {
@@ -411,5 +412,9 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
     paddingTop: SPACING.lg,
     borderTopWidth: 1,
+  },
+  disabledMenuItem: {
+    cursor: 'not-allowed',
+    opacity: 0.8,
   },
 }); 
