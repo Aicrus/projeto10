@@ -1,4 +1,5 @@
 import { StyleSheet, Platform, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import { HelloWave } from '@/components/HelloWave';
 import { ThemedText } from '@/components/ThemedText';
@@ -8,9 +9,19 @@ import { Sidebar } from '@/components/Sidebar';
 import { SPACING } from '@/constants/DesignSystem';
 
 export default function HomeScreen() {
+  const router = useRouter();
+
+  const handleNavigation = (route: string) => {
+    if (route === '/index') {
+      router.push('/');
+    } else if (route === '/explore') {
+      router.push('/explore');
+    }
+  };
+
   return (
     <ThemedView style={styles.container}>
-      <Sidebar onNavigate={(route) => console.log('Navegando para:', route)} />
+      <Sidebar onNavigate={handleNavigation} />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
@@ -52,4 +63,4 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
     marginBottom: SPACING.xl,
   },
-});
+}); 

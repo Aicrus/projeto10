@@ -85,15 +85,22 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
 
   const themeColors = COLORS[currentTheme as keyof typeof COLORS];
 
+  const [currentRoute, setCurrentRoute] = useState('/dash');
+
   const menuItems = [
-    { icon: 'LayoutDashboard', label: 'Dashboard', route: '/', isActive: true },
+    { icon: 'LayoutDashboard', label: 'Dashboard', route: '/dash', isActive: currentRoute === '/dash' },
     { icon: 'RotateCw', label: 'Transações', route: '/transactions' },
     { icon: 'Wallet', label: 'Carteira', route: '/wallet' },
     { icon: 'Target', label: 'Objetivos', route: '/goals' },
     { icon: 'CircleDollarSign', label: 'Orçamento', route: '/budget' },
     { icon: 'LineChart', label: 'Análises', route: '/analytics' },
-    { icon: 'Settings', label: 'Configurações', route: '/config' }
+    { icon: 'Settings', label: 'Configurações', route: '/config', isActive: currentRoute === '/config' }
   ];
+
+  const handleNavigation = (route: string) => {
+    setCurrentRoute(route);
+    onNavigate?.(route);
+  };
 
   return (
     <Animated.View style={[
@@ -168,19 +175,21 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
           <View style={styles.menuContainer}>
             {menuItems.map((item, index) => {
               const IconComponent = (Icons as any)[item.icon];
+              const isActive = currentRoute === item.route;
+              
               return (
                 <HoverableView
                   key={index}
-                  onPress={() => onNavigate?.(item.route)}
+                  onPress={() => handleNavigation(item.route)}
                   style={styles.menuItem}
-                  isActive={item.isActive}
+                  isActive={isActive}
                   activeBackgroundColor={themeColors.primary + '15'}
                   hoverTranslateX={4}
                 >
                   <View style={styles.menuIconContainer}>
                     <IconComponent
                       size={20}
-                      color={item.isActive ? themeColors.primary : currentTheme === 'dark' ? '#fff' : themeColors.text}
+                      color={isActive ? themeColors.primary : currentTheme === 'dark' ? '#fff' : themeColors.text}
                       strokeWidth={2}
                     />
                   </View>
@@ -196,14 +205,14 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
                         style={[
                           styles.menuItemText,
                           typography.body,
-                          item.isActive && { color: themeColors.primary }
+                          isActive && { color: themeColors.primary }
                         ]}
                       >
                         {item.label}
                       </ThemedText>
                     </Animated.View>
                   )}
-                  {item.isActive && (
+                  {isActive && (
                     <View style={[
                       styles.activeIndicator,
                       { backgroundColor: themeColors.primary }

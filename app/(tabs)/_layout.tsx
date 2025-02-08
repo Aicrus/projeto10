@@ -84,14 +84,14 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="index"
+        name="dash"
         options={{
           title: 'Dash',
           tabBarIcon: ({ color }) => <LayoutDashboard size={ICONS.sizes.md} color={color} strokeWidth={1.5} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="config"
         options={{
           title: 'Config',
           tabBarIcon: ({ color }) => <Settings size={ICONS.sizes.md} color={color} strokeWidth={1.5} />,
