@@ -100,7 +100,7 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
           Platform.select({
             native: {
               position: 'absolute',
-              backgroundColor: 'rgba(0,0,0,0.1)'
+              backgroundColor: 'rgba(0,0,0,0.4)'
             }
           })
         ]} 
