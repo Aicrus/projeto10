@@ -4,11 +4,13 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { ScrollView } from 'react-native';
 import 'react-native-reanimated';
 
 import { useTheme } from '@/hooks/ThemeContext';
 import { ThemeProvider } from '@/hooks/ThemeContext';
 import { ToastProvider } from '@/hooks/useToast';
+import { ThemedView } from '@/components/ThemedView';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -42,10 +44,20 @@ function RootLayoutNav() {
 
   return (
     <NavigationThemeProvider value={currentTheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <ThemedView style={{ flex: 1 }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}>
+          <Stack screenOptions={{
+            headerShown: false,
+            contentStyle: { flex: 1 }
+          }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ScrollView>
+      </ThemedView>
       <StatusBar style={currentTheme === 'dark' ? 'light' : 'dark'} />
     </NavigationThemeProvider>
   );

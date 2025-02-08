@@ -327,6 +327,32 @@ function App() {
 
 ### 🎯 Componentes Principais
 
+#### 📄 PageContainer
+O PageContainer é um componente fundamental que padroniza o layout de todas as telas da aplicação. Ele garante uma experiência consistente, adaptando-se automaticamente à presença ou ausência da sidebar e diferentes breakpoints.
+
+```typescript
+import { PageContainer } from '@/components/PageContainer';
+
+// Na sua tela:
+export default function MinhaNovaScreen() {
+  return (
+    <PageContainer>
+      {/* Seu conteúdo aqui */}
+    </PageContainer>
+  );
+}
+```
+
+Características do PageContainer:
+- 📱 Responsivo para mobile, tablet e desktop
+- 📏 Largura máxima adaptativa (1200px desktop, 800px outros)
+- 🎯 Padding responsivo baseado no breakpoint
+- 🎨 Centralização automática do conteúdo
+- 🔄 Compatível com sidebar (ajusta-se automaticamente)
+- 🎭 Suporte total aos temas claro/escuro
+
+> 💡 **Dica**: Use o PageContainer em todas as novas telas para manter a consistência do layout em toda a aplicação!
+
 #### 🧭 Sidebar
 A Sidebar é um componente opcional que pode ser adicionado a qualquer tela. Ela oferece navegação lateral e pode ser expandida ou recolhida:
 
