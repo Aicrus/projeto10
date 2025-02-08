@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Animated, Platform, Pressable, useColorScheme, useWindowDimensions, TextStyle } from 'react-native';
+import { View, StyleSheet, Animated, Platform, Pressable, useColorScheme, useWindowDimensions, TextStyle, ScrollView } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { HoverableView } from './HoverableView';
@@ -106,7 +106,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
       }
     ]}>
       <ThemedView style={styles.content}>
-        <ThemedView style={styles.header}>
+        <ThemedView style={[styles.header, { backgroundColor: currentTheme === 'dark' ? '#111' : 'white' }]}>
           <View style={[
             styles.logoContainer,
             { backgroundColor: themeColors.primary }
@@ -159,102 +159,109 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
           </HoverableView>
         </ThemedView>
 
-        <View style={styles.menuContainer}>
-          {menuItems.map((item, index) => {
-            const IconComponent = (Icons as any)[item.icon];
-            return (
-              <HoverableView
-                key={index}
-                onPress={() => onNavigate?.(item.label)}
-                style={styles.menuItem}
-                isActive={item.isActive}
-                activeBackgroundColor={themeColors.primary + '15'}
-                hoverTranslateX={4}
-              >
-                <View style={styles.menuIconContainer}>
-                  <IconComponent
-                    size={20}
-                    color={item.isActive ? themeColors.primary : currentTheme === 'dark' ? '#fff' : themeColors.text}
-                    strokeWidth={2}
-                  />
-                </View>
-                {isExpanded && (
-                  <Animated.View style={{
-                    opacity: fadeAnim,
-                    transform: [{ translateX: fadeAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [-20, 0]
-                    })}]
-                  }}>
-                    <ThemedText
-                      style={[
-                        styles.menuItemText,
-                        typography.body,
-                        item.isActive && { color: themeColors.primary }
-                      ]}
-                    >
-                      {item.label}
-                    </ThemedText>
-                  </Animated.View>
-                )}
-                {item.isActive && (
-                  <View style={[
-                    styles.activeIndicator,
-                    { backgroundColor: themeColors.primary }
-                  ]} />
-                )}
-              </HoverableView>
-            );
-          })}
-        </View>
+        <ScrollView 
+          style={styles.scrollContainer}
+          showsVerticalScrollIndicator={Platform.OS === 'web'}
+          scrollIndicatorInsets={{ right: 2 }}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <View style={styles.menuContainer}>
+            {menuItems.map((item, index) => {
+              const IconComponent = (Icons as any)[item.icon];
+              return (
+                <HoverableView
+                  key={index}
+                  onPress={() => onNavigate?.(item.label)}
+                  style={styles.menuItem}
+                  isActive={item.isActive}
+                  activeBackgroundColor={themeColors.primary + '15'}
+                  hoverTranslateX={4}
+                >
+                  <View style={styles.menuIconContainer}>
+                    <IconComponent
+                      size={20}
+                      color={item.isActive ? themeColors.primary : currentTheme === 'dark' ? '#fff' : themeColors.text}
+                      strokeWidth={2}
+                    />
+                  </View>
+                  {isExpanded && (
+                    <Animated.View style={{
+                      opacity: fadeAnim,
+                      transform: [{ translateX: fadeAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-20, 0]
+                      })}]
+                    }}>
+                      <ThemedText
+                        style={[
+                          styles.menuItemText,
+                          typography.body,
+                          item.isActive && { color: themeColors.primary }
+                        ]}
+                      >
+                        {item.label}
+                      </ThemedText>
+                    </Animated.View>
+                  )}
+                  {item.isActive && (
+                    <View style={[
+                      styles.activeIndicator,
+                      { backgroundColor: themeColors.primary }
+                    ]} />
+                  )}
+                </HoverableView>
+              );
+            })}
+          </View>
 
-        <View style={[
-          styles.footer,
-          { 
-            borderTopColor: themeColors.divider,
-            marginTop: 'auto',
-            paddingTop: SPACING.lg,
-            borderTopWidth: 1,
-          }
-        ]}>
-          {['Ajuda', 'Sair'].map((label, index) => {
-            const IconComponent = index === 0 ? Icons.HelpCircle : Icons.LogOut;
-            return (
-              <HoverableView
-                key={label}
-                style={styles.menuItem}
-                hoverTranslateX={4}
-                activeBackgroundColor={themeColors.hover}
-              >
-                <View style={styles.menuIconContainer}>
-                  <IconComponent
-                    size={20}
-                    color={currentTheme === 'dark' ? '#fff' : themeColors.text}
-                    strokeWidth={2}
-                  />
-                </View>
-                {isExpanded && (
-                  <Animated.View style={{
-                    opacity: fadeAnim,
-                    transform: [{ translateX: fadeAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [-20, 0]
-                    })}]
-                  }}>
-                    <ThemedText
-                      style={[
-                        styles.menuItemText,
-                        typography.body
-                      ]}
-                    >
-                      {label}
-                    </ThemedText>
-                  </Animated.View>
-                )}
-              </HoverableView>
-            );
-          })}
-        </View>
+          <View style={[
+            styles.footer,
+            { 
+              borderTopColor: themeColors.divider,
+              marginTop: 'auto',
+              paddingTop: SPACING.lg,
+              borderTopWidth: 1,
+            }
+          ]}>
+            {['Ajuda', 'Sair'].map((label, index) => {
+              const IconComponent = index === 0 ? Icons.HelpCircle : Icons.LogOut;
+              return (
+                <HoverableView
+                  key={label}
+                  style={styles.menuItem}
+                  hoverTranslateX={4}
+                  activeBackgroundColor={themeColors.hover}
+                >
+                  <View style={styles.menuIconContainer}>
+                    <IconComponent
+                      size={20}
+                      color={currentTheme === 'dark' ? '#fff' : themeColors.text}
+                      strokeWidth={2}
+                    />
+                  </View>
+                  {isExpanded && (
+                    <Animated.View style={{
+                      opacity: fadeAnim,
+                      transform: [{ translateX: fadeAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-20, 0]
+                      })}]
+                    }}>
+                      <ThemedText
+                        style={[
+                          styles.menuItemText,
+                          typography.body
+                        ]}
+                      >
+                        {label}
+                      </ThemedText>
+                    </Animated.View>
+                  )}
+                </HoverableView>
+              );
+            })}
+          </View>
+        </ScrollView>
       </ThemedView>
     </Animated.View>
   );
@@ -267,7 +274,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingVertical: SPACING.lg,
   },
   header: {
     paddingHorizontal: SPACING.md,
@@ -275,6 +281,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: SPACING.xl,
     position: 'relative',
+    paddingVertical: SPACING.lg,
+    zIndex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: 'transparent',
+    ...Platform.select({
+      web: {
+        position: 'sticky',
+        top: 0,
+      },
+    }),
+  },
+  scrollContainer: {
+    flex: 1,
+    ...Platform.select({
+      web: {
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'rgba(0,0,0,0.2) transparent',
+      },
+    }),
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   logoContainer: {
     width: 36,
