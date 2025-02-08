@@ -1,45 +1,62 @@
-import { PropsWithChildren, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Pressable, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { ThemedText } from './ThemedText';
+import { useTheme } from '@/hooks/ThemeContext';
+import { COLORS } from '@/constants/DesignSystem';
 
-export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
+interface CollapsibleProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+export function Collapsible({ title, children }: CollapsibleProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const theme = useColorScheme() ?? 'light';
+  const { currentTheme } = useTheme();
+
+  const iconStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotate: withSpring(isOpen ? '180deg' : '0deg', {
+            damping: 15,
+            stiffness: 150,
+          }),
+        },
+      ],
+    };
+  });
 
   return (
-    <ThemedView>
-      <TouchableOpacity
-        style={styles.heading}
-        onPress={() => setIsOpen((value) => !value)}
-        activeOpacity={0.8}>
-        <IconSymbol
-          name="chevron.right"
-          size={18}
-          weight="medium"
-          color={theme === 'light' ? Colors.light.icon : Colors.dark.icon}
-          style={{ transform: [{ rotate: isOpen ? '90deg' : '0deg' }] }}
-        />
-
+    <View style={styles.container}>
+      <Pressable onPress={() => setIsOpen(!isOpen)} style={styles.header}>
         <ThemedText type="defaultSemiBold">{title}</ThemedText>
-      </TouchableOpacity>
-      {isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
-    </ThemedView>
+        <Animated.View style={iconStyle}>
+          <Ionicons
+            name="chevron-down"
+            size={20}
+            color={COLORS[currentTheme].text}
+          />
+        </Animated.View>
+      </Pressable>
+      {isOpen && <View style={styles.content}>{children}</View>}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  heading: {
+  container: {
+    width: '100%',
+  },
+  header: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 6,
+    paddingVertical: 12,
   },
   content: {
-    marginTop: 6,
-    marginLeft: 24,
+    paddingTop: 8,
   },
 });

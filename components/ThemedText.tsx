@@ -1,11 +1,12 @@
-import { Text, type TextProps, StyleSheet } from 'react-native';
+import { Text, type TextProps, StyleSheet, useWindowDimensions } from 'react-native';
 
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { useTheme } from '@/hooks/ThemeContext';
+import { COLORS, getTypographyForBreakpoint } from '@/constants/DesignSystem';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'small';
 };
 
 export function ThemedText({
@@ -15,17 +16,37 @@ export function ThemedText({
   type = 'default',
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+  const { currentTheme } = useTheme();
+  const { width } = useWindowDimensions();
+  
+  const typography = getTypographyForBreakpoint(width);
+  
+  const color = currentTheme === 'dark'
+    ? darkColor ?? COLORS.dark.text
+    : lightColor ?? COLORS.light.text;
+
+  const getTypographyStyle = () => {
+    switch (type) {
+      case 'title':
+        return typography.title;
+      case 'subtitle':
+        return typography.subtitle;
+      case 'defaultSemiBold':
+        return typography.bodySemiBold;
+      case 'small':
+        return typography.small;
+      case 'link':
+        return { ...typography.link, color: COLORS[currentTheme].primary };
+      default:
+        return typography.body;
+    }
+  };
 
   return (
     <Text
       style={[
         { color },
-        type === 'default' ? styles.default : undefined,
-        type === 'title' ? styles.title : undefined,
-        type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
-        type === 'subtitle' ? styles.subtitle : undefined,
-        type === 'link' ? styles.link : undefined,
+        getTypographyStyle(),
         style,
       ]}
       {...rest}
