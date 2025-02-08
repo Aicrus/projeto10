@@ -52,7 +52,7 @@ export default function ConfigScreen() {
         styles.mainContent,
         { left: isMobile ? 0 : animatedWidth }
       ]}>
-        <Header sidebarWidth={animatedWidth} onNavigate={handleNavigation} />
+        <Header sidebarWidth={animatedWidth} onNavigate={handleNavigation} currentPath="/config" />
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}

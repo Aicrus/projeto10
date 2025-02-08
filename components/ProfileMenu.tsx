@@ -281,9 +281,10 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: SPACING.xs,
+    padding: SPACING.sm,
     paddingHorizontal: SPACING.sm,
     gap: SPACING.sm,
+    marginVertical: SPACING.xs / 2,
     ...Platform.select({
       web: {
         cursor: 'pointer',

@@ -52,7 +52,7 @@ export default function DashScreen() {
         styles.mainContent,
         { left: isMobile ? 0 : animatedWidth }
       ]}>
-        <Header sidebarWidth={animatedWidth} onNavigate={handleNavigation} />
+        <Header sidebarWidth={animatedWidth} onNavigate={handleNavigation} currentPath="/dash" />
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}

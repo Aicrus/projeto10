@@ -13,15 +13,26 @@ import { useBreakpoints } from '@/hooks/useBreakpoints';
 interface HeaderProps {
   sidebarWidth: Animated.Value;
   onNavigate?: (route: string) => void;
+  currentPath?: string;
 }
 
-export function Header({ sidebarWidth, onNavigate }: HeaderProps) {
+export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: HeaderProps) {
   const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
   const [isNotificationsMenuVisible, setIsNotificationsMenuVisible] = useState(false);
   const { currentTheme } = useTheme();
   const { isMobile } = useBreakpoints();
   const themeColors = COLORS[currentTheme];
   const typography = getTypographyForBreakpoint(Platform.OS === 'web' ? window.innerWidth : 0);
+
+  const getPageTitle = (path?: string) => {
+    switch (path) {
+      case '/config':
+        return 'Configurações';
+      case '/dash':
+      default:
+        return 'Dashboard';
+    }
+  };
 
   return (
     <Animated.View 
@@ -44,7 +55,7 @@ export function Header({ sidebarWidth, onNavigate }: HeaderProps) {
               { fontWeight: '600' }
             ]}
           >
-            Dashboard
+            {getPageTitle(currentPath)}
           </ThemedText>
         </View>
 
