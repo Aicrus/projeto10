@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, TextInput, Pressable, ActivityIndicator } from 'react-native';
+import { StyleSheet, TextInput, Pressable, ActivityIndicator, Platform } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { COLORS, SPACING, BORDER_RADIUS } from '@/constants/DesignSystem';
 import { useTheme } from '@/hooks/ThemeContext';
@@ -9,18 +9,31 @@ import { useWindowDimensions } from 'react-native';
 import { getTypographyForBreakpoint } from '@/constants/DesignSystem';
 import { useAuth } from '@/contexts/auth';
 import { useToast } from '@/hooks/useToast';
+import { Eye, EyeOff } from 'lucide-react-native';
 
 export default function Register() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { currentTheme } = useTheme();
   const { width } = useWindowDimensions();
   const typography = getTypographyForBreakpoint(width);
   const { signUp, isLoading } = useAuth();
   const { showToast } = useToast();
   const router = useRouter();
+
+  const inputStyle = [
+    styles.input,
+    { 
+      backgroundColor: COLORS[currentTheme].background,
+      color: COLORS[currentTheme].text,
+      borderColor: COLORS[currentTheme].divider,
+      ...(Platform.OS === 'web' ? { outline: 'none' } : {}),
+    }
+  ];
 
   const handleRegister = async () => {
     try {
@@ -158,74 +171,74 @@ export default function Register() {
           Preencha seus dados para começar
         </ThemedText>
 
-        <TextInput
-          style={[
-            styles.input,
-            { 
-              backgroundColor: COLORS[currentTheme].background,
-              color: COLORS[currentTheme].text,
-              borderColor: COLORS[currentTheme].divider,
-            }
-          ]}
-          placeholder="Nome completo"
-          placeholderTextColor={COLORS[currentTheme].icon}
-          value={nome}
-          onChangeText={setNome}
-          autoCapitalize="words"
-          editable={!isLoading}
-        />
+        <ThemedView style={styles.inputContainer}>
+          <TextInput
+            style={inputStyle}
+            placeholder="Nome completo"
+            placeholderTextColor={COLORS[currentTheme].icon}
+            value={nome}
+            onChangeText={setNome}
+            autoCapitalize="words"
+            editable={!isLoading}
+          />
+        </ThemedView>
 
-        <TextInput
-          style={[
-            styles.input,
-            { 
-              backgroundColor: COLORS[currentTheme].background,
-              color: COLORS[currentTheme].text,
-              borderColor: COLORS[currentTheme].divider,
-            }
-          ]}
-          placeholder="E-mail"
-          placeholderTextColor={COLORS[currentTheme].icon}
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          editable={!isLoading}
-        />
+        <ThemedView style={styles.inputContainer}>
+          <TextInput
+            style={inputStyle}
+            placeholder="E-mail"
+            placeholderTextColor={COLORS[currentTheme].icon}
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            editable={!isLoading}
+          />
+        </ThemedView>
 
-        <TextInput
-          style={[
-            styles.input,
-            { 
-              backgroundColor: COLORS[currentTheme].background,
-              color: COLORS[currentTheme].text,
-              borderColor: COLORS[currentTheme].divider,
-            }
-          ]}
-          placeholder="Senha"
-          placeholderTextColor={COLORS[currentTheme].icon}
-          value={senha}
-          onChangeText={setSenha}
-          secureTextEntry
-          editable={!isLoading}
-        />
+        <ThemedView style={styles.inputContainer}>
+          <TextInput
+            style={inputStyle}
+            placeholder="Senha"
+            placeholderTextColor={COLORS[currentTheme].icon}
+            value={senha}
+            onChangeText={setSenha}
+            secureTextEntry={!showPassword}
+            editable={!isLoading}
+          />
+          <Pressable 
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeIcon}
+          >
+            {showPassword ? (
+              <EyeOff size={20} color={COLORS[currentTheme].icon} />
+            ) : (
+              <Eye size={20} color={COLORS[currentTheme].icon} />
+            )}
+          </Pressable>
+        </ThemedView>
 
-        <TextInput
-          style={[
-            styles.input,
-            { 
-              backgroundColor: COLORS[currentTheme].background,
-              color: COLORS[currentTheme].text,
-              borderColor: COLORS[currentTheme].divider,
-            }
-          ]}
-          placeholder="Confirmar senha"
-          placeholderTextColor={COLORS[currentTheme].icon}
-          value={confirmarSenha}
-          onChangeText={setConfirmarSenha}
-          secureTextEntry
-          editable={!isLoading}
-        />
+        <ThemedView style={styles.inputContainer}>
+          <TextInput
+            style={inputStyle}
+            placeholder="Confirmar senha"
+            placeholderTextColor={COLORS[currentTheme].icon}
+            value={confirmarSenha}
+            onChangeText={setConfirmarSenha}
+            secureTextEntry={!showConfirmPassword}
+            editable={!isLoading}
+          />
+          <Pressable 
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            style={styles.eyeIcon}
+          >
+            {showConfirmPassword ? (
+              <EyeOff size={20} color={COLORS[currentTheme].icon} />
+            ) : (
+              <Eye size={20} color={COLORS[currentTheme].icon} />
+            )}
+          </Pressable>
+        </ThemedView>
 
         <Pressable
           style={[
@@ -284,13 +297,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: SPACING.xl,
   },
+  inputContainer: {
+    position: 'relative',
+    marginBottom: SPACING.md,
+  },
   input: {
     width: '100%',
     height: 48,
-    borderWidth: 1,
     borderRadius: BORDER_RADIUS.md,
     paddingHorizontal: SPACING.md,
-    marginBottom: SPACING.md,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: SPACING.md,
+    top: 12,
+    padding: SPACING.xs,
   },
   button: {
     width: '100%',

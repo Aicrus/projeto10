@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, TextInput, Pressable, ActivityIndicator } from 'react-native';
+import { StyleSheet, TextInput, Pressable, ActivityIndicator, Platform } from 'react-native';
 import { Link } from 'expo-router';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '@/constants/DesignSystem';
 import { useTheme } from '@/hooks/ThemeContext';
@@ -8,14 +8,26 @@ import { ThemedText } from '@/components/ThemedText';
 import { useWindowDimensions } from 'react-native';
 import { getTypographyForBreakpoint } from '@/constants/DesignSystem';
 import { useAuth } from '@/contexts/auth';
+import { Eye, EyeOff } from 'lucide-react-native';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { currentTheme } = useTheme();
   const { width } = useWindowDimensions();
   const typography = getTypographyForBreakpoint(width);
   const { signIn, isLoading } = useAuth();
+
+  const inputStyle = [
+    styles.input,
+    { 
+      backgroundColor: COLORS[currentTheme].background,
+      color: COLORS[currentTheme].text,
+      borderColor: COLORS[currentTheme].divider,
+      ...(Platform.OS === 'web' ? { outline: 'none' } : {}),
+    }
+  ];
 
   const handleLogin = async () => {
     try {
@@ -36,40 +48,40 @@ export default function Login() {
           Entre com suas credenciais para acessar sua conta
         </ThemedText>
 
-        <TextInput
-          style={[
-            styles.input,
-            { 
-              backgroundColor: COLORS[currentTheme].background,
-              color: COLORS[currentTheme].text,
-              borderColor: COLORS[currentTheme].divider,
-            }
-          ]}
-          placeholder="E-mail"
-          placeholderTextColor={COLORS[currentTheme].icon}
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          editable={!isLoading}
-        />
+        <ThemedView style={styles.inputContainer}>
+          <TextInput
+            style={inputStyle}
+            placeholder="E-mail"
+            placeholderTextColor={COLORS[currentTheme].icon}
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            editable={!isLoading}
+          />
+        </ThemedView>
 
-        <TextInput
-          style={[
-            styles.input,
-            { 
-              backgroundColor: COLORS[currentTheme].background,
-              color: COLORS[currentTheme].text,
-              borderColor: COLORS[currentTheme].divider,
-            }
-          ]}
-          placeholder="Senha"
-          placeholderTextColor={COLORS[currentTheme].icon}
-          value={senha}
-          onChangeText={setSenha}
-          secureTextEntry
-          editable={!isLoading}
-        />
+        <ThemedView style={styles.inputContainer}>
+          <TextInput
+            style={inputStyle}
+            placeholder="Senha"
+            placeholderTextColor={COLORS[currentTheme].icon}
+            value={senha}
+            onChangeText={setSenha}
+            secureTextEntry={!showPassword}
+            editable={!isLoading}
+          />
+          <Pressable 
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeIcon}
+          >
+            {showPassword ? (
+              <EyeOff size={20} color={COLORS[currentTheme].icon} />
+            ) : (
+              <Eye size={20} color={COLORS[currentTheme].icon} />
+            )}
+          </Pressable>
+        </ThemedView>
 
         <Pressable
           style={[
@@ -128,13 +140,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: SPACING.xl,
   },
+  inputContainer: {
+    position: 'relative',
+    marginBottom: SPACING.md,
+  },
   input: {
     width: '100%',
     height: 48,
-    borderWidth: 1,
     borderRadius: BORDER_RADIUS.md,
     paddingHorizontal: SPACING.md,
-    marginBottom: SPACING.md,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: SPACING.md,
+    top: 12,
+    padding: SPACING.xs,
   },
   button: {
     width: '100%',
