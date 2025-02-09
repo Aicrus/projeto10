@@ -58,13 +58,20 @@ Este projeto usa o Supabase como backend. Aqui está como configurar:
 
 ### 📋 Configuração Inicial
 
-1. **Arquivo de Ambiente**
-   - Copie o arquivo `.env.example` para `.env`:
+1. **Criar arquivo .env**
+   - Primeiro, crie um novo arquivo chamado `.env` na raiz do projeto:
+   ```bash
+   touch .env
+   ```
+   > 💡 **Dica**: Se estiver no Windows, você pode criar o arquivo manualmente ou usar o comando `type nul > .env`
+
+2. **Arquivo de Ambiente**
+   - Copie o conteúdo do `.env.example` para seu novo arquivo `.env`:
    ```bash
    cp .env.example .env
    ```
 
-2. **Configurando suas Credenciais**
+3. **Configurando suas Credenciais**
    - Acesse [supabase.com](https://supabase.com)
    - Crie uma nova conta ou faça login
    - Crie um novo projeto
@@ -73,7 +80,7 @@ Este projeto usa o Supabase como backend. Aqui está como configurar:
      - `Project URL` → Cole em `EXPO_PUBLIC_SUPABASE_URL`
      - `anon public` → Cole em `EXPO_PUBLIC_SUPABASE_ANON_KEY`
 
-3. **Estrutura Atual**
+4. **Estrutura Atual**
    ```
    EXPO_PUBLIC_SUPABASE_URL=https://idnyppqhuctffszcdbwk.supabase.co
    EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -82,10 +89,93 @@ Este projeto usa o Supabase como backend. Aqui está como configurar:
 
 ### 🔒 Segurança
 
-- O arquivo `.env` está no `.gitignore` e não será commitado
-- Nunca compartilhe suas chaves de produção
-- Use o `.env.example` como template
-- As chaves "anon" são públicas por natureza, mas ainda assim não devem ser commitadas
+- O arquivo `.env` está no `.gitignore` e não será commitado para o GitHub
+- As chaves "anon" do Supabase são públicas por natureza e podem ser vistas no navegador/console
+  > ℹ️ **Importante**: Isso é normal e seguro! Estas chaves têm permissões limitadas e são feitas para serem públicas
+- Para dados realmente sensíveis, use variáveis de ambiente sem o prefixo `EXPO_PUBLIC_`
+- Nunca compartilhe suas chaves de produção em repositórios públicos
+- Use o `.env.example` como template, mas sem credenciais reais
+
+### 🚀 Deploy e Variáveis de Ambiente
+
+#### 💡 Como Funciona?
+
+1. **Em Desenvolvimento**
+   ```typescript
+   // Seu código já usa as variáveis assim:
+   const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
+   // Em desenvolvimento, ele pega do seu arquivo .env local
+   ```
+
+2. **Em Produção**
+   ```typescript
+   // O MESMO código:
+   const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
+   // Em produção, ele pega automaticamente das variáveis da Vercel!
+   ```
+
+> 🎯 **Incrível, né?** Você não precisa mudar NADA no seu código! 
+> A Vercel cuida de tudo automaticamente.
+
+#### 📦 Preparando para Produção
+
+1. **Ambiente de Desenvolvimento**
+   - Durante o desenvolvimento, mantenha o `.env` no `.gitignore`
+   - Use o `.env.example` como template para outros desenvolvedores
+
+2. **Deploy na Vercel**
+   - NÃO remova o `.env` do `.gitignore`
+   - Configure as variáveis de ambiente na Vercel em 4 passos simples:
+
+   **Passo 1**: No Dashboard da Vercel, clique no seu projeto
+   
+   **Passo 2**: Clique em "Settings" na barra superior
+   
+   **Passo 3**: No menu lateral, clique em "Environment Variables"
+   
+   **Passo 4**: Adicione cada variável:
+   - Nome: `EXPO_PUBLIC_SUPABASE_URL`
+   - Valor: Cole sua URL do Supabase
+   - Clique em "Add"
+   - Repita para `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+
+   > 💡 **Dica**: Você pode copiar os valores direto do seu arquivo `.env` local!
+   
+   > 🎯 **Pronto!** A Vercel vai usar essas variáveis automaticamente em produção
+
+3. **Múltiplos Ambientes (Desenvolvimento/Produção)**
+   - Para desenvolvimento: use o `.env` local
+   - Para produção: use as variáveis de ambiente da Vercel
+   - Para staging/preview: configure variáveis específicas na Vercel para cada ambiente
+
+#### ⚠️ Importante: Commits e Segurança
+
+1. **NUNCA remova o `.env` do `.gitignore**
+   - Mesmo em produção, mantenha o `.env` no `.gitignore`
+   - Use a interface da Vercel para gerenciar variáveis de ambiente
+   - Isso mantém suas credenciais seguras e fora do controle de versão
+
+2. **Atualizando Credenciais**
+   - Para atualizar credenciais em produção:
+     1. Atualize localmente no seu `.env` para testes
+     2. Se funcionar, atualize na interface da Vercel
+     3. A Vercel fará automaticamente um novo deploy
+
+3. **Commits Seguros**
+   ```bash
+   # Verifique se .env não está sendo commitado
+   git status
+   
+   # Se aparecer .env na lista:
+   git reset .env
+   git add .
+   git commit -m "sua mensagem"
+   ```
+
+> ⚠️ **ATENÇÃO**: 
+> - NUNCA commite o arquivo `.env`
+> - SEMPRE use a interface da Vercel para gerenciar variáveis de produção
+> - Mantenha o `.env.example` atualizado, mas SEM credenciais reais
 
 ### 🔄 Mudando a Rota Home
 
