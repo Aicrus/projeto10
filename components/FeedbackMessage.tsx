@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { SPACING, BORDER_RADIUS, ICONS } from '@/constants/DesignSystem';
 import { useTheme } from '@/hooks/ThemeContext';
 import { FEEDBACK_COLORS } from '@/constants/DesignSystem';
 import * as LucideIcons from 'lucide-react-native';
+import { getTypographyForBreakpoint } from '@/constants/DesignSystem';
 
 type FeedbackType = 'success' | 'warning' | 'error' | 'info';
 
@@ -31,6 +32,8 @@ export function FeedbackMessage({ type, message, description }: FeedbackMessageP
   const { currentTheme } = useTheme();
   const colors = FEEDBACK_COLORS[currentTheme][type];
   const Icon = getFeedbackIcon(type);
+  const { width } = useWindowDimensions();
+  const typography = getTypographyForBreakpoint(width);
 
   return (
     <View style={[
@@ -46,12 +49,24 @@ export function FeedbackMessage({ type, message, description }: FeedbackMessageP
           color={colors.text}
           strokeWidth={2}
         />
-        <ThemedText style={[styles.message, { color: colors.text }]} type="defaultSemiBold">
+        <ThemedText 
+          style={[
+            styles.message, 
+            { color: colors.text },
+            typography.bodySemiBold
+          ]}
+        >
           {message}
         </ThemedText>
       </View>
       {description && (
-        <ThemedText style={[styles.description, { color: colors.text }]}>
+        <ThemedText 
+          style={[
+            styles.description, 
+            { color: colors.text },
+            typography.body
+          ]}
+        >
           {description}
         </ThemedText>
       )}

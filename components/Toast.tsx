@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Animated, Dimensions, Platform, Pressable } from 'react-native';
+import { StyleSheet, Animated, Dimensions, Platform, Pressable, useWindowDimensions } from 'react-native';
 import { FeedbackMessage } from './FeedbackMessage';
 import { SPACING, BORDER_RADIUS } from '@/constants/DesignSystem';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 
 export type ToastPosition = 'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export type ToastType = 'success' | 'warning' | 'error' | 'info';
@@ -30,7 +31,8 @@ export function Toast({
   const translateX = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(0.8)).current;
   const opacity = useRef(new Animated.Value(0)).current;
-  const { width: screenWidth } = Dimensions.get('window');
+  const { width: screenWidth } = useWindowDimensions();
+  const { isMobile, isTablet } = useBreakpoints();
   const hideTimeoutRef = useRef<NodeJS.Timeout>();
 
   const nativePadding = Platform.select({
@@ -119,16 +121,32 @@ export function Toast({
   };
 
   const getPositionStyle = () => {
-    const maxWidth = 400; // Largura máxima para o toast
-    const horizontalPadding = SPACING.lg;
+    // Ajusta a largura máxima baseada no breakpoint
+    const getMaxWidth = () => {
+      if (isMobile) return screenWidth - (SPACING.lg * 2);
+      if (isTablet) return 400;
+      return 480;
+    };
+
+    const maxWidth = getMaxWidth();
+    const horizontalPadding = isMobile ? SPACING.md : SPACING.lg;
     
     const baseStyle = {
       position: 'absolute' as const,
       maxWidth: Math.min(maxWidth, screenWidth - (horizontalPadding * 2)),
-      minWidth: Math.min(320, screenWidth - (horizontalPadding * 2)),
+      minWidth: isMobile ? screenWidth - (horizontalPadding * 2) : Math.min(320, screenWidth - (horizontalPadding * 2)),
+      width: isMobile ? '100%' : 'auto',
     };
 
     const getHorizontalPosition = (align: 'left' | 'right' | 'center') => {
+      if (isMobile) {
+        // No mobile, sempre centralizado
+        return {
+          left: horizontalPadding,
+          right: horizontalPadding,
+        };
+      }
+
       switch (align) {
         case 'left':
           return { left: horizontalPadding };
@@ -138,15 +156,42 @@ export function Toast({
           return {
             left: '50%',
             transform: [
-              { translateX: -baseStyle.maxWidth / 2 }
+              { translateX: -(maxWidth / 2) }
             ]
           };
       }
     };
 
-    const topPadding = Platform.OS !== 'web' ? nativePadding : SPACING.lg;
-    const bottomPadding = Platform.OS !== 'web' ? nativePadding : SPACING.lg;
+    // Ajusta o padding baseado na plataforma e breakpoint
+    const topPadding = Platform.OS !== 'web' 
+      ? nativePadding 
+      : isMobile 
+        ? SPACING.md 
+        : SPACING.lg;
+    
+    const bottomPadding = Platform.OS !== 'web'
+      ? nativePadding
+      : isMobile
+        ? SPACING.md + 20 // Adiciona espaço extra no mobile para não ficar muito próximo do bottom
+        : SPACING.lg;
 
+    // No mobile, sempre usa posição top ou bottom centralizado
+    if (isMobile) {
+      if (position.includes('bottom')) {
+        return {
+          ...baseStyle,
+          bottom: bottomPadding,
+          ...getHorizontalPosition('center'),
+        };
+      }
+      return {
+        ...baseStyle,
+        top: topPadding,
+        ...getHorizontalPosition('center'),
+      };
+    }
+
+    // Para tablet e desktop, mantém o comportamento original
     switch (position) {
       case 'top':
         return {
@@ -195,7 +240,7 @@ export function Toast({
     <Animated.View
       style={[
         styles.container,
-        getPositionStyle(),
+        getPositionStyle() as any,
         {
           opacity,
           transform: [
@@ -209,7 +254,10 @@ export function Toast({
         onHoverOut={() => Platform.OS === 'web' && setIsPaused(false)}
         onPressIn={() => Platform.OS !== 'web' && setIsPaused(true)}
         onPressOut={() => Platform.OS !== 'web' && setIsPaused(false)}
-        style={styles.pressable}>
+        style={[
+          styles.pressable,
+          isMobile && styles.pressableMobile
+        ]}>
         <FeedbackMessage
           type={type}
           message={message}
@@ -239,5 +287,8 @@ const styles = StyleSheet.create({
         cursor: 'pointer' as const,
       },
     }),
+  },
+  pressableMobile: {
+    width: '100%',
   },
 }); 
