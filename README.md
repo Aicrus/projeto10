@@ -84,13 +84,29 @@ Não se preocupe! É mais simples do que parece. Você só precisa instalar:
    - Teste tudo normalmente
 
 2. **Na Hora de Publicar na Vercel**
-   - Entre no site da Vercel
+   - Entre no [site da Vercel](https://vercel.com)
    - Vá em seu projeto
    - Clique em "Settings" > "Environment Variables"
    - Cole suas variáveis lá
    - Pronto! 🎉
 
 > 🔒 **Fique Tranquilo**: Suas credenciais ficam seguras e criptografadas!
+
+### 🤔 Por Que Escolhemos a Vercel?
+
+- ✨ **Padrão da Indústria**: Grandes empresas confiam na Vercel para seus projetos
+- 🚀 **Performance Incrível**: Deploy ultrarrápido e CDN global
+- 🎁 **Plano Gratuito Generoso**: 
+  - Até 100 GB de banda/mês
+  - Domínios personalizados grátis
+  - SSL automático
+  - Integrações com GitHub
+  - Preview de cada commit
+- 🔒 **Segurança de Primeira**: Gerenciamento seguro de variáveis de ambiente
+- 🎯 **Deploy Automático**: Cada push no GitHub gera um novo deploy
+- 📊 **Analytics Incluído**: Métricas de performance em tempo real
+
+> 💡 **Dica**: Acesse [vercel.com/pricing](https://vercel.com/pricing) para conhecer todos os recursos do plano gratuito!
 
 ## 📱 Como Rodar o Projeto?
 
