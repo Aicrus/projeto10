@@ -1,145 +1,318 @@
 # 🎨 Projeto Base com Design System
 
-## 👋 Olá, Seja Bem-Vindo(a)!
+## 📋 Índice
+- [👋 Introdução](#-introdução)
+- [✨ Destaques](#-destaques)
+- [🚀 Começando](#-começando)
+- [🔐 Configuração do Supabase](#-configuração-do-supabase)
+- [🚀 Deploy](#-deploy)
+- [📱 Executando o Projeto](#-executando-o-projeto)
+- [🎯 Estrutura de Navegação](#-estrutura-de-navegação)
+- [🎨 Design System](#-design-system)
+- [📦 Componentes Principais](#-componentes-principais)
+- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
+- [💻 Desenvolvimento](#-desenvolvimento)
+- [🤝 Suporte](#-suporte)
 
-Este é um projeto incrível que funciona tanto no seu celular quanto no computador! 
-Ele já vem com tudo preparado para você criar aplicativos modernos e bonitos.
+## 👋 Introdução
 
-## 🎁 O Que Você Ganha Com Este Projeto?
+Bem-vindo ao nosso projeto base! Este é um template moderno e flexível para criar aplicações incríveis que funcionam tanto na web quanto em dispositivos móveis. Nosso objetivo é tornar o desenvolvimento mais fácil e divertido, fornecendo uma base sólida com as melhores práticas já implementadas.
+
+## ✨ Destaques
 
 - 🌓 Modo Claro e Escuro (igual ao Instagram/WhatsApp)
-- 📱 Funciona em Qualquer Tela (celular, tablet ou computador)
-- 🎯 Componentes Prontos para Usar
-- 🖌️ Design Moderno e Consistente
-- 🌐 Roda na Web e no Celular
+- 📱 Design Responsivo (funciona em qualquer tela)
+- 🎯 Componentes Reutilizáveis
+- 🖌️ Design System Completo
+- 🌐 Suporte Web e Mobile Nativo
+- 🚀 Deploy Simplificado
 
-## 🚀 Vamos Começar?
+## 🚀 Começando
 
-### 📱 O Que Você Precisa Ter no Seu Computador
+### 📋 Pré-requisitos
 
-Não se preocupe! É mais simples do que parece. Você só precisa instalar:
+Antes de começar, você precisa ter instalado em sua máquina:
 
-1. [Git](https://git-scm.com) - Para baixar o projeto
-2. [Node.js](https://nodejs.org/) - Para rodar o projeto (pegue a versão LTS)
-3. [npm](https://www.npmjs.com/) - Vem junto com o Node.js!
-4. [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) - Para rodar no celular
+1. [Git](https://git-scm.com) - Para baixar e versionar o projeto
+2. [Node.js](https://nodejs.org/) - Use a versão LTS
+3. [npm](https://www.npmjs.com/) - Vem junto com o Node.js
+4. [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) - Para desenvolvimento mobile
 
-> 🤔 **Não Sabe Se Já Tem Algo Instalado?**
-> Digite estes comandos no terminal do seu computador:
-> - `git --version` (para verificar o Git)
-> - `node --version` (para verificar o Node.js)
-> - `npm --version` (para verificar o npm)
+> 💡 **Dica**: Verifique se já tem algo instalado usando estes comandos:
+> ```bash
+> git --version
+> node --version
+> npm --version
+> ```
 
-### 🎮 Primeiros Passos
+### 🎮 Configuração Inicial
 
-1. **Baixe o Projeto**
+1. **Clone o Projeto**
    ```bash
    git clone [url-do-repositório]
    cd [nome-do-projeto]
    ```
 
-2. **Instale o Que Precisa**
+2. **Instale as Dependências**
    ```bash
    npm install
    ```
 
-3. **Instale o Expo** (só precisa fazer uma vez)
+3. **Instale o Expo CLI**
    ```bash
    npm install -g expo-cli
    ```
 
-## 🔐 Configurando o Supabase (Nosso Backend)
+## 🔐 Configuração do Supabase
 
-### 🎯 Passo a Passo Simples
+### 🎯 Passo a Passo
 
-1. **Crie o Arquivo de Configuração**
-   - Crie um arquivo chamado `.env` na pasta principal
+1. **Crie o Arquivo de Ambiente**
    ```bash
-   touch .env   # No Mac/Linux
-   # OU
-   type nul > .env   # No Windows
+   # Mac/Linux
+   touch .env
+   # Windows
+   type nul > .env
    ```
 
-2. **Copie as Configurações Base**
-   - Copie o conteúdo do arquivo `.env.example` para seu novo `.env`
+2. **Configure as Variáveis**
+   - Copie o conteúdo de `.env.example` para `.env`
    ```bash
    cp .env.example .env
    ```
 
-3. **Pegue Suas Credenciais**
-   - Entre no [site do Supabase](https://supabase.com)
-   - Faça login ou crie uma conta
-   - Crie um projeto novo
-   - Vá em "Settings" > "API"
-   - Copie:
-     - `Project URL` → Cole em `EXPO_PUBLIC_SUPABASE_URL`
-     - `anon public` → Cole em `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+3. **Obtenha suas Credenciais**
+   1. Acesse [supabase.com](https://supabase.com)
+   2. Crie uma conta ou faça login
+   3. Crie um novo projeto
+   4. Vá em "Settings" > "API"
+   5. Copie:
+      - Project URL → Cole em `EXPO_PUBLIC_SUPABASE_URL`
+      - anon public → Cole em `EXPO_PUBLIC_SUPABASE_ANON_KEY`
 
-## 🚀 Como Colocar em Produção?
+## 🚀 Deploy
 
-### 💡 É Mais Fácil do Que Parece!
+### 💡 Configuração na Vercel
 
-1. **Durante o Desenvolvimento**
-   - Use seu arquivo `.env` local
-   - Teste tudo normalmente
+1. Acesse [vercel.com](https://vercel.com)
+2. Vá em seu projeto
+3. Clique em "Settings" > "Environment Variables"
+4. Adicione cada variável separadamente:
 
-2. **Na Hora de Publicar na Vercel**
-   - Entre no [site da Vercel](https://vercel.com)
-   - Vá em seu projeto
-   - Clique em "Settings" > "Environment Variables"
-   - Cole suas variáveis lá
-   - Pronto! 🎉
+   **Primeira Variável:**
+   - Key: `EXPO_PUBLIC_SUPABASE_URL`
+   - Value: sua_url_do_supabase (exemplo: https://seu-projeto.supabase.co)
 
-> 🔒 **Fique Tranquilo**: Suas credenciais ficam seguras e criptografadas!
+   **Segunda Variável:**
+   - Key: `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+   - Value: sua_chave_anonima_do_supabase
 
-### 🤔 Por Que Escolhemos a Vercel?
+   > 💡 **Dica**: Você verá dois campos separados para cada variável: um para a "Key" (nome da variável) e outro para o "Value" (valor da variável)
 
-- ✨ **Padrão da Indústria**: Grandes empresas confiam na Vercel para seus projetos
-- 🚀 **Performance Incrível**: Deploy ultrarrápido e CDN global
-- 🎁 **Plano Gratuito Generoso**: 
-  - Até 100 GB de banda/mês
-  - Domínios personalizados grátis
-  - SSL automático
-  - Integrações com GitHub
-  - Preview de cada commit
-- 🔒 **Segurança de Primeira**: Gerenciamento seguro de variáveis de ambiente
-- 🎯 **Deploy Automático**: Cada push no GitHub gera um novo deploy
-- 📊 **Analytics Incluído**: Métricas de performance em tempo real
+> ⚠️ **Importante**: Use EXATAMENTE estes nomes de variáveis e mantenha suas credenciais seguras!
 
-> 💡 **Dica**: Acesse [vercel.com/pricing](https://vercel.com/pricing) para conhecer todos os recursos do plano gratuito!
+### 🎯 Por que a Vercel?
 
-## 📱 Como Rodar o Projeto?
+- ✨ Padrão da Indústria
+- 🚀 Performance Excepcional
+- 🎁 Plano Gratuito Generoso
+- 🔒 Segurança de Primeira
+- 🎯 Deploy Automático
+- 📊 Analytics Incluído
 
-Escolha como quer ver o projeto:
+## 📱 Executando o Projeto
 
-### 💻 No Computador
+Escolha como deseja executar:
+
 ```bash
+# Web
 npm run web
-```
 
-### 📱 No iPhone
-```bash
+# iOS
 npm run ios
-```
 
-### 🤖 No Android
-```bash
+# Android
 npm run android
 ```
 
-## 🎨 Personalizando o Visual
+## 🎯 Estrutura de Navegação
 
-Quer mudar as cores ou o estilo? Super fácil:
+### 🔄 Rotas Principais
 
-1. Abra a pasta `constants`
-2. Encontre o arquivo `DesignSystem.ts`
-3. Mude os valores que quiser!
+1. **Usuários Não Logados**
+   - Padrão: `/(auth)/login`
+   - Para alterar, edite `app/index.tsx`:
+   ```typescript
+   import { Redirect } from 'expo-router';
+   
+   export default function Index() {
+     return <Redirect href="/(auth)/sua-nova-rota" />;
+   }
+   ```
+   > 💡 **Dica**: Crie o arquivo correspondente em `app/(auth)/sua-nova-rota.tsx`
 
-> 💡 **Dica**: Todas as mudanças aparecem automaticamente no projeto!
+2. **Usuários Logados**
+   - Padrão: `/(tabs)/dash` (nossa tela inicial após login)
+   - Para alterar, edite `contexts/auth.tsx`
 
-## 🤝 Precisa de Ajuda?
+### 📱 Fluxo de Autenticação
+- Login: `/(auth)/login`
+- Cadastro: `/(auth)/signup`
+- Home após login: `/(tabs)/dash`
 
-- 📖 Consulte nossa documentação detalhada nas seções abaixo
+## 🎨 Design System
+
+### 🎨 Cores do Sistema
+```typescript
+const COLORS = {
+  light: {
+    primary: '#0a7ea4',
+    text: '#11181C',
+    background: '#fff',
+    icon: '#71717A',
+    divider: '#EBEBEB',
+  },
+  dark: {
+    primary: '#0a7ea4',
+    text: '#ECEDEE',
+    background: '#151718',
+    icon: '#A1A1AA',
+    divider: '#292929',
+  },
+};
+```
+
+### 📏 Sistema de Espaçamento
+```typescript
+const SPACING = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+};
+```
+
+### 📱 Breakpoints
+```typescript
+const BREAKPOINTS = {
+  mobile: 0,
+  tablet: 768,
+  desktop: 1024,
+};
+```
+
+## 📦 Componentes Principais
+
+### 🔔 Toast
+```typescript
+import { useToast } from '@/hooks/useToast';
+
+const { showToast } = useToast();
+showToast({
+  type: 'success', // 'success' | 'warning' | 'error' | 'info'
+  message: 'Deu tudo certo!',
+  description: 'Seus dados foram salvos', // Opcional
+  position: 'top', // Opcional
+  duration: 5000, // Opcional
+});
+```
+
+### 📄 PageContainer
+```typescript
+import { PageContainer } from '@/components/PageContainer';
+
+export default function MinhaTelaLinda() {
+  return (
+    <PageContainer>
+      {/* Seu conteúdo aqui */}
+    </PageContainer>
+  );
+}
+```
+
+### 🧭 Sidebar e Header
+```typescript
+import { Sidebar } from '@/components/Sidebar';
+import { Header } from '@/components/Header';
+
+// Usar na sua tela
+<Sidebar 
+  onNavigate={handleNavigation} 
+  currentPath="/sua-rota"
+/>
+
+<Header 
+  sidebarWidth={currentSidebarWidth} 
+  onNavigate={handleNavigation}
+/>
+```
+
+## 📁 Estrutura do Projeto
+
+```
+📱 Estrutura Principal
+/.expo              # Configurações do Expo
+/app                # Páginas e rotas da aplicação
+  /(auth)           # Rotas de autenticação
+    /_layout.tsx    # Layout das telas de auth
+    /login.tsx      # Tela de login
+    /register.tsx   # Tela de registro
+  /(tabs)           # Rotas autenticadas
+    /_layout.tsx    # Layout das tabs
+    /dash.tsx       # Dashboard (tela inicial)
+    /design-system.tsx  # Visualização do Design System
+  /+not-found.tsx   # Página 404
+
+🎨 Assets e Componentes
+/assets            # Recursos estáticos
+/components        # Componentes reutilizáveis
+  /ui             # Componentes base (botões, inputs, etc)
+/constants        # Design System e configurações
+/contexts         # Contextos do React
+/hooks            # Hooks personalizados
+/lib              # Bibliotecas e utilitários
+/types            # Definições de tipos TypeScript
+
+🛠️ Configuração
+/.env             # Variáveis de ambiente
+/.env.example     # Exemplo de variáveis de ambiente
+/package.json     # Dependências e scripts
+/tsconfig.json    # Configuração do TypeScript
+```
+
+## 💻 Desenvolvimento
+
+### 📤 Git e GitHub
+
+**Primeira vez?**
+```bash
+git remote add origin [URL_DO_SEU_REPOSITÓRIO]
+git branch -M main
+git push -u origin main
+```
+
+**Commits diários**
+```bash
+git add .
+git commit -m "Explique o que você mudou"
+git push
+```
+
+### 🎯 Checklist para Novos Componentes
+
+1. [ ] Usar imports corretos do Design System
+2. [ ] Implementar suporte a tema claro/escuro
+3. [ ] Usar tipografia responsiva
+4. [ ] Considerar os três breakpoints
+5. [ ] Usar espaçamentos do Design System
+6. [ ] Usar cores do tema atual
+7. [ ] Implementar animações suaves (quando necessário)
+
+## 🤝 Suporte
+
+- 📖 Consulte nossa documentação acima
 - 🐛 Encontrou um bug? Abra uma issue no GitHub
 - 💡 Tem uma sugestão? Adoramos ouvir ideias novas!
 
