@@ -12,6 +12,7 @@ import { useTheme } from '@/hooks/ThemeContext';
 import { ThemeProvider } from '@/hooks/ThemeContext';
 import { ToastProvider } from '@/hooks/useToast';
 import { ThemedView } from '@/components/ThemedView';
+import { AuthProvider } from '@/contexts/auth';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -35,7 +36,9 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ThemeProvider>
         <ToastProvider>
-          <RootLayoutNav />
+          <AuthProvider>
+            <RootLayoutNav />
+          </AuthProvider>
         </ToastProvider>
       </ThemeProvider>
     </SafeAreaProvider>
@@ -52,6 +55,7 @@ function RootLayoutNav() {
           headerShown: false,
           contentStyle: { flex: 1 }
         }}>
+          <Stack.Screen name="(auth)" />
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="+not-found" />
         </Stack>

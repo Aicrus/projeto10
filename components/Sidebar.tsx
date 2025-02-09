@@ -8,6 +8,7 @@ import * as Icons from 'lucide-react-native';
 import { useTheme } from '@/hooks/ThemeContext';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import type { Theme } from '@/src/hooks/useTheme';
+import { useAuth } from '@/contexts/auth';
 
 interface SidebarProps {
   onNavigate?: (route: string) => void;
@@ -18,13 +19,13 @@ interface SidebarProps {
 interface TypographyStyle {
   fontSize: number;
   lineHeight: number;
-  fontWeight?: string;
+  fontWeight?: TextStyle['fontWeight'];
 }
 
 const EXPANDED_WIDTH = 240;
 const COLLAPSED_WIDTH = 68;
 
-const getFontWeight = (weight?: string): TextStyle['fontWeight'] => {
+const getFontWeight = (weight?: TextStyle['fontWeight']): TextStyle['fontWeight'] => {
   switch (weight) {
     case 'bold':
       return '700';
@@ -44,23 +45,24 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
   const { currentTheme } = useTheme();
   const { width: windowWidth } = useWindowDimensions();
   const { isTablet, isDesktop } = useBreakpoints();
+  const { signOut } = useAuth();
   const typographyBase = getTypographyForBreakpoint(windowWidth);
   
   // Convertendo a tipografia para o formato correto do React Native
-  const typography = {
+  const typography: Record<string, TypographyStyle> = {
     title: {
-      fontSize: typographyBase.title.fontSize,
-      lineHeight: typographyBase.title.lineHeight,
-      fontWeight: getFontWeight(typographyBase.title.fontWeight),
+      fontSize: typographyBase.title?.fontSize || 24,
+      lineHeight: typographyBase.title?.lineHeight || 28,
+      fontWeight: getFontWeight(typographyBase.title?.fontWeight),
     },
     subtitle: {
-      fontSize: typographyBase.subtitle.fontSize,
-      lineHeight: typographyBase.subtitle.lineHeight,
-      fontWeight: getFontWeight(typographyBase.subtitle.fontWeight),
+      fontSize: typographyBase.subtitle?.fontSize || 18,
+      lineHeight: typographyBase.subtitle?.lineHeight || 24,
+      fontWeight: getFontWeight(typographyBase.subtitle?.fontWeight),
     },
     body: {
-      fontSize: typographyBase.body.fontSize,
-      lineHeight: typographyBase.body.lineHeight,
+      fontSize: typographyBase.body?.fontSize || 16,
+      lineHeight: typographyBase.body?.lineHeight || 20,
       fontWeight: getFontWeight('normal'),
     },
   };
@@ -150,6 +152,14 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
+  };
+
   return (
     <>
       <Animated.View style={[
@@ -170,7 +180,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
               <ThemedText style={[
                 styles.logoText,
                 typography.title,
-                { fontSize: typography.title.fontSize * 0.8 }
+                { fontSize: (typography.title?.fontSize || 24) * 0.8 }
               ]} type="title">A</ThemedText>
             </View>
             <Animated.View style={{
@@ -283,14 +293,17 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
                 marginBottom: SPACING.xl,
               }
             ]}>
-              {['Ajuda', 'Sair'].map((label, index) => {
-                const IconComponent = index === 0 ? Icons.HelpCircle : Icons.LogOut;
+              {[
+                { label: 'Ajuda', icon: Icons.HelpCircle, action: () => {} },
+                { label: 'Sair', icon: Icons.LogOut, action: handleLogout }
+              ].map(({ label, icon: IconComponent, action }, index) => {
                 return (
                   <HoverableView
                     key={label}
                     style={styles.menuItem}
                     hoverTranslateX={4}
                     activeBackgroundColor={themeColors.hover}
+                    onPress={action}
                   >
                     <View style={styles.menuIconContainer}>
                       <IconComponent
@@ -310,7 +323,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
                         <ThemedText
                           style={[
                             styles.menuItemText,
-                            typography.body
+                            typography.body,
                           ]}
                         >
                           {label}

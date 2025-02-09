@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Animated, TouchableOpacity, Pressable, Platform, Dimensions, ViewStyle } from 'react-native';
 import { LogOut, Settings, Sun, Moon, Monitor } from 'lucide-react-native';
 import { ThemedText } from './ThemedText';
@@ -7,6 +7,8 @@ import { HoverableView } from './HoverableView';
 import { COLORS, SPACING, BORDER_RADIUS } from '@/constants/DesignSystem';
 import { useTheme } from '@/hooks/ThemeContext';
 import { LucideIcon } from 'lucide-react-native';
+import { useAuth } from '@/contexts/auth';
+import { Link } from 'expo-router';
 
 interface MenuItemProps {
   icon: LucideIcon;
@@ -23,6 +25,7 @@ interface ProfileMenuProps {
 
 export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps) {
   const { currentTheme, themeMode, setThemeMode } = useTheme();
+  const { session, signOut } = useAuth();
   const themeColors = COLORS[currentTheme];
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(10)).current;
@@ -56,6 +59,14 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
       ]).start();
     }
   }, [isVisible]);
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
+  };
 
   if (!isVisible) return null;
 
@@ -107,8 +118,10 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
       >
         {/* Cabeçalho do Perfil */}
         <View style={styles.profileHeader}>
-          <ThemedText style={styles.name}>Paulo Morales</ThemedText>
-          <ThemedText style={styles.email}>canal.paulomorales@gmail.com</ThemedText>
+          <ThemedText style={styles.name}>
+            {session?.user?.user_metadata?.display_name || session?.user?.user_metadata?.name || 'Usuário'}
+          </ThemedText>
+          <ThemedText style={styles.email}>{session?.user?.email || 'email@exemplo.com'}</ThemedText>
         </View>
 
         <View style={[styles.divider, { backgroundColor: themeColors.divider }]} />
@@ -167,7 +180,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
           icon={LogOut}
           label="Sair"
           onClick={() => {
-            // Implementar lógica de logout
+            handleLogout();
             onClose();
           }}
           color={themeColors.primary}

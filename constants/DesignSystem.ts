@@ -1,4 +1,5 @@
 import { BREAKPOINTS } from '@/hooks/useBreakpoints';
+import { TextStyle } from 'react-native';
 
 // Cores do Sistema
 export const COLORS = {
@@ -73,21 +74,26 @@ export const FEEDBACK_COLORS = {
 };
 
 // Tipografia Responsiva
-export const TYPOGRAPHY = {
+export const TYPOGRAPHY: {
+  mobile: { [key: string]: TextStyle };
+  tablet: { [key: string]: TextStyle };
+  desktop: { [key: string]: TextStyle };
+} = {
   mobile: {
     title: {
       fontSize: 28,
       lineHeight: 32,
-      fontWeight: 'bold',
+      fontWeight: '700',
     },
     subtitle: {
       fontSize: 18,
       lineHeight: 24,
-      fontWeight: 'bold',
+      fontWeight: '700',
     },
     body: {
       fontSize: 14,
       lineHeight: 20,
+      fontWeight: '400',
     },
     bodySemiBold: {
       fontSize: 14,
@@ -97,10 +103,12 @@ export const TYPOGRAPHY = {
     small: {
       fontSize: 12,
       lineHeight: 16,
+      fontWeight: '400',
     },
     link: {
       fontSize: 14,
       lineHeight: 20,
+      fontWeight: '400',
       textDecorationLine: 'underline',
     },
   },
@@ -108,16 +116,17 @@ export const TYPOGRAPHY = {
     title: {
       fontSize: 32,
       lineHeight: 36,
-      fontWeight: 'bold',
+      fontWeight: '700',
     },
     subtitle: {
       fontSize: 20,
       lineHeight: 28,
-      fontWeight: 'bold',
+      fontWeight: '700',
     },
     body: {
       fontSize: 16,
       lineHeight: 24,
+      fontWeight: '400',
     },
     bodySemiBold: {
       fontSize: 16,
@@ -127,10 +136,12 @@ export const TYPOGRAPHY = {
     small: {
       fontSize: 14,
       lineHeight: 20,
+      fontWeight: '400',
     },
     link: {
       fontSize: 16,
       lineHeight: 24,
+      fontWeight: '400',
       textDecorationLine: 'underline',
     },
   },
@@ -138,16 +149,17 @@ export const TYPOGRAPHY = {
     title: {
       fontSize: 36,
       lineHeight: 40,
-      fontWeight: 'bold',
+      fontWeight: '700',
     },
     subtitle: {
       fontSize: 24,
       lineHeight: 32,
-      fontWeight: 'bold',
+      fontWeight: '700',
     },
     body: {
       fontSize: 16,
       lineHeight: 24,
+      fontWeight: '400',
     },
     bodySemiBold: {
       fontSize: 16,
@@ -157,10 +169,12 @@ export const TYPOGRAPHY = {
     small: {
       fontSize: 14,
       lineHeight: 20,
+      fontWeight: '400',
     },
     link: {
       fontSize: 16,
       lineHeight: 24,
+      fontWeight: '400',
       textDecorationLine: 'underline',
     },
   },

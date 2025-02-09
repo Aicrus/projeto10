@@ -10,6 +10,144 @@ Bem-vindo ao nosso projeto base! Este é um template moderno e flexível para cr
 - 🖌️ Design System Completo
 - 🌐 Funciona na Web e Mobile
 
+## 🚀 Começando
+
+### 📋 Pré-requisitos
+
+Antes de começar, você precisa ter instalado em sua máquina:
+
+- [Git](https://git-scm.com) - Para clonar o projeto e controlar as versões
+- [Node.js](https://nodejs.org/) - Recomendamos a versão LTS
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/) - Para gerenciar os pacotes
+- [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) - Para rodar o projeto
+
+> 💡 **Dica**: Não tem certeza se já tem algo instalado? Abra seu terminal e tente estes comandos:
+> - `git --version`
+> - `node --version`
+> - `npm --version` ou `yarn --version`
+
+### ⚙️ Configuração Inicial
+
+1. **Clone o repositório**
+```bash
+git clone [url-do-repositório]
+cd [nome-do-projeto]
+```
+
+2. **Instale as dependências**
+```bash
+# Com npm
+npm install
+
+# Com yarn
+yarn install
+```
+
+3. **Instale o Expo CLI globalmente** (se ainda não tiver)
+```bash
+# Com npm
+npm install -g expo-cli
+
+# Com yarn
+yarn global add expo-cli
+```
+
+## 🔐 Configuração do Supabase
+
+Este projeto usa o Supabase como backend. Aqui está como configurar:
+
+### 📋 Configuração Inicial
+
+1. **Arquivo de Ambiente**
+   - Copie o arquivo `.env.example` para `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Configurando suas Credenciais**
+   - Acesse [supabase.com](https://supabase.com)
+   - Crie uma nova conta ou faça login
+   - Crie um novo projeto
+   - Vá em `Settings > API`
+   - Copie as credenciais:
+     - `Project URL` → Cole em `EXPO_PUBLIC_SUPABASE_URL`
+     - `anon public` → Cole em `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+
+3. **Estrutura Atual**
+   ```
+   EXPO_PUBLIC_SUPABASE_URL=https://idnyppqhuctffszcdbwk.supabase.co
+   EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   ```
+   > ⚠️ Estas são as chaves de desenvolvimento. Substitua com suas próprias chaves ao criar seu projeto!
+
+### 🔒 Segurança
+
+- O arquivo `.env` está no `.gitignore` e não será commitado
+- Nunca compartilhe suas chaves de produção
+- Use o `.env.example` como template
+- As chaves "anon" são públicas por natureza, mas ainda assim não devem ser commitadas
+
+### 🔄 Mudando a Rota Home
+
+Por padrão, o sistema tem duas rotas principais:
+
+1. **Rota para Usuários Não Logados**:
+   - Por padrão: `/(auth)/login`
+   - Para mudar, edite o arquivo `app/index.tsx`:
+   ```typescript
+   export default function Index() {
+     return <Redirect href="/(auth)/sua-nova-rota" />;
+   }
+   ```
+   > 💡 **Dica**: Certifique-se de criar o arquivo correspondente em `app/(auth)/sua-nova-rota.tsx`
+
+2. **Rota para Usuários Logados**:
+   - Por padrão: `/(tabs)/dash`
+   - Para mudar, edite em `contexts/auth.tsx`:
+   ```typescript
+   router.replace('/(tabs)/sua-nova-rota');
+   ```
+   > 💡 **Dica**: Certifique-se de criar o arquivo correspondente em `app/(tabs)/sua-nova-rota.tsx`
+
+### 📱 Fluxo de Autenticação
+
+1. **Login**: `/(auth)/login`
+2. **Cadastro**: `/(auth)/signup`
+3. **Home após login**: `/(tabs)/dash` (configurável)
+
+> 💡 **Dica**: Para testar localmente, você pode usar as chaves de desenvolvimento fornecidas. Para produção, sempre use suas próprias chaves!
+
+## 📱 Rodando o Projeto
+
+Escolha como quer rodar o projeto:
+
+### 🌐 Web
+```bash
+# Com npm
+npm run web
+
+# Com yarn
+yarn web
+```
+
+### 📱 iOS
+```bash
+# Com npm
+npm run ios
+
+# Com yarn
+yarn ios
+```
+
+### 🤖 Android
+```bash
+# Com npm
+npm run android
+
+# Com yarn
+yarn android
+```
+
 ## 🎯 Design System
 
 Nosso Design System foi criado para tornar o desenvolvimento mais fácil e consistente. Você pode visualizar todos os elementos acessando a tela "Design System" no projeto.
@@ -145,107 +283,6 @@ Nossa navegação mantém consistência visual em todas as plataformas (iOS, And
 - Backdrop filter na Web
 
 > 💡 **Dica**: A estrutura modular permite adicionar novas funcionalidades sem afetar o código existente!
-
-## 🚀 Começando
-
-### 📋 Pré-requisitos
-
-Antes de começar, você precisa ter instalado em sua máquina:
-
-- [Git](https://git-scm.com) - Para clonar o projeto e controlar as versões
-- [Node.js](https://nodejs.org/) - Recomendamos a versão LTS
-- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/) - Para gerenciar os pacotes
-- [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) - Para rodar o projeto
-
-> 💡 **Dica**: Não tem certeza se já tem algo instalado? Abra seu terminal e tente estes comandos:
-> - `git --version`
-> - `node --version`
-> - `npm --version` ou `yarn --version`
-
-### ⚙️ Configuração Inicial
-
-1. **Clone o repositório**
-```bash
-git clone [url-do-repositório]
-cd [nome-do-projeto]
-```
-
-2. **Instale as dependências**
-```bash
-# Com npm
-npm install
-
-# Com yarn
-yarn install
-```
-
-3. **Instale o Expo CLI globalmente** (se ainda não tiver)
-```bash
-# Com npm
-npm install -g expo-cli
-
-# Com yarn
-yarn global add expo-cli
-```
-
-## 📱 Rodando o Projeto
-
-Escolha como quer rodar o projeto:
-
-### 🌐 Web
-```bash
-# Com npm
-npm run web
-
-# Com yarn
-yarn web
-```
-
-### 📱 iOS
-```bash
-# Com npm
-npm run ios
-
-# Com yarn
-yarn ios
-```
-
-### 🤖 Android
-```bash
-# Com npm
-npm run android
-
-# Com yarn
-yarn android
-```
-
-## 📤 GitHub
-
-### Primeira vez enviando para o GitHub?
-
-1. Crie um novo repositório no GitHub
-2. Configure o repositório local e envie seu código:
-```bash
-git remote add origin [URL_DO_SEU_REPOSITÓRIO]
-git branch -M main
-git push -u origin main
-```
-
-### Enviando atualizações
-
-Depois da configuração inicial, você pode enviar novas alterações com apenas três comandos:
-
-```bash
-git add .
-git commit -m "Sua mensagem explicando o que mudou"
-git push
-```
-
-> 💡 **Dica**: Use mensagens claras nos commits para manter um histórico organizado!
-
----
-
-Feito com ❤️ pela [Aicrus Tech](https://www.aicrustech.com/) para tornar o desenvolvimento mais fácil e divertido!
 
 ## 📦 Componentes
 
@@ -387,112 +424,30 @@ import { Header } from '@/components/Header';
 
 > 💡 **Dica**: Tanto a Sidebar quanto o Header são componentes opcionais. Você pode escolher usar um, ambos ou nenhum em cada tela da sua aplicação!
 
-## 🎯 Estrutura do Projeto
+## 📤 GitHub
 
-```
-projeto-base/
-├── app/                    # Páginas e navegação
-├── components/             # Componentes reutilizáveis
-├── constants/             
-│   └── DesignSystem.ts    # Configurações do Design System
-├── hooks/                 
-│   ├── ThemeContext.tsx   # Contexto de tema
-│   └── useToast.tsx       # Hook do sistema de Toast
-└── assets/                # Recursos estáticos
-```
+### Primeira vez enviando para o GitHub?
 
-## 🚀 Começando
-
-1. Clone o repositório
-2. Instale as dependências:
+1. Crie um novo repositório no GitHub
+2. Configure o repositório local e envie seu código:
 ```bash
-npm install
+git remote add origin [URL_DO_SEU_REPOSITÓRIO]
+git branch -M main
+git push -u origin main
 ```
 
-3. Inicie o projeto:
+### Enviando atualizações
+
+Depois da configuração inicial, você pode enviar novas alterações com apenas três comandos:
+
 ```bash
-npm start
+git add .
+git commit -m "Sua mensagem explicando o que mudou"
+git push
 ```
 
-## 📱 Plataformas Suportadas
+> 💡 **Dica**: Use mensagens claras nos commits para manter um histórico organizado!
 
-- iOS
-- Android
-- Web
+---
 
-## 🛠️ Tecnologias
-
-- React Native
-- Expo
-- TypeScript
-- React Navigation
-- Reanimated
-
-## 🔐 Configuração do Supabase
-
-Este projeto usa o Supabase como backend. Aqui está como configurar:
-
-### 📋 Configuração Inicial
-
-1. **Arquivo de Ambiente**
-   - Copie o arquivo `.env.example` para `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Configurando suas Credenciais**
-   - Acesse [supabase.com](https://supabase.com)
-   - Crie uma nova conta ou faça login
-   - Crie um novo projeto
-   - Vá em `Settings > API`
-   - Copie as credenciais:
-     - `Project URL` → Cole em `EXPO_PUBLIC_SUPABASE_URL`
-     - `anon public` → Cole em `EXPO_PUBLIC_SUPABASE_ANON_KEY`
-
-3. **Estrutura Atual**
-   ```
-   EXPO_PUBLIC_SUPABASE_URL=https://idnyppqhuctffszcdbwk.supabase.co
-   EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-   ```
-   > ⚠️ Estas são as chaves de desenvolvimento. Substitua com suas próprias chaves ao criar seu projeto!
-
-### 🔄 Mudando a Rota Home
-
-Por padrão, após o login o usuário é redirecionado para `/(tabs)/dash`. Para mudar isso:
-
-1. **Alterar Redirecionamento no Auth**
-   - Abra `contexts/auth.tsx`
-   - Procure por `router.replace('/(tabs)/dash')`
-   - Substitua `dash` pela sua rota desejada
-
-2. **Criar Nova Rota**
-   - Crie um arquivo na pasta `app/(tabs)`
-   - Exemplo: `app/(tabs)/minharota.tsx`
-
-3. **Atualizar Tab Navigation**
-   - Abra `app/(tabs)/_layout.tsx`
-   - Adicione sua nova rota nas tabs
-
-Exemplo de mudança de rota home:
-```typescript
-// Em contexts/auth.tsx
-// Altere esta linha:
-router.replace('/(tabs)/dash');
-// Para:
-router.replace('/(tabs)/minharota');
-```
-
-### 🔒 Segurança
-
-- O arquivo `.env` está no `.gitignore` e não será commitado
-- Nunca compartilhe suas chaves de produção
-- Use o `.env.example` como template
-- As chaves "anon" são públicas por natureza, mas ainda assim não devem ser commitadas
-
-### 📱 Fluxo de Autenticação
-
-1. **Login**: `/(auth)/login`
-2. **Cadastro**: `/(auth)/signup`
-3. **Home após login**: `/(tabs)/dash` (configurável)
-
-> 💡 **Dica**: Para testar localmente, você pode usar as chaves de desenvolvimento fornecidas. Para produção, sempre use suas próprias chaves!
+Feito com ❤️ pela [Aicrus Tech](https://www.aicrustech.com/) para tornar o desenvolvimento mais fácil e divertido!
