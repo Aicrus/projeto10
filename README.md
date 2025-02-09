@@ -427,3 +427,72 @@ npm start
 - TypeScript
 - React Navigation
 - Reanimated
+
+## 🔐 Configuração do Supabase
+
+Este projeto usa o Supabase como backend. Aqui está como configurar:
+
+### 📋 Configuração Inicial
+
+1. **Arquivo de Ambiente**
+   - Copie o arquivo `.env.example` para `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Configurando suas Credenciais**
+   - Acesse [supabase.com](https://supabase.com)
+   - Crie uma nova conta ou faça login
+   - Crie um novo projeto
+   - Vá em `Settings > API`
+   - Copie as credenciais:
+     - `Project URL` → Cole em `EXPO_PUBLIC_SUPABASE_URL`
+     - `anon public` → Cole em `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+
+3. **Estrutura Atual**
+   ```
+   EXPO_PUBLIC_SUPABASE_URL=https://idnyppqhuctffszcdbwk.supabase.co
+   EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   ```
+   > ⚠️ Estas são as chaves de desenvolvimento. Substitua com suas próprias chaves ao criar seu projeto!
+
+### 🔄 Mudando a Rota Home
+
+Por padrão, após o login o usuário é redirecionado para `/(tabs)/dash`. Para mudar isso:
+
+1. **Alterar Redirecionamento no Auth**
+   - Abra `contexts/auth.tsx`
+   - Procure por `router.replace('/(tabs)/dash')`
+   - Substitua `dash` pela sua rota desejada
+
+2. **Criar Nova Rota**
+   - Crie um arquivo na pasta `app/(tabs)`
+   - Exemplo: `app/(tabs)/minharota.tsx`
+
+3. **Atualizar Tab Navigation**
+   - Abra `app/(tabs)/_layout.tsx`
+   - Adicione sua nova rota nas tabs
+
+Exemplo de mudança de rota home:
+```typescript
+// Em contexts/auth.tsx
+// Altere esta linha:
+router.replace('/(tabs)/dash');
+// Para:
+router.replace('/(tabs)/minharota');
+```
+
+### 🔒 Segurança
+
+- O arquivo `.env` está no `.gitignore` e não será commitado
+- Nunca compartilhe suas chaves de produção
+- Use o `.env.example` como template
+- As chaves "anon" são públicas por natureza, mas ainda assim não devem ser commitadas
+
+### 📱 Fluxo de Autenticação
+
+1. **Login**: `/(auth)/login`
+2. **Cadastro**: `/(auth)/signup`
+3. **Home após login**: `/(tabs)/dash` (configurável)
+
+> 💡 **Dica**: Para testar localmente, você pode usar as chaves de desenvolvimento fornecidas. Para produção, sempre use suas próprias chaves!
