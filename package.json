@@ -9,7 +9,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build": "expo export -p web --output-dir dist",
+    "vercel-build": "npm install @expo/webpack-config@18.0.1 react-native-svg react-native-web@~0.19.13 @expo/vector-icons react-dom --save-exact --legacy-peer-deps && expo export -p web --output-dir dist"
   },
   "jest": {
     "preset": "jest-expo"
@@ -61,5 +63,13 @@
     "react-test-renderer": "18.3.1",
     "typescript": "^5.7.3"
   },
-  "private": true
+  "private": true,
+  "overrides": {
+    "@expo/webpack-config": "18.0.1",
+    "react-native-web": "~0.19.13"
+  },
+  "resolutions": {
+    "@expo/webpack-config": "18.0.1",
+    "react-native-web": "~0.19.13"
+  }
 }
