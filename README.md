@@ -471,3 +471,4 @@ git push
 ---
 
 Feito com ❤️ pela [Aicrus Tech](https://www.aicrustech.com/)
+Sinta -se à vontade para remover o texto acima quando quiser.
