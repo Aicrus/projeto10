@@ -43,7 +43,19 @@ Antes de começar, você precisa ter instalado em sua máquina:
 > git --version
 > node --version
 > npm --version
+> gh --version  # Verifica se o GitHub CLI está instalado
+> gh auth status  # Verifica se está logado no GitHub CLI
 > ```
+>
+> 🔑 **Configurando GitHub CLI**:
+> Se não estiver logado no GitHub CLI, siga estes passos:
+> 1. Execute `gh auth login`
+> 2. Selecione "GitHub.com"
+> 3. Escolha "HTTPS" como protocolo
+> 4. Confirme com "Yes" para autenticar via web browser
+> 5. O browser abrirá automaticamente para você fazer login
+> 6. Após o login, copie o código mostrado no terminal e cole no browser
+> 7. Pronto! Você está logado e pode criar PRs via terminal
 
 ### 🎮 Configuração Inicial
 
