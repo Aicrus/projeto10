@@ -15,10 +15,10 @@ export function AuthImage({ type }: AuthImageProps) {
   }
 
   // Aqui você muda a imagem de login
-  const loginImage = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEinMgYsvDNz0Oo2uSw1nW1DtiQIyLP-cvPwTEx_QGd8rVcY9QgI_IsEo6-jVI9sQF9Q3CH6vqTqZqz7ZxhkY_Uf9k_k1iPoribWBBIiMsPSzXHjC0glMsQ1e1xMc2Xi_Pa-Uo-3XUgZYfpFHZID8B8t3h42Mly6m9nL59thsonvcDDTvGkjdqdkwDwWsxJK/d/sleek-blue-red-gradient-fluid-art-wallpaper.jpg';
+  const loginImage = 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1920&auto=format&fit=crop';
 
   // Aqui você muda a imagem de cadastro
-  const registerImage = 'https://wallpapercat.com/w/full/b/4/a/795093-3840x2160-desktop-4k-gradient-wallpaper-photo.jpg';
+  const registerImage = 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?q=80&w=1920&auto=format&fit=crop';
 
   return (
     <Image
