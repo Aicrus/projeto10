@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Platform, Pressable, Animated, Image } from 'react-native';
 import { Bell, Search } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemedView } from './ThemedView';
 import { ThemedText } from './ThemedText';
 import { HoverableView } from './HoverableView';
@@ -17,9 +18,33 @@ interface HeaderProps {
   currentPath?: string;
 }
 
+const pastelColors = [
+  'E3F2FD', // azul claro
+  'FCE4EC', // rosa claro
+  'F3E5F5', // roxo claro
+  'E8F5E9', // verde claro
+  'FFF3E0', // laranja claro
+  'E0F7FA', // ciano claro
+] as const;
+
+// Função para obter o storage apropriado
+const getStorage = () => {
+  if (Platform.OS === 'web') {
+    return {
+      getItem: (key: string) => localStorage.getItem(key),
+      setItem: (key: string, value: string) => localStorage.setItem(key, value),
+    };
+  }
+  return {
+    getItem: async (key: string) => await AsyncStorage.getItem(key),
+    setItem: async (key: string, value: string) => await AsyncStorage.setItem(key, value),
+  };
+};
+
 export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: HeaderProps) {
   const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
   const [isNotificationsMenuVisible, setIsNotificationsMenuVisible] = useState(false);
+  const [userAvatarColor, setUserAvatarColor] = useState<string>(pastelColors[0]);
   const { currentTheme } = useTheme();
   const { isMobile } = useBreakpoints();
   const { session } = useAuth();
@@ -27,7 +52,31 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
   const typography = getTypographyForBreakpoint(Platform.OS === 'web' ? window.innerWidth : 0);
 
   const userName = session?.user?.user_metadata?.display_name || session?.user?.user_metadata?.name || 'Usuário';
-  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random&color=ffffff`;
+  const userId = session?.user?.id;
+
+  // Efeito para carregar/salvar a cor do avatar do usuário
+  useEffect(() => {
+    const storage = getStorage();
+    const loadAvatarColor = async () => {
+      if (!userId) return;
+      
+      const storageKey = `avatar_color_${userId}`;
+      const savedColor = await storage.getItem(storageKey);
+      
+      if (savedColor && pastelColors.includes(savedColor as any)) {
+        setUserAvatarColor(savedColor);
+      } else {
+        // Se não houver cor salva, escolhe uma aleatória e salva
+        const newColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+        setUserAvatarColor(newColor);
+        await storage.setItem(storageKey, newColor);
+      }
+    };
+
+    loadAvatarColor();
+  }, [userId]);
+
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=${userAvatarColor}&color=6A7280`;
 
   const getPageTitle = (path?: string) => {
     switch (path) {
