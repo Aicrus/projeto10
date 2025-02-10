@@ -15,6 +15,8 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isLinkHovered, setIsLinkHovered] = useState(false);
   const { currentTheme } = useTheme();
   const { width } = useWindowDimensions();
   const typography = getTypographyForBreakpoint(width);
@@ -114,11 +116,13 @@ export default function Login() {
             styles.button,
             { 
               backgroundColor: COLORS[currentTheme].primary,
-              opacity: isLoading ? 0.7 : 1,
+              opacity: isLoading ? 0.7 : isHovered ? 0.8 : 1,
             }
           ]}
           onPress={handleLogin}
           disabled={isLoading}
+          onHoverIn={() => Platform.OS === 'web' && setIsHovered(true)}
+          onHoverOut={() => Platform.OS === 'web' && setIsHovered(false)}
         >
           {isLoading ? (
             <ActivityIndicator color="#fff" />
@@ -134,8 +138,23 @@ export default function Login() {
             Ainda não tem uma conta?{' '}
           </ThemedText>
           <Link href="/register" asChild>
-            <Pressable disabled={isLoading}>
-              <ThemedText style={[typography.bodySemiBold, { color: COLORS[currentTheme].primary }]}>
+            <Pressable 
+              disabled={isLoading}
+              onHoverIn={() => Platform.OS === 'web' && setIsLinkHovered(true)}
+              onHoverOut={() => Platform.OS === 'web' && setIsLinkHovered(false)}
+            >
+              <ThemedText 
+                style={[
+                  typography.bodySemiBold, 
+                  { 
+                    color: COLORS[currentTheme].primary,
+                    opacity: isLinkHovered ? 0.8 : 1,
+                    ...(Platform.OS === 'web' ? {
+                      transition: 'all 0.2s ease-in-out',
+                    } : {}),
+                  }
+                ]}
+              >
                 Cadastre-se
               </ThemedText>
             </Pressable>
@@ -199,6 +218,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: SPACING.md,
+    ...(Platform.OS === 'web' ? {
+      cursor: 'pointer',
+      transition: 'all 0.2s ease-in-out',
+    } : {}),
   },
   buttonText: {
     color: '#fff',
