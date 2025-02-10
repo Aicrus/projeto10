@@ -182,6 +182,133 @@ const COLORS = {
 };
 ```
 
+### 🖱️ Hover (Web)
+
+O projeto oferece duas abordagens diferentes para efeitos de hover:
+
+#### 1️⃣ Hover Simples
+Este é o hover básico, ideal para elementos isolados como botões e links que precisam apenas de uma mudança sutil de opacidade ao passar o mouse:
+
+- ✅ **Quando Usar**:
+  - Em botões de ação (login, cadastro, etc)
+  - Em links de navegação simples
+  - Quando precisa apenas reduzir a opacidade no hover
+  - Para interações isoladas e específicas
+
+- 🎯 **Características**:
+  - Transição suave de opacidade
+  - Sem animações complexas
+  - Implementação leve e direta
+  - Específico para cada componente
+
+#### 2️⃣ RoverView Component
+Este é nosso componente especializado para efeitos de hover mais elaborados, usado em cards e elementos que precisam de animações mais complexas:
+
+- ✅ **Quando Usar**:
+  - Em cards de conteúdo
+  - Em elementos que precisam de zoom
+  - Quando necessitar animações elaboradas
+  - Para manter consistência em grupos de elementos similares
+
+- 🎯 **Características**:
+  - Animação de zoom
+  - Efeitos de elevação (shadow)
+  - Transições mais complexas
+  - Padronizado para todo o sistema
+
+#### 💡 Qual Escolher?
+
+1. **Use Hover Simples quando**:
+   ```typescript
+   // Para interações básicas e isoladas
+   const [isHovered, setIsHovered] = useState(false);
+   
+   <Pressable
+     onHoverIn={() => Platform.OS === 'web' && setIsHovered(true)}
+     onHoverOut={() => Platform.OS === 'web' && setIsHovered(false)}
+     style={{ opacity: isHovered ? 0.8 : 1 }}
+   >
+     {/* Conteúdo */}
+   </Pressable>
+   ```
+
+2. **Use RoverView quando**:
+   ```typescript
+   // Para cards e elementos que precisam de animações complexas
+   import { RoverView } from '@/components/RoverView';
+   
+   <RoverView>
+     <Card>
+       {/* Conteúdo que precisa de zoom e elevação */}
+     </Card>
+   </RoverView>
+   ```
+
+#### 🎯 Comparativo
+
+| Característica | Hover Simples | RoverView |
+|---------------|---------------|-----------|
+| Complexidade | Baixa | Alta |
+| Animações | Básicas | Complexas |
+| Uso Ideal | Botões/Links | Cards/Containers |
+| Customização | Por elemento | Padronizada |
+| Performance | Muito leve | Moderada |
+
+> 💡 **Dica**: Se estiver em dúvida, comece com o hover simples. Se perceber que precisa de mais elaboração ou que o mesmo efeito está sendo repetido em vários lugares similares, considere migrar para o RoverView.
+
+Agora vamos ver como implementar cada tipo...
+
+#### 📱 Exemplos de Hover Simples no Projeto
+
+1. **Botões Principais**
+   ```typescript
+   // Botão de Login/Cadastro
+   <Pressable
+     style={[
+       styles.button,
+       { 
+         backgroundColor: COLORS[currentTheme].primary,
+         opacity: isLoading ? 0.7 : isHovered ? 0.8 : 1,
+       }
+     ]}
+     onHoverIn={() => Platform.OS === 'web' && setIsHovered(true)}
+     onHoverOut={() => Platform.OS === 'web' && setIsHovered(false)}
+   >
+     <ThemedText>Entrar</ThemedText>
+   </Pressable>
+   ```
+
+2. **Links de Navegação**
+   ```typescript
+   // Links "Faça login" e "Cadastre-se"
+   <Link href="/register" asChild>
+     <Pressable
+       onHoverIn={() => Platform.OS === 'web' && setIsLinkHovered(true)}
+       onHoverOut={() => Platform.OS === 'web' && setIsLinkHovered(false)}
+     >
+       <ThemedText
+         style={[
+           typography.bodySemiBold,
+           {
+             color: COLORS[currentTheme].primary,
+             opacity: isLinkHovered ? 0.8 : 1,
+             transition: 'all 0.2s ease-in-out',
+           }
+         ]}
+       >
+         Cadastre-se
+       </ThemedText>
+     </Pressable>
+   </Link>
+   ```
+
+#### 💡 Dicas Gerais para Hover
+- Sempre verifique `Platform.OS === 'web'` antes de aplicar efeitos de hover
+- Use transições suaves com `transition: 'all 0.2s ease-in-out'`
+- Mantenha a opacidade entre 0.8 e 1 para um efeito sutil
+- Adicione `cursor: 'pointer'` para melhor UX na web
+- Escolha entre Hover Simples ou RoverView baseado na complexidade necessária
+
 ### 📏 Sistema de Espaçamento
 ```typescript
 const SPACING = {
