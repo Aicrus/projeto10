@@ -3,11 +3,14 @@ import { useRouter, useSegments } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { Session } from '@supabase/supabase-js';
 import { useToast } from '@/hooks/useToast';
+import { View } from 'react-native';
+import { COLORS } from '@/constants/DesignSystem';
 
 // Tipos
 type AuthContextData = {
   session: Session | null;
   isLoading: boolean;
+  isInitialized: boolean;
   signUp: (data: { email: string; password: string; name: string }) => Promise<void>;
   signIn: (data: { email: string; password: string }) => Promise<void>;
   signOut: () => Promise<void>;
@@ -20,6 +23,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
   const router = useRouter();
   const segments = useSegments();
   const { showToast } = useToast();
@@ -29,6 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setIsLoading(false);
+      setIsInitialized(true);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -65,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (!isInitialized) return;
 
     const inAuthGroup = segments[0] === '(auth)';
 
@@ -74,7 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } else if (session && inAuthGroup) {
       router.replace('/(tabs)/dash');
     }
-  }, [session, segments, isLoading]);
+  }, [session, segments, isInitialized]);
 
   useEffect(() => {
     if (!session) return;
@@ -302,14 +307,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  if (!isInitialized) {
+    return (
+      <View 
+        style={{ 
+          flex: 1, 
+          backgroundColor: COLORS.light.background // Usando light por padrão para o splash
+        }} 
+      />
+    );
+  }
+
   return (
-    <AuthContext.Provider value={{
-      session,
-      isLoading,
-      signUp,
-      signIn,
-      signOut,
-    }}>
+    <AuthContext.Provider
+      value={{
+        session,
+        isLoading,
+        isInitialized,
+        signUp,
+        signIn,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
