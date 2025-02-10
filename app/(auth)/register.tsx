@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, TextInput, Pressable, ActivityIndicator, Platform, Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { Link, useRouter } from 'expo-router';
-import { COLORS, SPACING, BORDER_RADIUS } from '@/constants/DesignSystem';
+import { COLORS, SPACING, BORDER_RADIUS, BREAKPOINTS } from '@/constants/DesignSystem';
 import { useTheme } from '@/hooks/ThemeContext';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
@@ -10,6 +10,7 @@ import { getTypographyForBreakpoint } from '@/constants/DesignSystem';
 import { useAuth } from '@/contexts/auth';
 import { useToast } from '@/hooks/useToast';
 import { Eye, EyeOff } from 'lucide-react-native';
+import { AuthImage } from '@/components/AuthImage';
 
 export default function Register() {
   const [nome, setNome] = useState('');
@@ -174,138 +175,148 @@ export default function Register() {
     }
   };
 
+  const isDesktopOrTablet = width >= BREAKPOINTS.tablet;
+
   return (
     <ThemedView style={styles.container} onTouchStart={handlePressOutside}>
-      <ThemedView style={styles.formContainer}>
-        <ThemedText style={[typography.title, styles.title]}>
-          Crie sua conta
-        </ThemedText>
-        
-        <ThemedText style={[typography.body, styles.subtitle]}>
-          Preencha seus dados para começar
-        </ThemedText>
+      <ThemedView style={styles.contentContainer}>
+        {isDesktopOrTablet && (
+          <ThemedView style={styles.imageContainer}>
+            <AuthImage type="register" />
+          </ThemedView>
+        )}
 
-        <ThemedView style={styles.inputContainer}>
-          <TextInput
-            style={inputStyle}
-            placeholder="Nome completo"
-            placeholderTextColor={COLORS[currentTheme].icon}
-            value={nome}
-            onChangeText={setNome}
-            autoCapitalize="words"
-            editable={!isLoading}
-            onKeyPress={handleKeyPress}
-          />
-        </ThemedView>
-
-        <ThemedView style={styles.inputContainer}>
-          <TextInput
-            style={inputStyle}
-            placeholder="E-mail"
-            placeholderTextColor={COLORS[currentTheme].icon}
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            editable={!isLoading}
-            onKeyPress={handleKeyPress}
-          />
-        </ThemedView>
-
-        <ThemedView style={styles.inputContainer}>
-          <TextInput
-            style={inputStyle}
-            placeholder="Senha"
-            placeholderTextColor={COLORS[currentTheme].icon}
-            value={senha}
-            onChangeText={setSenha}
-            secureTextEntry={!showPassword}
-            editable={!isLoading}
-            onKeyPress={handleKeyPress}
-          />
-          <Pressable 
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.eyeIcon}
-          >
-            {showPassword ? (
-              <EyeOff size={20} color={COLORS[currentTheme].icon} />
-            ) : (
-              <Eye size={20} color={COLORS[currentTheme].icon} />
-            )}
-          </Pressable>
-        </ThemedView>
-
-        <ThemedView style={styles.inputContainer}>
-          <TextInput
-            style={inputStyle}
-            placeholder="Confirmar senha"
-            placeholderTextColor={COLORS[currentTheme].icon}
-            value={confirmarSenha}
-            onChangeText={setConfirmarSenha}
-            secureTextEntry={!showConfirmPassword}
-            editable={!isLoading}
-            onKeyPress={handleKeyPress}
-          />
-          <Pressable 
-            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-            style={styles.eyeIcon}
-          >
-            {showConfirmPassword ? (
-              <EyeOff size={20} color={COLORS[currentTheme].icon} />
-            ) : (
-              <Eye size={20} color={COLORS[currentTheme].icon} />
-            )}
-          </Pressable>
-        </ThemedView>
-
-        <Pressable
-          style={[
-            styles.button,
-            { 
-              backgroundColor: COLORS[currentTheme].primary,
-              opacity: isLoading ? 0.7 : isHovered ? 0.8 : 1,
-            }
-          ]}
-          onPress={handleRegister}
-          disabled={isLoading}
-          onHoverIn={() => Platform.OS === 'web' && setIsHovered(true)}
-          onHoverOut={() => Platform.OS === 'web' && setIsHovered(false)}
-        >
-          {isLoading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <ThemedText style={[typography.bodySemiBold, styles.buttonText]}>
-              Cadastrar
-            </ThemedText>
-          )}
-        </Pressable>
-
-        <ThemedView style={styles.footer}>
-          <ThemedText style={typography.body}>
-            Já tem uma conta?{' '}
+        <ThemedView style={[styles.formContainer, isDesktopOrTablet && styles.formContainerDesktop]}>
+          <ThemedText style={[typography.title, styles.title]}>
+            Crie sua conta
           </ThemedText>
-          <Link href="/login" asChild>
+          
+          <ThemedText style={[typography.body, styles.subtitle]}>
+            Preencha seus dados para começar
+          </ThemedText>
+
+          <ThemedView style={styles.inputContainer}>
+            <TextInput
+              style={inputStyle}
+              placeholder="Nome completo"
+              placeholderTextColor={COLORS[currentTheme].icon}
+              value={nome}
+              onChangeText={setNome}
+              autoCapitalize="words"
+              editable={!isLoading}
+              onKeyPress={handleKeyPress}
+            />
+          </ThemedView>
+
+          <ThemedView style={styles.inputContainer}>
+            <TextInput
+              style={inputStyle}
+              placeholder="E-mail"
+              placeholderTextColor={COLORS[currentTheme].icon}
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              editable={!isLoading}
+              onKeyPress={handleKeyPress}
+            />
+          </ThemedView>
+
+          <ThemedView style={styles.inputContainer}>
+            <TextInput
+              style={inputStyle}
+              placeholder="Senha"
+              placeholderTextColor={COLORS[currentTheme].icon}
+              value={senha}
+              onChangeText={setSenha}
+              secureTextEntry={!showPassword}
+              editable={!isLoading}
+              onKeyPress={handleKeyPress}
+            />
             <Pressable 
-              disabled={isLoading}
-              onHoverIn={() => Platform.OS === 'web' && setIsLinkHovered(true)}
-              onHoverOut={() => Platform.OS === 'web' && setIsLinkHovered(false)}
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.eyeIcon}
             >
-              <ThemedText 
-                style={[
-                  typography.bodySemiBold, 
-                  { 
-                    color: COLORS[currentTheme].primary,
-                    opacity: isLinkHovered ? 0.8 : 1,
-                    ...(Platform.OS === 'web' ? {
-                      transition: 'all 0.2s ease-in-out',
-                    } : {}),
-                  }
-                ]}
-              >
-                Faça login
-              </ThemedText>
+              {showPassword ? (
+                <EyeOff size={20} color={COLORS[currentTheme].icon} />
+              ) : (
+                <Eye size={20} color={COLORS[currentTheme].icon} />
+              )}
             </Pressable>
-          </Link>
+          </ThemedView>
+
+          <ThemedView style={styles.inputContainer}>
+            <TextInput
+              style={inputStyle}
+              placeholder="Confirmar senha"
+              placeholderTextColor={COLORS[currentTheme].icon}
+              value={confirmarSenha}
+              onChangeText={setConfirmarSenha}
+              secureTextEntry={!showConfirmPassword}
+              editable={!isLoading}
+              onKeyPress={handleKeyPress}
+            />
+            <Pressable 
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={styles.eyeIcon}
+            >
+              {showConfirmPassword ? (
+                <EyeOff size={20} color={COLORS[currentTheme].icon} />
+              ) : (
+                <Eye size={20} color={COLORS[currentTheme].icon} />
+              )}
+            </Pressable>
+          </ThemedView>
+
+          <Pressable
+            style={[
+              styles.button,
+              { 
+                backgroundColor: COLORS[currentTheme].primary,
+                opacity: isLoading ? 0.7 : isHovered ? 0.8 : 1,
+              }
+            ]}
+            onPress={handleRegister}
+            disabled={isLoading}
+            onHoverIn={() => Platform.OS === 'web' && setIsHovered(true)}
+            onHoverOut={() => Platform.OS === 'web' && setIsHovered(false)}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <ThemedText style={[typography.bodySemiBold, styles.buttonText]}>
+                Criar conta
+              </ThemedText>
+            )}
+          </Pressable>
+
+          <ThemedView style={styles.footer}>
+            <ThemedText style={typography.body}>
+              Já tem uma conta?{' '}
+            </ThemedText>
+            <Link href="/login" asChild>
+              <Pressable 
+                disabled={isLoading}
+                onHoverIn={() => Platform.OS === 'web' && setIsLinkHovered(true)}
+                onHoverOut={() => Platform.OS === 'web' && setIsLinkHovered(false)}
+              >
+                <ThemedText 
+                  style={[
+                    typography.bodySemiBold, 
+                    { 
+                      color: COLORS[currentTheme].primary,
+                      opacity: isLinkHovered ? 0.8 : 1,
+                      ...(Platform.OS === 'web' ? {
+                        transition: 'all 0.2s ease-in-out',
+                      } : {}),
+                    }
+                  ]}
+                >
+                  Faça login
+                </ThemedText>
+              </Pressable>
+            </Link>
+          </ThemedView>
         </ThemedView>
       </ThemedView>
     </ThemedView>
@@ -315,14 +326,22 @@ export default function Register() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  formContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: SPACING.lg,
   },
-  formContainer: {
-    width: '100%',
-    maxWidth: 400,
-    padding: SPACING.xl,
+  formContainerDesktop: {
+    maxWidth: '50%',
+  },
+  imageContainer: {
+    flex: 1,
   },
   title: {
     textAlign: 'center',
@@ -334,6 +353,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     position: 'relative',
+    width: '100%',
+    maxWidth: 400,
     marginBottom: SPACING.md,
   },
   input: {
@@ -360,6 +381,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
+    maxWidth: 400,
     height: 48,
     borderRadius: BORDER_RADIUS.md,
     justifyContent: 'center',

@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
 import { StyleSheet, ScrollView, View, useWindowDimensions, Platform, Pressable, Animated } from 'react-native';
-import { useBreakpoints, BREAKPOINTS } from '@/hooks/useBreakpoints';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { useTheme } from '@/hooks/ThemeContext';
 import { FeedbackMessage } from '@/components/FeedbackMessage';
 import { Sidebar } from '@/components/Sidebar';
-import { COLORS, FEEDBACK_COLORS, SPACING, SHADOWS, ICONS, BORDER_RADIUS } from '@/constants/DesignSystem';
+import { COLORS, FEEDBACK_COLORS, SPACING, SHADOWS, ICONS, BORDER_RADIUS, BREAKPOINTS } from '@/constants/DesignSystem';
 import { Home, Search, User } from 'lucide-react-native';
 import { useToast } from '@/hooks/useToast';
 import { PageContainer } from '@/components/PageContainer';

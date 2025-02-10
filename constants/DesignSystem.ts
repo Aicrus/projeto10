@@ -1,5 +1,11 @@
-import { BREAKPOINTS } from '@/hooks/useBreakpoints';
 import { TextStyle } from 'react-native';
+
+// Breakpoints do Sistema
+export const BREAKPOINTS = {
+  mobile: 0,    // De 0 até 742px
+  tablet: 742,  // De 742px até 1024px
+  desktop: 1024 // 1024px ou mais
+} as const;
 
 // Cores do Sistema
 export const COLORS = {
