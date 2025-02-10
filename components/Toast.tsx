@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Animated, Dimensions, Platform, Pressable, useWindowDimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FeedbackMessage } from './FeedbackMessage';
 import { SPACING, BORDER_RADIUS } from '@/constants/DesignSystem';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
@@ -34,6 +35,7 @@ export function Toast({
   const { width: screenWidth } = useWindowDimensions();
   const { isMobile, isTablet } = useBreakpoints();
   const hideTimeoutRef = useRef<NodeJS.Timeout>();
+  const insets = useSafeAreaInsets();
 
   const nativePadding = Platform.select({
     ios: 35,
@@ -121,7 +123,6 @@ export function Toast({
   };
 
   const getPositionStyle = () => {
-    // Ajusta a largura máxima baseada no breakpoint
     const getMaxWidth = () => {
       if (isMobile) return screenWidth - (SPACING.lg * 2);
       if (isTablet) return 400;
@@ -140,7 +141,6 @@ export function Toast({
 
     const getHorizontalPosition = (align: 'left' | 'right' | 'center') => {
       if (isMobile) {
-        // No mobile, sempre centralizado
         return {
           left: horizontalPadding,
           right: horizontalPadding,
@@ -162,31 +162,31 @@ export function Toast({
       }
     };
 
-    // Ajusta o padding baseado na plataforma e breakpoint
-    const topPadding = Platform.OS !== 'web' 
-      ? nativePadding 
-      : isMobile 
-        ? SPACING.md 
-        : SPACING.lg;
-    
-    const bottomPadding = Platform.OS !== 'web'
-      ? nativePadding
-      : isMobile
-        ? SPACING.md + 20 // Adiciona espaço extra no mobile para não ficar muito próximo do bottom
-        : SPACING.lg;
+    // Calcula o padding considerando a safe area
+    const getSafeAreaPadding = (isTop: boolean) => {
+      if (Platform.OS === 'web') {
+        return isMobile ? SPACING.md : SPACING.lg;
+      }
+      
+      // Para dispositivos nativos
+      if (isTop) {
+        return Math.max(insets.top + SPACING.md, SPACING.xl);
+      }
+      return Math.max(insets.bottom + SPACING.md, SPACING.xl);
+    };
 
     // No mobile, sempre usa posição top ou bottom centralizado
     if (isMobile) {
       if (position.includes('bottom')) {
         return {
           ...baseStyle,
-          bottom: bottomPadding,
+          bottom: getSafeAreaPadding(false),
           ...getHorizontalPosition('center'),
         };
       }
       return {
         ...baseStyle,
-        top: topPadding,
+        top: getSafeAreaPadding(true),
         ...getHorizontalPosition('center'),
       };
     }
@@ -196,37 +196,37 @@ export function Toast({
       case 'top':
         return {
           ...baseStyle,
-          top: topPadding,
+          top: getSafeAreaPadding(true),
           ...getHorizontalPosition('center'),
         };
       case 'bottom':
         return {
           ...baseStyle,
-          bottom: bottomPadding,
+          bottom: getSafeAreaPadding(false),
           ...getHorizontalPosition('center'),
         };
       case 'top-left':
         return {
           ...baseStyle,
-          top: topPadding,
+          top: getSafeAreaPadding(true),
           ...getHorizontalPosition('left'),
         };
       case 'top-right':
         return {
           ...baseStyle,
-          top: topPadding,
+          top: getSafeAreaPadding(true),
           ...getHorizontalPosition('right'),
         };
       case 'bottom-left':
         return {
           ...baseStyle,
-          bottom: bottomPadding,
+          bottom: getSafeAreaPadding(false),
           ...getHorizontalPosition('left'),
         };
       case 'bottom-right':
         return {
           ...baseStyle,
-          bottom: bottomPadding,
+          bottom: getSafeAreaPadding(false),
           ...getHorizontalPosition('right'),
         };
       default:
