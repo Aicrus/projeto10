@@ -17,7 +17,9 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     if (!isInitialized || !rootNav?.isReady()) return;
 
     if (!session) {
-      router.replace('/(auth)/login');
+      setTimeout(() => {
+        router.replace('/(auth)/login');
+      }, 100);
     }
   }, [session, isInitialized, rootNav?.isReady()]);
 

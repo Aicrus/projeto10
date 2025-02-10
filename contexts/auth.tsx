@@ -293,7 +293,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: 'Você foi desconectado com sucesso.',
       });
 
-      router.replace('/(auth)/login');
+      setTimeout(() => {
+        router.replace('/(auth)/login');
+      }, 100);
 
     } catch (error) {
       console.error('Erro no logout:', error);

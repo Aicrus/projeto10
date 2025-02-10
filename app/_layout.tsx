@@ -51,12 +51,26 @@ function RootLayoutNav() {
   const MainContent = (
     <NavigationThemeProvider value={currentTheme === 'dark' ? DarkTheme : DefaultTheme}>
       <ThemedView style={{ flex: 1 }}>
-        <Stack screenOptions={{
-          headerShown: false,
-          contentStyle: { flex: 1 }
-        }}>
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(tabs)" />
+        <Stack 
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { flex: 1 },
+            animation: 'fade'
+          }}
+          initialRouteName="(auth)"
+        >
+          <Stack.Screen 
+            name="(auth)" 
+            options={{
+              gestureEnabled: false
+            }}
+          />
+          <Stack.Screen 
+            name="(tabs)"
+            options={{
+              gestureEnabled: false
+            }}
+          />
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemedView>
