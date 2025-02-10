@@ -215,8 +215,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) {
-        console.error('Erro no login:', error);
-
         if (error.message?.toLowerCase().includes('invalid login credentials')) {
           showToast({
             type: 'error',

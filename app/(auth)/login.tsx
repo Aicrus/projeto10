@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, TextInput, Pressable, ActivityIndicator, Platform } from 'react-native';
+import { StyleSheet, TextInput, Pressable, ActivityIndicator, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Link } from 'expo-router';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '@/constants/DesignSystem';
 import { useTheme } from '@/hooks/ThemeContext';
@@ -8,6 +8,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { useWindowDimensions } from 'react-native';
 import { getTypographyForBreakpoint } from '@/constants/DesignSystem';
 import { useAuth } from '@/contexts/auth';
+import { useToast } from '@/hooks/useToast';
 import { Eye, EyeOff } from 'lucide-react-native';
 
 export default function Login() {
@@ -18,6 +19,7 @@ export default function Login() {
   const { width } = useWindowDimensions();
   const typography = getTypographyForBreakpoint(width);
   const { signIn, isLoading } = useAuth();
+  const { showToast } = useToast();
 
   const inputStyle = [
     styles.input,
@@ -31,92 +33,104 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
+      // Validação dos campos obrigatórios
+      if (!email || !senha) {
+        showToast({
+          type: 'warning',
+          message: 'Campos obrigatórios',
+          description: 'Por favor, preencha todos os campos.',
+        });
+        return;
+      }
+
       await signIn({ email, password: senha });
     } catch (error) {
-      console.error('Erro no login:', error);
+      // Removido o console.error para não mostrar o erro adicional
     }
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedView style={styles.formContainer}>
-        <ThemedText style={[typography.title, styles.title]}>
-          Bem-vindo de volta!
-        </ThemedText>
-        
-        <ThemedText style={[typography.body, styles.subtitle]}>
-          Entre com suas credenciais para acessar sua conta
-        </ThemedText>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <ThemedView style={styles.container}>
+        <ThemedView style={styles.formContainer}>
+          <ThemedText style={[typography.title, styles.title]}>
+            Bem-vindo de volta!
+          </ThemedText>
+          
+          <ThemedText style={[typography.body, styles.subtitle]}>
+            Entre com suas credenciais para acessar sua conta
+          </ThemedText>
 
-        <ThemedView style={styles.inputContainer}>
-          <TextInput
-            style={inputStyle}
-            placeholder="E-mail"
-            placeholderTextColor={COLORS[currentTheme].icon}
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            editable={!isLoading}
-          />
-        </ThemedView>
+          <ThemedView style={styles.inputContainer}>
+            <TextInput
+              style={inputStyle}
+              placeholder="E-mail"
+              placeholderTextColor={COLORS[currentTheme].icon}
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              editable={!isLoading}
+            />
+          </ThemedView>
 
-        <ThemedView style={styles.inputContainer}>
-          <TextInput
-            style={inputStyle}
-            placeholder="Senha"
-            placeholderTextColor={COLORS[currentTheme].icon}
-            value={senha}
-            onChangeText={setSenha}
-            secureTextEntry={!showPassword}
-            editable={!isLoading}
-          />
-          <Pressable 
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.eyeIcon}
+          <ThemedView style={styles.inputContainer}>
+            <TextInput
+              style={inputStyle}
+              placeholder="Senha"
+              placeholderTextColor={COLORS[currentTheme].icon}
+              value={senha}
+              onChangeText={setSenha}
+              secureTextEntry={!showPassword}
+              editable={!isLoading}
+            />
+            <Pressable 
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.eyeIcon}
+            >
+              {showPassword ? (
+                <EyeOff size={20} color={COLORS[currentTheme].icon} />
+              ) : (
+                <Eye size={20} color={COLORS[currentTheme].icon} />
+              )}
+            </Pressable>
+          </ThemedView>
+
+          <Pressable
+            style={[
+              styles.button,
+              { 
+                backgroundColor: COLORS[currentTheme].primary,
+                opacity: isLoading ? 0.7 : 1,
+              }
+            ]}
+            onPress={handleLogin}
+            disabled={isLoading}
           >
-            {showPassword ? (
-              <EyeOff size={20} color={COLORS[currentTheme].icon} />
+            {isLoading ? (
+              <ActivityIndicator color="#fff" />
             ) : (
-              <Eye size={20} color={COLORS[currentTheme].icon} />
+              <ThemedText style={[typography.bodySemiBold, styles.buttonText]}>
+                Entrar
+              </ThemedText>
             )}
           </Pressable>
-        </ThemedView>
 
-        <Pressable
-          style={[
-            styles.button,
-            { 
-              backgroundColor: COLORS[currentTheme].primary,
-              opacity: isLoading ? 0.7 : 1,
-            }
-          ]}
-          onPress={handleLogin}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <ThemedText style={[typography.bodySemiBold, styles.buttonText]}>
-              Entrar
+          <ThemedView style={styles.footer}>
+            <ThemedText style={typography.body}>
+              Ainda não tem uma conta?{' '}
             </ThemedText>
-          )}
-        </Pressable>
-
-        <ThemedView style={styles.footer}>
-          <ThemedText style={typography.body}>
-            Ainda não tem uma conta?{' '}
-          </ThemedText>
-          <Link href="/register" asChild>
-            <Pressable disabled={isLoading}>
-              <ThemedText style={[typography.bodySemiBold, { color: COLORS[currentTheme].primary }]}>
-                Cadastre-se
-              </ThemedText>
-            </Pressable>
-          </Link>
+            <Link href="/register" asChild>
+              <Pressable disabled={isLoading}>
+                <ThemedText style={[typography.bodySemiBold, { color: COLORS[currentTheme].primary }]}>
+                  Cadastre-se
+                </ThemedText>
+              </Pressable>
+            </Link>
+          </ThemedView>
         </ThemedView>
       </ThemedView>
-    </ThemedView>
+    </TouchableWithoutFeedback>
   );
 }
 
