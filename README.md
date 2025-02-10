@@ -254,6 +254,19 @@ Este é nosso componente especializado para efeitos de hover mais elaborados, us
 | Customização | Por elemento | Padronizada |
 | Performance | Muito leve | Moderada |
 
+#### 🚀 Onde Usamos no Projeto
+
+- **RoverView**: 
+  - Card de Perfil (com zoom e elevação)
+  - Menu de Notificações (com animação ao expandir)
+  - Cards de Conteúdo Interativos
+
+- **Hover Simples**:
+  - Links da Sidebar (mudança sutil de cor)
+  - Botões de Login/Cadastro (alteração de opacidade)
+  - Links de Navegação (efeito suave)
+
+
 > 💡 **Dica**: Se estiver em dúvida, comece com o hover simples. Se perceber que precisa de mais elaboração ou que o mesmo efeito está sendo repetido em vários lugares similares, considere migrar para o RoverView.
 
 Agora vamos ver como implementar cada tipo...
