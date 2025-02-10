@@ -33,7 +33,10 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
     switch (path) {
       case '/config':
         return 'Configurações';
+      case '/design-system':
+        return 'Design System';
       case '/dash':
+        return 'Dashboard';
       default:
         return 'Dashboard';
     }

@@ -3,7 +3,7 @@ import { useRouter, useSegments } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { Session } from '@supabase/supabase-js';
 import { useToast } from '@/hooks/useToast';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { COLORS } from '@/constants/DesignSystem';
 
 // Tipos
@@ -28,47 +28,54 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const segments = useSegments();
   const { showToast } = useToast();
 
-  useEffect(() => {
-    // Monitora mudanças na sessão
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
+  // Função para verificar e atualizar a sessão
+  const checkAndUpdateSession = async () => {
+    try {
+      const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error('Erro ao verificar sessão:', error);
+        setSession(null);
+        return;
+      }
+
+      if (currentSession) {
+        setSession(currentSession);
+      } else {
+        setSession(null);
+      }
+    } catch (error) {
+      console.error('Erro ao verificar sessão:', error);
+      setSession(null);
+    } finally {
       setIsLoading(false);
       setIsInitialized(true);
-    });
+    }
+  };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      // Verifica se existe uma sessão
-      if (session) {
-        try {
-          // Tenta buscar o usuário para verificar se a conta ainda existe
-          const { data: user, error } = await supabase.auth.getUser();
-          
-          if (error || !user) {
-            console.error('Erro ao verificar usuário:', error);
-            showToast({
-              type: 'info',
-              message: 'Conta não encontrada',
-              description: 'Sua conta foi excluída. Você será desconectado.',
-            });
-            
-            // Se houver erro ou o usuário não existir, faz logout
-            await signOut();
-            return;
-          }
-        } catch (error) {
-          console.error('Erro ao verificar usuário:', error);
-        }
+  // Efeito para verificação inicial da sessão
+  useEffect(() => {
+    checkAndUpdateSession();
+  }, []);
+
+  // Efeito para monitorar mudanças na sessão
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {      
+      if (event === 'SIGNED_IN') {
+        setSession(newSession);
+      } else if (event === 'SIGNED_OUT') {
+        setSession(null);
+      } else if (event === 'TOKEN_REFRESHED') {
+        setSession(newSession);
       }
-      
-      setSession(session);
     });
 
-    // Cleanup da subscription
     return () => {
       subscription.unsubscribe();
     };
   }, []);
 
+  // Efeito para navegação baseada no estado da sessão
   useEffect(() => {
     if (!isInitialized) return;
 
@@ -314,9 +321,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       <View 
         style={{ 
           flex: 1, 
-          backgroundColor: COLORS.light.background // Usando light por padrão para o splash
+          backgroundColor: COLORS.light.background,
+          justifyContent: 'center',
+          alignItems: 'center'
         }} 
-      />
+      >
+        <ActivityIndicator size="large" color={COLORS.light.primary} />
+      </View>
     );
   }
 

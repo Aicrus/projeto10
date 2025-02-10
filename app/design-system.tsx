@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, ScrollView, View, useWindowDimensions, Platform, Pressable } from 'react-native';
+import React, { useRef } from 'react';
+import { StyleSheet, ScrollView, View, useWindowDimensions, Platform, Pressable, Animated } from 'react-native';
 import { useBreakpoints, BREAKPOINTS } from '@/hooks/useBreakpoints';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
@@ -11,12 +11,14 @@ import { COLORS, FEEDBACK_COLORS, SPACING, SHADOWS, ICONS, BORDER_RADIUS } from 
 import { Home, Search, User } from 'lucide-react-native';
 import { useToast } from '@/hooks/useToast';
 import { PageContainer } from '@/components/PageContainer';
+import { Header } from '@/components/Header';
 
 export default function DesignSystemScreen() {
   const { currentTheme } = useTheme();
   const breakpoints = useBreakpoints();
   const { width } = useWindowDimensions();
   const { showToast } = useToast();
+  const sidebarWidth = useRef(new Animated.Value(0)).current;
 
   const testToasts = [
     {
@@ -90,8 +92,15 @@ export default function DesignSystemScreen() {
 
   return (
     <ThemedView style={styles.container}>
+      <Header 
+        sidebarWidth={sidebarWidth}
+        currentPath="/design-system"
+      />
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingTop: 80 } // Adicionando espaço para o Header
+        ]}
         showsVerticalScrollIndicator={false}>
         <PageContainer>
           {/* Guia de Cores */}
@@ -203,6 +212,9 @@ export default function DesignSystemScreen() {
               <ThemedView style={[styles.breakpointBox, SHADOWS[currentTheme].sm, breakpoints.isMobile && styles.activeBreakpoint]}>
                 <ThemedText>Mobile</ThemedText>
                 <ThemedText style={styles.breakpointValue}>{`0-${BREAKPOINTS.tablet-1}px`}</ThemedText>
+                <ThemedText style={styles.currentWidth}>
+                  Largura atual: {width}px
+                </ThemedText>
                 {breakpoints.isMobile && (
                   <ThemedText type="small" style={styles.activeLabel}>Ativo</ThemedText>
                 )}
@@ -210,6 +222,9 @@ export default function DesignSystemScreen() {
               <ThemedView style={[styles.breakpointBox, SHADOWS[currentTheme].sm, breakpoints.isTablet && styles.activeBreakpoint]}>
                 <ThemedText>Tablet</ThemedText>
                 <ThemedText style={styles.breakpointValue}>{`${BREAKPOINTS.tablet}-${BREAKPOINTS.desktop-1}px`}</ThemedText>
+                <ThemedText style={styles.currentWidth}>
+                  Largura atual: {width}px
+                </ThemedText>
                 {breakpoints.isTablet && (
                   <ThemedText type="small" style={styles.activeLabel}>Ativo</ThemedText>
                 )}
@@ -217,6 +232,9 @@ export default function DesignSystemScreen() {
               <ThemedView style={[styles.breakpointBox, SHADOWS[currentTheme].sm, breakpoints.isDesktop && styles.activeBreakpoint]}>
                 <ThemedText>Desktop</ThemedText>
                 <ThemedText style={styles.breakpointValue}>{`${BREAKPOINTS.desktop}px+`}</ThemedText>
+                <ThemedText style={styles.currentWidth}>
+                  Largura atual: {width}px
+                </ThemedText>
                 {breakpoints.isDesktop && (
                   <ThemedText type="small" style={styles.activeLabel}>Ativo</ThemedText>
                 )}
@@ -400,6 +418,7 @@ export default function DesignSystemScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
   },
   scrollContent: {
     padding: SPACING.lg,
@@ -618,5 +637,11 @@ const styles = StyleSheet.create({
   },
   toastButtonText: {
     fontWeight: '600',
+  },
+  currentWidth: {
+    fontSize: 12,
+    opacity: 0.7,
+    marginTop: 4,
+    color: COLORS.light.primary,
   },
 }); 

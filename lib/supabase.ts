@@ -16,39 +16,57 @@ if (!process.env.EXPO_PUBLIC_SUPABASE_URL || !process.env.EXPO_PUBLIC_SUPABASE_A
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
-// Configuração específica para web
-const webStorage = {
-  getItem: (key: string) => {
-    try {
-      const item = localStorage.getItem(key);
-      return Promise.resolve(item);
-    } catch {
-      return Promise.resolve(null);
+// Verifica se estamos no ambiente do navegador
+const isBrowser = typeof window !== 'undefined';
+
+// Função para obter o storage apropriado
+const getStorage = () => {
+  if (Platform.OS === 'web') {
+    if (isBrowser) {
+      return localStorage;
     }
-  },
-  setItem: (key: string, value: string) => {
-    try {
-      localStorage.setItem(key, value);
-      return Promise.resolve();
-    } catch {
-      return Promise.resolve();
-    }
-  },
-  removeItem: (key: string) => {
-    try {
-      localStorage.removeItem(key);
-      return Promise.resolve();
-    } catch {
-      return Promise.resolve();
-    }
-  },
+    // Retorna um storage vazio para SSR
+    return {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+    };
+  }
+  return AsyncStorage;
 };
 
+const storage = getStorage();
+
+// Configuração do cliente Supabase com opções melhoradas
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: Platform.OS === 'web' ? webStorage : AsyncStorage,
+    storage: {
+      getItem: async (key: string) => {
+        try {
+          return await storage.getItem(key);
+        } catch (error) {
+          console.error('Erro ao recuperar item do storage:', error);
+          return null;
+        }
+      },
+      setItem: async (key: string, value: string) => {
+        try {
+          await storage.setItem(key, value);
+        } catch (error) {
+          console.error('Erro ao salvar item do storage:', error);
+        }
+      },
+      removeItem: async (key: string) => {
+        try {
+          await storage.removeItem(key);
+        } catch (error) {
+          console.error('Erro ao remover item do storage:', error);
+        }
+      },
+    },
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
+    flowType: 'implicit',
   },
 }); 
