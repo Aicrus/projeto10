@@ -9,6 +9,7 @@ import { NotificationsMenu } from './NotificationsMenu';
 import { COLORS, SPACING, BORDER_RADIUS, getTypographyForBreakpoint } from '@/constants/DesignSystem';
 import { useTheme } from '@/hooks/ThemeContext';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { useAuth } from '@/contexts/auth';
 
 interface HeaderProps {
   sidebarWidth: Animated.Value;
@@ -21,8 +22,12 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
   const [isNotificationsMenuVisible, setIsNotificationsMenuVisible] = useState(false);
   const { currentTheme } = useTheme();
   const { isMobile } = useBreakpoints();
+  const { session } = useAuth();
   const themeColors = COLORS[currentTheme];
   const typography = getTypographyForBreakpoint(Platform.OS === 'web' ? window.innerWidth : 0);
+
+  const userName = session?.user?.user_metadata?.display_name || session?.user?.user_metadata?.name || 'Usuário';
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random&color=ffffff`;
 
   const getPageTitle = (path?: string) => {
     switch (path) {
@@ -95,7 +100,7 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
             onPress={() => setIsProfileMenuVisible(true)}
           >
             <Image 
-              source={{ uri: 'https://pbs.twimg.com/profile_images/1506266082453172227/XqK8i7Zc_400x400.jpg' }}
+              source={{ uri: avatarUrl }}
               style={styles.avatarImage}
             />
           </HoverableView>
