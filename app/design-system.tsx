@@ -99,7 +99,7 @@ export default function DesignSystemScreen() {
       <ScrollView
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: 80 } // Adicionando espaço para o Header
+          { paddingTop: 80 } // Mantendo apenas o espaço para o Header
         ]}
         showsVerticalScrollIndicator={false}>
         <PageContainer>
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   scrollContent: {
-    padding: SPACING.lg,
+    minHeight: '100%',
   },
   section: {
     gap: 24,

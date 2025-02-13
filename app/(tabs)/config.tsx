@@ -61,8 +61,6 @@ export default function ConfigScreen() {
             styles.contentContainer,
             {
               maxWidth: isDesktop ? 1200 : 800,
-              paddingHorizontal: isMobile ? SPACING.md : isTablet ? SPACING.xl : SPACING.xxl,
-              paddingVertical: isMobile ? SPACING.md : isTablet ? SPACING.xl : SPACING.xxl,
               alignSelf: 'center',
               width: '100%'
             }

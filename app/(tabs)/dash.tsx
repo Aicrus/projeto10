@@ -7,9 +7,10 @@ import { ThemedView } from '@/components/ThemedView';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
-import { SPACING, TYPOGRAPHY, getTypographyForBreakpoint } from '@/constants/DesignSystem';
+import { SPACING, TYPOGRAPHY, getTypographyForBreakpoint, COLORS } from '@/constants/DesignSystem';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { PageContainer } from '@/components/PageContainer';
+import { useTheme } from '@/hooks/ThemeContext';
 
 const EXPANDED_WIDTH = 240;
 const COLLAPSED_WIDTH = 68;
@@ -21,6 +22,7 @@ export default function DashScreen() {
   const { isMobile, isTablet, isDesktop } = useBreakpoints();
   const [isExpanded, setIsExpanded] = useState(true);
   const animatedWidth = useRef(new Animated.Value(isMobile ? 0 : EXPANDED_WIDTH)).current;
+  const { currentTheme } = useTheme();
 
   const handleNavigation = (route: string) => {
     if (route === '/dash') {
@@ -61,8 +63,6 @@ export default function DashScreen() {
             styles.contentContainer,
             {
               maxWidth: isDesktop ? 1200 : 800,
-              paddingHorizontal: isMobile ? SPACING.md : isTablet ? SPACING.xl : SPACING.xxl,
-              paddingVertical: isMobile ? SPACING.md : isTablet ? SPACING.xl : SPACING.xxl,
               alignSelf: 'center',
               width: '100%'
             }
