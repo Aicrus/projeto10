@@ -134,18 +134,44 @@ Antes de começar, você precisa ter instalado em sua máquina:
 
 ## 📱 Executando o Projeto
 
-Escolha como deseja executar:
+Para iniciar o projeto em qualquer sistema operacional (Windows, macOS ou Linux), use o comando:
 
 ```bash
-# Web
+npm start
+```
+
+Este comando irá:
+1. ✅ Verificar automaticamente se as dependências estão instaladas
+2. 📦 Instalar as dependências caso necessário
+3. 🚀 Iniciar o Expo em modo de desenvolvimento
+
+> 💡 **Dicas para Windows**:
+> - O comando `npm start` funciona perfeitamente no Windows
+> - Use o Windows Terminal ou PowerShell para melhor experiência
+> - Se encontrar algum erro de permissão:
+>   1. Execute o PowerShell como administrador
+>   2. Execute o comando: `Set-ExecutionPolicy RemoteSigned`
+>   3. Tente `npm start` novamente
+> - Certifique-se de ter o Node.js instalado corretamente no Windows
+
+> 💡 **Dica**: Este é o comando recomendado para iniciar o projeto, pois ele garante que todas as dependências estejam corretamente instaladas antes de iniciar.
+
+Alternativamente, se você precisar iniciar o projeto para uma plataforma específica, pode usar:
+
+```bash
+# Web (Windows, macOS, Linux)
 npm run web
 
-# iOS
+# iOS (apenas em macOS)
 npm run ios
 
-# Android
+# Android (Windows, macOS, Linux)
 npm run android
 ```
+
+> ⚠️ **Notas importantes**:
+> - O comando `npm run ios` só está disponível em computadores macOS, pois requer o Xcode instalado
+> - Para rodar no Android, você precisa ter o Android Studio instalado e configurado em qualquer sistema operacional
 
 ## 🎯 Estrutura de Navegação
 
