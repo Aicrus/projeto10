@@ -6,7 +6,27 @@ import { COLORS, getTypographyForBreakpoint } from '@/constants/DesignSystem';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'small';
+  type?: 
+    | 'default'
+    | 'title'
+    | 'defaultSemiBold'
+    | 'subtitle'
+    | 'link'
+    | 'small'
+    // Display
+    | 'displayLarge'
+    | 'displayMedium'
+    | 'displaySmall'
+    // Headline
+    | 'headlineLarge'
+    | 'headlineMedium'
+    | 'headlineSmall'
+    // Label
+    | 'labelLarge'
+    | 'labelMedium'
+    | 'labelSmall'
+    // Body
+    | 'bodySemiBold';
 };
 
 export function ThemedText({
@@ -22,11 +42,33 @@ export function ThemedText({
   const typography = getTypographyForBreakpoint(width);
   
   const color = currentTheme === 'dark'
-    ? darkColor ?? COLORS.dark.text
-    : lightColor ?? COLORS.light.text;
+    ? darkColor ?? COLORS.dark.primaryText
+    : lightColor ?? COLORS.light.primaryText;
 
   const getTypographyStyle = () => {
     switch (type) {
+      // Display
+      case 'displayLarge':
+        return typography.displayLarge;
+      case 'displayMedium':
+        return typography.displayMedium;
+      case 'displaySmall':
+        return typography.displaySmall;
+      // Headline
+      case 'headlineLarge':
+        return typography.headlineLarge;
+      case 'headlineMedium':
+        return typography.headlineMedium;
+      case 'headlineSmall':
+        return typography.headlineSmall;
+      // Label
+      case 'labelLarge':
+        return typography.labelLarge;
+      case 'labelMedium':
+        return typography.labelMedium;
+      case 'labelSmall':
+        return typography.labelSmall;
+      // Títulos existentes (mantidos para compatibilidade)
       case 'title':
         return typography.title;
       case 'subtitle':

@@ -6,10 +6,11 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
-import { SPACING, TYPOGRAPHY, getTypographyForBreakpoint } from '@/constants/DesignSystem';
+import { SPACING, TYPOGRAPHY, getTypographyForBreakpoint, COLORS } from '@/constants/DesignSystem';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { PageContainer } from '@/components/PageContainer';
+import { useTheme } from '@/hooks/ThemeContext';
 
 const EXPANDED_WIDTH = 240;
 const COLLAPSED_WIDTH = 68;
@@ -21,6 +22,7 @@ export default function ConfigScreen() {
   const { isMobile, isTablet, isDesktop } = useBreakpoints();
   const [isExpanded, setIsExpanded] = useState(true);
   const animatedWidth = useRef(new Animated.Value(isMobile ? 0 : EXPANDED_WIDTH)).current;
+  const { currentTheme } = useTheme();
 
   const handleNavigation = (route: string) => {
     if (route === '/dash') {
@@ -40,7 +42,7 @@ export default function ConfigScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, { backgroundColor: COLORS[currentTheme].primaryBackground }]}>
       {!isMobile && (
         <Sidebar 
           onNavigate={handleNavigation} 
@@ -50,7 +52,10 @@ export default function ConfigScreen() {
       )}
       <Animated.View style={[
         styles.mainContent,
-        { left: isMobile ? 0 : animatedWidth }
+        { 
+          left: isMobile ? 0 : animatedWidth,
+          backgroundColor: COLORS[currentTheme].primaryBackground
+        }
       ]}>
         <Header sidebarWidth={animatedWidth} onNavigate={handleNavigation} currentPath="/config" />
         <ScrollView

@@ -110,7 +110,7 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
         style={[
           styles.container,
           {
-            backgroundColor: currentTheme === 'dark' ? '#1A1A1A' : 'white',
+            backgroundColor: themeColors.secondaryBackground,
             borderColor: themeColors.divider,
             opacity: fadeAnim,
             transform: [{ translateY: translateYAnim }],
@@ -177,7 +177,7 @@ export function NotificationsMenu({ isVisible, onClose }: NotificationsMenuProps
         <View style={[styles.divider, { backgroundColor: themeColors.divider }]} />
 
         <HoverableView style={styles.footer} hoverScale={1.01}>
-          <ThemedText style={styles.viewAll}>Ver todas as notificações</ThemedText>
+          <ThemedText style={[styles.viewAll, { color: themeColors.primary }]}>Ver todas as notificações</ThemedText>
         </HoverableView>
       </Animated.View>
     </>
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
   },
   viewAll: {
     fontSize: 13,
-    color: '#0a7ea4',
-    fontWeight: '500',
+    textAlign: 'center',
+    padding: SPACING.sm,
   },
 }); 

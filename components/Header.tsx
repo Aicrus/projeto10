@@ -120,7 +120,7 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
           <HoverableView
             style={[
               styles.iconButton,
-              { backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.background }
+              { backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.primaryBackground }
             ]}
             hoverScale={1.02}
           >
@@ -130,7 +130,7 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
           <HoverableView
             style={[
               styles.iconButton,
-              { backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.background }
+              { backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.primaryBackground }
             ]}
             hoverScale={1.02}
             onPress={() => setIsNotificationsMenuVisible(true)}
@@ -143,7 +143,7 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
             style={[
               styles.avatarButton,
               { 
-                backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.background,
+                backgroundColor: currentTheme === 'dark' ? '#222' : themeColors.primaryBackground,
                 borderWidth: 2,
                 borderColor: currentTheme === 'dark' ? '#333' : '#f0f0f0'
               }

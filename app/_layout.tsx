@@ -1,10 +1,10 @@
 import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
+import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { ScrollView, Platform, ActivityIndicator } from 'react-native';
+import { ScrollView, Platform, ActivityIndicator, View } from 'react-native';
 import 'react-native-reanimated';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
@@ -21,36 +21,40 @@ SplashScreen.preventAutoHideAsync();
 
 function LoadingScreen() {
   const { currentTheme } = useTheme();
+  const themeColors = COLORS[currentTheme];
+  
   return (
-    <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size="large" color={COLORS[currentTheme].primary} />
-    </ThemedView>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: themeColors.primaryBackground }}>
+      <ActivityIndicator size="large" color={themeColors.primary} />
+    </View>
   );
 }
 
 export default function RootLayout() {
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_600SemiBold,
+    Inter_700Bold,
   });
 
   useEffect(() => {
-    if (loaded) {
+    if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
+  }, [fontsLoaded]);
 
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <ToastProvider>
+        {!fontsLoaded ? (
+          <LoadingScreen />
+        ) : (
           <AuthProvider>
-            <RootLayoutNav />
+            <ToastProvider>
+              <RootLayoutNav />
+            </ToastProvider>
           </AuthProvider>
-        </ToastProvider>
+        )}
       </ThemeProvider>
     </SafeAreaProvider>
   );
@@ -76,11 +80,14 @@ function RootLayoutNav() {
   console.log('🎯 Renderizando conteúdo principal');
   const MainContent = (
     <NavigationThemeProvider value={currentTheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <ThemedView style={{ flex: 1 }}>
+      <ThemedView style={{ flex: 1, backgroundColor: COLORS[currentTheme].primaryBackground }}>
         <Stack 
           screenOptions={{
             headerShown: false,
-            contentStyle: { flex: 1 },
+            contentStyle: { 
+              flex: 1,
+              backgroundColor: COLORS[currentTheme].primaryBackground 
+            },
             animation: 'fade'
           }}
           initialRouteName="(auth)"

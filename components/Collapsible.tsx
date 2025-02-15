@@ -37,7 +37,7 @@ export function Collapsible({ title, children }: CollapsibleProps) {
           <Ionicons
             name="chevron-down"
             size={20}
-            color={COLORS[currentTheme].text}
+            color={COLORS[currentTheme].primaryText}
           />
         </Animated.View>
       </Pressable>

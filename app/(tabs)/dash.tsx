@@ -42,7 +42,7 @@ export default function DashScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, { backgroundColor: COLORS[currentTheme].primaryBackground }]}>
       {!isMobile && (
         <Sidebar 
           onNavigate={handleNavigation} 
@@ -52,7 +52,10 @@ export default function DashScreen() {
       )}
       <Animated.View style={[
         styles.mainContent,
-        { left: isMobile ? 0 : animatedWidth }
+        { 
+          left: isMobile ? 0 : animatedWidth,
+          backgroundColor: COLORS[currentTheme].primaryBackground
+        }
       ]}>
         <Header sidebarWidth={animatedWidth} onNavigate={handleNavigation} currentPath="/dash" />
         <ScrollView

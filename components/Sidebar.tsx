@@ -166,7 +166,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
         styles.container,
         {
           width: animatedWidth,
-          backgroundColor: currentTheme === 'dark' ? '#151718' : 'white',
+          backgroundColor: themeColors.secondaryBackground,
           borderRightWidth: 0.5,
           borderRightColor: themeColors.divider,
         }
@@ -201,7 +201,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
               style={[
                 styles.toggleButton,
                 {
-                  backgroundColor: currentTheme === 'dark' ? '#222' : 'white',
+                  backgroundColor: themeColors.secondaryBackground,
                   right: -8,
                   top: 62,
                   borderColor: themeColors.divider,
@@ -249,8 +249,8 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
                     <View style={styles.menuIconContainer}>
                       <IconComponent
                         size={20}
-                        color={isActive ? themeColors.primary : currentTheme === 'dark' ? '#fff' : themeColors.text}
-                        strokeWidth={2}
+                        color={isActive ? themeColors.primary : themeColors.primaryText}
+                        strokeWidth={1.5}
                       />
                     </View>
                     {isExpanded && (
@@ -308,7 +308,7 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
                     <View style={styles.menuIconContainer}>
                       <IconComponent
                         size={20}
-                        color={currentTheme === 'dark' ? '#fff' : themeColors.text}
+                        color={currentTheme === 'dark' ? '#fff' : themeColors.primaryText}
                         strokeWidth={2}
                       />
                     </View>

@@ -31,8 +31,8 @@ export default function Register() {
   const inputStyle = [
     styles.input,
     { 
-      backgroundColor: COLORS[currentTheme].background,
-      color: COLORS[currentTheme].text,
+      backgroundColor: COLORS[currentTheme].primaryBackground,
+      color: COLORS[currentTheme].primaryText,
       borderColor: COLORS[currentTheme].divider,
       ...(Platform.OS === 'web' ? { outline: 'none' } : {}),
     }

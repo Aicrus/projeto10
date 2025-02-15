@@ -91,15 +91,16 @@ export default function DesignSystemScreen() {
   );
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, { backgroundColor: COLORS[currentTheme].primaryBackground }]}>
       <Header 
         sidebarWidth={sidebarWidth}
         currentPath="/design-system"
       />
       <ScrollView
+        style={[styles.scrollView, { backgroundColor: COLORS[currentTheme].primaryBackground }]}
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: 80 } // Mantendo apenas o espaço para o Header
+          { paddingTop: 80 }
         ]}
         showsVerticalScrollIndicator={false}>
         <PageContainer>
@@ -111,35 +112,40 @@ export default function DesignSystemScreen() {
             </ThemedText>
 
             <ThemedView style={styles.colorSection}>
-              <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cor Primária</ThemedText>
+              <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores da Marca</ThemedText>
               <ThemedText style={styles.colorSectionDescription}>
-                Usada para destacar elementos importantes, ações principais e indicar interatividade
+                Cores principais que definem a identidade visual da marca
               </ThemedText>
               <View style={styles.colorsGrid}>
                 <ColorBox color={COLORS[currentTheme].primary} name="Primary" />
+                <ColorBox color={COLORS[currentTheme].secondary} name="Secondary" />
+                <ColorBox color={COLORS[currentTheme].tertiary} name="Tertiary" />
+                <ColorBox color={COLORS[currentTheme].alternate} name="Alternate" />
               </View>
             </ThemedView>
 
             <ThemedView style={styles.colorSection}>
-              <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores Base</ThemedText>
+              <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores Utilitárias</ThemedText>
               <ThemedText style={styles.colorSectionDescription}>
-                Cores fundamentais para textos e fundos
+                Cores fundamentais para textos e fundos da aplicação
               </ThemedText>
               <View style={styles.colorsGrid}>
-                <ColorBox color={COLORS[currentTheme].text} name="Text" />
-                <ColorBox color={COLORS[currentTheme].background} name="Background" />
+                <ColorBox color={COLORS[currentTheme].primaryText} name="Primary Text" />
+                <ColorBox color={COLORS[currentTheme].secondaryText} name="Secondary Text" />
+                <ColorBox color={COLORS[currentTheme].primaryBackground} name="Primary Background" />
+                <ColorBox color={COLORS[currentTheme].secondaryBackground} name="Secondary Background" />
               </View>
             </ThemedView>
 
             <ThemedView style={styles.colorSection}>
-              <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores de Interface</ThemedText>
+              <ThemedText type="defaultSemiBold" style={styles.colorSectionTitle}>Cores do Sistema</ThemedText>
               <ThemedText style={styles.colorSectionDescription}>
-                Utilizadas em ícones, elementos de navegação e divisórias
+                Cores utilizadas em elementos de interface e interação
               </ThemedText>
               <View style={styles.colorsGrid}>
                 <ColorBox color={COLORS[currentTheme].icon} name="Icon" />
-                <ColorBox color={COLORS[currentTheme].tabIconDefault} name="Tab Icon" />
-                <ColorBox color={COLORS[currentTheme].tabIconSelected} name="Tab Selected" />
+                <ColorBox color={COLORS[currentTheme].tabIconDefault} name="Tab Icon Default" />
+                <ColorBox color={COLORS[currentTheme].tabIconSelected} name="Tab Icon Selected" />
                 <ColorBox color={COLORS[currentTheme].divider} name="Divider" />
               </View>
             </ThemedView>
@@ -154,43 +160,97 @@ export default function DesignSystemScreen() {
           <ThemedView style={[styles.section, styles.typographySection]}>
             <SectionTitle>Tipografia</SectionTitle>
             <ThemedText style={styles.sectionDescription}>
-              Sistema de textos responsivo que se adapta ao tamanho da tela
+              Sistema de textos responsivo que se adapta ao tamanho da tela, utilizando a fonte Inter
             </ThemedText>
+            
             <ThemedView style={[styles.typographyContainer, SHADOWS[currentTheme].sm]}>
+              {/* Display */}
+              <ThemedText type="subtitle" style={styles.typographyGroupTitle}>Display</ThemedText>
               <View style={styles.typographyItem}>
-                <ThemedText type="title">Título</ThemedText>
+                <ThemedText type="displayLarge">Display Large</ThemedText>
                 <ThemedText type="small" style={styles.typographyInfo}>
-                  {width < BREAKPOINTS.tablet ? '28px' : width < BREAKPOINTS.desktop ? '32px' : '36px'} • Bold
+                  {width < BREAKPOINTS.tablet ? '48px' : width < BREAKPOINTS.desktop ? '56px' : '64px'} • Inter Bold
                 </ThemedText>
               </View>
               <View style={styles.typographyItem}>
-                <ThemedText type="subtitle">Subtítulo</ThemedText>
+                <ThemedText type="displayMedium">Display Medium</ThemedText>
                 <ThemedText type="small" style={styles.typographyInfo}>
-                  {width < BREAKPOINTS.tablet ? '18px' : width < BREAKPOINTS.desktop ? '20px' : '24px'} • Bold
+                  {width < BREAKPOINTS.tablet ? '40px' : width < BREAKPOINTS.desktop ? '48px' : '56px'} • Inter Bold
                 </ThemedText>
               </View>
               <View style={styles.typographyItem}>
-                <ThemedText type="defaultSemiBold">Texto Semi-Bold</ThemedText>
+                <ThemedText type="displaySmall">Display Small</ThemedText>
                 <ThemedText type="small" style={styles.typographyInfo}>
-                  {width < BREAKPOINTS.tablet ? '14px' : '16px'} • SemiBold
+                  {width < BREAKPOINTS.tablet ? '36px' : width < BREAKPOINTS.desktop ? '40px' : '48px'} • Inter Bold
+                </ThemedText>
+              </View>
+
+              {/* Headline */}
+              <ThemedText type="subtitle" style={[styles.typographyGroupTitle, { marginTop: SPACING.xl }]}>Headline</ThemedText>
+              <View style={styles.typographyItem}>
+                <ThemedText type="headlineLarge">Headline Large</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '32px' : width < BREAKPOINTS.desktop ? '36px' : '40px'} • Inter Bold
                 </ThemedText>
               </View>
               <View style={styles.typographyItem}>
-                <ThemedText>Texto Regular</ThemedText>
+                <ThemedText type="headlineMedium">Headline Medium</ThemedText>
                 <ThemedText type="small" style={styles.typographyInfo}>
-                  {width < BREAKPOINTS.tablet ? '14px' : '16px'} • Regular
+                  {width < BREAKPOINTS.tablet ? '28px' : width < BREAKPOINTS.desktop ? '32px' : '36px'} • Inter Bold
                 </ThemedText>
               </View>
               <View style={styles.typographyItem}>
-                <ThemedText type="small">Texto Pequeno</ThemedText>
+                <ThemedText type="headlineSmall">Headline Small</ThemedText>
                 <ThemedText type="small" style={styles.typographyInfo}>
-                  {width < BREAKPOINTS.tablet ? '12px' : '14px'} • Regular
+                  {width < BREAKPOINTS.tablet ? '24px' : width < BREAKPOINTS.desktop ? '28px' : '32px'} • Inter Bold
+                </ThemedText>
+              </View>
+
+              {/* Labels */}
+              <ThemedText type="subtitle" style={[styles.typographyGroupTitle, { marginTop: SPACING.xl }]}>Label</ThemedText>
+              <View style={styles.typographyItem}>
+                <ThemedText type="labelLarge">Label Large</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '16px' : width < BREAKPOINTS.desktop ? '18px' : '20px'} • Inter SemiBold
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText type="labelMedium">Label Medium</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '14px' : width < BREAKPOINTS.desktop ? '16px' : '18px'} • Inter SemiBold
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText type="labelSmall">Label Small</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '12px' : width < BREAKPOINTS.desktop ? '14px' : '16px'} • Inter SemiBold
+                </ThemedText>
+              </View>
+
+              {/* Body */}
+              <ThemedText type="subtitle" style={[styles.typographyGroupTitle, { marginTop: SPACING.xl }]}>Body</ThemedText>
+              <View style={styles.typographyItem}>
+                <ThemedText type="bodySemiBold">Body Semi-Bold</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '14px' : '16px'} • Inter SemiBold
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText>Body Regular</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '14px' : '16px'} • Inter Regular
+                </ThemedText>
+              </View>
+              <View style={styles.typographyItem}>
+                <ThemedText type="small">Small</ThemedText>
+                <ThemedText type="small" style={styles.typographyInfo}>
+                  {width < BREAKPOINTS.tablet ? '12px' : '14px'} • Inter Regular
                 </ThemedText>
               </View>
               <View style={styles.typographyItem}>
                 <ThemedText type="link">Link</ThemedText>
                 <ThemedText type="small" style={styles.typographyInfo}>
-                  {width < BREAKPOINTS.tablet ? '14px' : '16px'} • Regular • Underline
+                  {width < BREAKPOINTS.tablet ? '14px' : '16px'} • Inter Regular • Underline
                 </ThemedText>
               </View>
               <View style={styles.typographyItem}>
@@ -200,6 +260,11 @@ export default function DesignSystemScreen() {
                 </ThemedText>
               </View>
             </ThemedView>
+
+            <ThemedText style={[styles.componentDescription, { textAlign: 'left', marginTop: 16 }]}>
+              💡 Para modificar a tipografia, edite o arquivo:
+              <ThemedText style={{ fontFamily: 'SpaceMono' }}> constants/DesignSystem.ts</ThemedText>
+            </ThemedText>
           </ThemedView>
 
           {/* Breakpoints */}
@@ -295,7 +360,7 @@ export default function DesignSystemScreen() {
               <ThemedView style={[
                 styles.shadowBox, 
                 SHADOWS[currentTheme].sm,
-                { backgroundColor: COLORS[currentTheme].background }
+                { backgroundColor: COLORS[currentTheme].primaryBackground }
               ]}>
                 <ThemedText>Small</ThemedText>
                 <ThemedText type="small" style={styles.shadowInfo}>Elevação Sutil</ThemedText>
@@ -303,7 +368,7 @@ export default function DesignSystemScreen() {
               <ThemedView style={[
                 styles.shadowBox, 
                 SHADOWS[currentTheme].md,
-                { backgroundColor: COLORS[currentTheme].background }
+                { backgroundColor: COLORS[currentTheme].primaryBackground }
               ]}>
                 <ThemedText>Medium</ThemedText>
                 <ThemedText type="small" style={styles.shadowInfo}>Elevação Média</ThemedText>
@@ -311,7 +376,7 @@ export default function DesignSystemScreen() {
               <ThemedView style={[
                 styles.shadowBox, 
                 SHADOWS[currentTheme].lg,
-                { backgroundColor: COLORS[currentTheme].background }
+                { backgroundColor: COLORS[currentTheme].primaryBackground }
               ]}>
                 <ThemedText>Large</ThemedText>
                 <ThemedText type="small" style={styles.shadowInfo}>Elevação Alta</ThemedText>
@@ -392,15 +457,15 @@ export default function DesignSystemScreen() {
               </ThemedText>
               <View style={styles.iconGrid}>
                 <View style={styles.iconItem}>
-                  <Home size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
+                  <Home size={24} color={COLORS[currentTheme].primaryText} strokeWidth={1.5} />
                   <ThemedText style={styles.iconLabel}>Home</ThemedText>
                 </View>
                 <View style={styles.iconItem}>
-                  <Search size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
+                  <Search size={24} color={COLORS[currentTheme].primaryText} strokeWidth={1.5} />
                   <ThemedText style={styles.iconLabel}>Search</ThemedText>
                 </View>
                 <View style={styles.iconItem}>
-                  <User size={24} color={COLORS[currentTheme].text} strokeWidth={1.5} />
+                  <User size={24} color={COLORS[currentTheme].primaryText} strokeWidth={1.5} />
                   <ThemedText style={styles.iconLabel}>User</ThemedText>
                 </View>
               </View>
@@ -419,6 +484,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
+  },
+  scrollView: {
+    flex: 1,
   },
   scrollContent: {
     minHeight: '100%',
@@ -502,7 +570,7 @@ const styles = StyleSheet.create({
     padding: 20,
     gap: 12,
     borderRadius: 12,
-    backgroundColor: COLORS.light.background + '10',
+    backgroundColor: COLORS.light.primaryBackground + '10',
     alignItems: 'center',
   },
   demoThemedView: {
@@ -510,7 +578,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     width: '100%',
-    backgroundColor: COLORS.light.background + '10',
+    backgroundColor: COLORS.light.primaryBackground + '10',
   },
   iconGrid: {
     flexDirection: 'row',
@@ -563,6 +631,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     minWidth: 120,
+    backgroundColor: COLORS.light.primaryBackground,
   },
   sectionDescription: {
     opacity: 0.7,
@@ -643,5 +712,9 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     marginTop: 4,
     color: COLORS.light.primary,
+  },
+  typographyGroupTitle: {
+    marginBottom: SPACING.md,
+    opacity: 0.7,
   },
 }); 

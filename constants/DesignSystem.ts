@@ -10,24 +10,44 @@ export const BREAKPOINTS = {
 // Cores do Sistema
 export const COLORS = {
   light: {
-    primary: '#0a7ea4', // Cor principal do projeto
-    text: '#11181C',    // Cor base para textos
-    background: '#fff', // Cor de fundo padrão
-    icon: '#71717A',    // Cor padrão para ícones
-    tabIconDefault: '#71717A', // Cor dos ícones inativos na tab
-    tabIconSelected: '#0a7ea4', // Cor dos ícones ativos na tab (igual à primary)
-    divider: '#EBEBEB',  // Cor para linhas divisórias no tema claro
-    hover: '#00000008', // Cor do hover no tema claro
+    // Brand Colors - Cores principais da marca
+    primary: '#6366F1',    // Indigo vibrante - Cor principal moderna e tecnológica
+    secondary: '#22D3EE',  // Ciano vibrante - Complementa o indigo com um tom refrescante
+    tertiary: '#F43F5E',   // Rosa vibrante - Adiciona energia e contraste
+    alternate: '#e0e3e7',  // Cor alternativa (igual à imagem #e0e3e7)
+
+    // Utility Colors - Cores utilitárias para texto e fundo
+    primaryText: '#14181b',    // Cor principal para textos (igual à imagem)
+    secondaryText: '#57636c',  // Cor secundária para textos (igual à imagem)
+    primaryBackground: '#F7F8FA',   // Cor de fundo principal (igual à imagem)
+    secondaryBackground: '#ffffff', // Cor de fundo secundária (igual à imagem)
+
+    // System Colors - Cores do sistema
+    icon: '#57636c',           // Mesma cor do secondaryText para consistência
+    tabIconDefault: '#57636c', // Mesma cor do secondaryText para consistência
+    tabIconSelected: '#6366F1',// Usa a cor primary
+    divider: '#e0e3e7',        // Mesma cor do alternate
+    hover: '#00000008',        // Hover suave
   },
   dark: {
-    primary: '#0a7ea4', // Cor principal do projeto
-    text: '#ECEDEE',    // Cor base para textos no tema escuro
-    background: '#151718', // Cor de fundo no tema escuro
-    icon: '#A1A1AA',    // Cor padrão para ícones no tema escuro
-    tabIconDefault: '#A1A1AA', // Cor dos ícones inativos na tab no tema escuro
-    tabIconSelected: '#fff', // Cor dos ícones ativos na tab no tema escuro
-    divider: '#292929',  // Cor para linhas divisórias no tema escuro
-    hover: '#FFFFFF08', // Cor do hover no tema escuro
+    // Brand Colors - Cores principais da marca no tema escuro
+    primary: '#6366F1',    // Mantém a mesma cor primária
+    secondary: '#22D3EE',  // Mantém a mesma cor secundária
+    tertiary: '#F43F5E',   // Mantém a mesma cor terciária
+    alternate: '#262d34',  // Cor alternativa (igual à imagem #262d34)
+
+    // Utility Colors - Cores utilitárias adaptadas para o tema escuro
+    primaryText: '#ffffff',    // Texto principal (igual à imagem)
+    secondaryText: '#95a1ac',  // Texto secundário (igual à imagem)
+    primaryBackground: '#1d2428',   // Fundo principal (igual à imagem)
+    secondaryBackground: '#14181b', // Fundo secundário (igual à imagem)
+
+    // System Colors - Cores do sistema adaptadas para o tema escuro
+    icon: '#95a1ac',           // Mesma cor do secondaryText para consistência
+    tabIconDefault: '#95a1ac', // Mesma cor do secondaryText para consistência
+    tabIconSelected: '#ffffff',// Branco para melhor contraste
+    divider: '#262d34',        // Mesma cor do alternate
+    hover: '#FFFFFF08',        // Hover suave
   },
 } as const;
 
@@ -86,101 +106,296 @@ export const TYPOGRAPHY: {
   desktop: { [key: string]: TextStyle };
 } = {
   mobile: {
+    // Display - Títulos grandes e impactantes
+    displayLarge: {
+      fontSize: 48,
+      lineHeight: 56,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    displayMedium: {
+      fontSize: 40,
+      lineHeight: 48,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    displaySmall: {
+      fontSize: 36,
+      lineHeight: 44,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    // Headings - Títulos de seção
+    headlineLarge: {
+      fontSize: 32,
+      lineHeight: 40,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    headlineMedium: {
+      fontSize: 28,
+      lineHeight: 36,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    headlineSmall: {
+      fontSize: 24,
+      lineHeight: 32,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    // Títulos existentes (mantidos para compatibilidade)
     title: {
       fontSize: 28,
       lineHeight: 32,
       fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
     },
     subtitle: {
       fontSize: 18,
       lineHeight: 24,
       fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
     },
+    // Labels - Textos de destaque
+    labelLarge: {
+      fontSize: 16,
+      lineHeight: 24,
+      fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
+    },
+    labelMedium: {
+      fontSize: 14,
+      lineHeight: 20,
+      fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
+    },
+    labelSmall: {
+      fontSize: 12,
+      lineHeight: 16,
+      fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
+    },
+    // Body - Textos de conteúdo
     body: {
       fontSize: 14,
       lineHeight: 20,
       fontWeight: '400',
+      fontFamily: 'Inter_400Regular',
     },
     bodySemiBold: {
       fontSize: 14,
       lineHeight: 20,
       fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
     },
     small: {
       fontSize: 12,
       lineHeight: 16,
       fontWeight: '400',
+      fontFamily: 'Inter_400Regular',
     },
     link: {
       fontSize: 14,
       lineHeight: 20,
       fontWeight: '400',
+      fontFamily: 'Inter_400Regular',
       textDecorationLine: 'underline',
     },
   },
   tablet: {
+    // Display - Títulos grandes e impactantes
+    displayLarge: {
+      fontSize: 56,
+      lineHeight: 64,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    displayMedium: {
+      fontSize: 48,
+      lineHeight: 56,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    displaySmall: {
+      fontSize: 40,
+      lineHeight: 48,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    // Headings - Títulos de seção
+    headlineLarge: {
+      fontSize: 36,
+      lineHeight: 44,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    headlineMedium: {
+      fontSize: 32,
+      lineHeight: 40,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    headlineSmall: {
+      fontSize: 28,
+      lineHeight: 36,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    // Títulos existentes (mantidos para compatibilidade)
     title: {
       fontSize: 32,
       lineHeight: 36,
       fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
     },
     subtitle: {
       fontSize: 20,
       lineHeight: 28,
       fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
     },
+    // Labels - Textos de destaque
+    labelLarge: {
+      fontSize: 18,
+      lineHeight: 28,
+      fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
+    },
+    labelMedium: {
+      fontSize: 16,
+      lineHeight: 24,
+      fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
+    },
+    labelSmall: {
+      fontSize: 14,
+      lineHeight: 20,
+      fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
+    },
+    // Body - Textos de conteúdo
     body: {
       fontSize: 16,
       lineHeight: 24,
       fontWeight: '400',
+      fontFamily: 'Inter_400Regular',
     },
     bodySemiBold: {
       fontSize: 16,
       lineHeight: 24,
       fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
     },
     small: {
       fontSize: 14,
       lineHeight: 20,
       fontWeight: '400',
+      fontFamily: 'Inter_400Regular',
     },
     link: {
       fontSize: 16,
       lineHeight: 24,
       fontWeight: '400',
+      fontFamily: 'Inter_400Regular',
       textDecorationLine: 'underline',
     },
   },
   desktop: {
+    // Display - Títulos grandes e impactantes
+    displayLarge: {
+      fontSize: 64,
+      lineHeight: 72,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    displayMedium: {
+      fontSize: 56,
+      lineHeight: 64,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    displaySmall: {
+      fontSize: 48,
+      lineHeight: 56,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    // Headings - Títulos de seção
+    headlineLarge: {
+      fontSize: 40,
+      lineHeight: 48,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    headlineMedium: {
+      fontSize: 36,
+      lineHeight: 44,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    headlineSmall: {
+      fontSize: 32,
+      lineHeight: 40,
+      fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
+    },
+    // Títulos existentes (mantidos para compatibilidade)
     title: {
       fontSize: 36,
       lineHeight: 40,
       fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
     },
     subtitle: {
       fontSize: 24,
       lineHeight: 32,
       fontWeight: '700',
+      fontFamily: 'Inter_700Bold',
     },
+    // Labels - Textos de destaque
+    labelLarge: {
+      fontSize: 20,
+      lineHeight: 32,
+      fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
+    },
+    labelMedium: {
+      fontSize: 18,
+      lineHeight: 28,
+      fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
+    },
+    labelSmall: {
+      fontSize: 16,
+      lineHeight: 24,
+      fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
+    },
+    // Body - Textos de conteúdo
     body: {
       fontSize: 16,
       lineHeight: 24,
       fontWeight: '400',
+      fontFamily: 'Inter_400Regular',
     },
     bodySemiBold: {
       fontSize: 16,
       lineHeight: 24,
       fontWeight: '600',
+      fontFamily: 'Inter_600SemiBold',
     },
     small: {
       fontSize: 14,
       lineHeight: 20,
       fontWeight: '400',
+      fontFamily: 'Inter_400Regular',
     },
     link: {
       fontSize: 16,
       lineHeight: 24,
       fontWeight: '400',
+      fontFamily: 'Inter_400Regular',
       textDecorationLine: 'underline',
     },
   },

@@ -70,7 +70,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
 
   if (!isVisible) return null;
 
-  const MenuItem = ({ icon: Icon, label, onClick, color = themeColors.text }: MenuItemProps) => (
+  const MenuItem = ({ icon: Icon, label, onClick, color = themeColors.primaryText }: MenuItemProps) => (
     <HoverableView
       style={styles.menuItem}
       onPress={onClick}
@@ -104,7 +104,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
         style={[
           styles.container,
           {
-            backgroundColor: currentTheme === 'dark' ? '#1A1A1A' : 'white',
+            backgroundColor: themeColors.secondaryBackground,
             borderColor: themeColors.divider,
             opacity: fadeAnim,
             transform: [{ translateY: translateYAnim }],
@@ -134,7 +134,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
               style={getThemeOptionStyle(themeMode === 'light')}
               onPress={() => setThemeMode('light')}
             >
-              <Sun size={16} color={themeMode === 'light' ? themeColors.primary : themeColors.text} />
+              <Sun size={16} color={themeMode === 'light' ? themeColors.primary : themeColors.primaryText} />
               <ThemedText style={[
                 styles.themeText,
                 themeMode === 'light' && { color: themeColors.primary }
@@ -145,7 +145,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
               style={getThemeOptionStyle(themeMode === 'dark')}
               onPress={() => setThemeMode('dark')}
             >
-              <Moon size={16} color={themeMode === 'dark' ? themeColors.primary : themeColors.text} />
+              <Moon size={16} color={themeMode === 'dark' ? themeColors.primary : themeColors.primaryText} />
               <ThemedText style={[
                 styles.themeText,
                 themeMode === 'dark' && { color: themeColors.primary }
@@ -156,7 +156,7 @@ export function ProfileMenu({ isVisible, onClose, onNavigate }: ProfileMenuProps
               style={getThemeOptionStyle(themeMode === 'system')}
               onPress={() => setThemeMode('system')}
             >
-              <Monitor size={16} color={themeMode === 'system' ? themeColors.primary : themeColors.text} />
+              <Monitor size={16} color={themeMode === 'system' ? themeColors.primary : themeColors.primaryText} />
               <ThemedText style={[
                 styles.themeText,
                 themeMode === 'system' && { color: themeColors.primary }
@@ -249,25 +249,21 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 13,
     fontWeight: '600',
-    marginBottom: SPACING.xs / 2,
+    marginBottom: 2,
   },
   email: {
-    fontSize: 11,
-    opacity: 0.8,
+    fontSize: 12,
   },
   divider: {
     height: 1,
     width: '100%',
   },
   themeSection: {
-    padding: SPACING.xs,
-    paddingBottom: SPACING.sm,
+    padding: SPACING.sm,
   },
   sectionTitle: {
-    fontSize: 11,
-    opacity: 0.8,
+    fontSize: 12,
     marginBottom: SPACING.xs,
-    paddingLeft: SPACING.xs,
   },
   themeOptions: {
     flexDirection: 'row',
@@ -295,17 +291,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: SPACING.sm,
-    paddingHorizontal: SPACING.sm,
-    gap: SPACING.sm,
-    marginVertical: SPACING.xs / 2,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-      },
-    }),
+    gap: SPACING.xs,
   },
   menuItemText: {
-    fontSize: 12,
+    fontSize: 13,
   },
 }); 
