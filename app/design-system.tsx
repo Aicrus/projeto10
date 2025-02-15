@@ -308,12 +308,12 @@ export default function DesignSystemScreen() {
           </ThemedView>
 
           {/* Feedback Visual */}
-          <ThemedView style={styles.section}>
+          <ThemedView style={[styles.section, { marginVertical: SPACING.xxl }]}>
             <SectionTitle>Feedback Visual</SectionTitle>
             <ThemedText style={styles.sectionDescription}>
               Mensagens e alertas para comunicação com o usuário
             </ThemedText>
-            <View style={styles.feedbackContainer}>
+            <View style={[styles.feedbackContainer, { marginTop: SPACING.md }]}>
               <FeedbackMessage
                 type="success"
                 message="Operação realizada com sucesso!"
@@ -335,6 +335,9 @@ export default function DesignSystemScreen() {
                 description="Mensagens informativas e dicas para o usuário"
               />
             </View>
+            <ThemedText style={[styles.componentDescription, { textAlign: 'left', marginTop: SPACING.md }]}>
+              💡 Para usar as mensagens de feedback, importe FeedbackMessage de components/FeedbackMessage
+            </ThemedText>
           </ThemedView>
 
           {/* Espaçamento */}
@@ -351,7 +354,7 @@ export default function DesignSystemScreen() {
           </ThemedView>
 
           {/* Sombras */}
-          <ThemedView style={styles.section}>
+          <ThemedView style={[styles.section, { marginVertical: SPACING.xxl }]}>
             <SectionTitle>Sistema de Elevação</SectionTitle>
             <ThemedText style={styles.sectionDescription}>
               Sombras para criar hierarquia visual e profundidade
@@ -359,11 +362,25 @@ export default function DesignSystemScreen() {
             <ThemedView style={[styles.shadowsContainer, SHADOWS[currentTheme].sm]}>
               <ThemedView style={[
                 styles.shadowBox, 
+                SHADOWS[currentTheme].xs,
+                { backgroundColor: COLORS[currentTheme].primaryBackground }
+              ]}>
+                <ThemedText>Extra Small</ThemedText>
+                <ThemedText type="small" style={styles.shadowInfo}>Elevação Mínima</ThemedText>
+                <ThemedText style={[styles.codeExample, { fontFamily: 'SpaceMono' }]}>
+                  SHADOWS[currentTheme].xs
+                </ThemedText>
+              </ThemedView>
+              <ThemedView style={[
+                styles.shadowBox, 
                 SHADOWS[currentTheme].sm,
                 { backgroundColor: COLORS[currentTheme].primaryBackground }
               ]}>
                 <ThemedText>Small</ThemedText>
                 <ThemedText type="small" style={styles.shadowInfo}>Elevação Sutil</ThemedText>
+                <ThemedText style={[styles.codeExample, { fontFamily: 'SpaceMono' }]}>
+                  SHADOWS[currentTheme].sm
+                </ThemedText>
               </ThemedView>
               <ThemedView style={[
                 styles.shadowBox, 
@@ -372,6 +389,9 @@ export default function DesignSystemScreen() {
               ]}>
                 <ThemedText>Medium</ThemedText>
                 <ThemedText type="small" style={styles.shadowInfo}>Elevação Média</ThemedText>
+                <ThemedText style={[styles.codeExample, { fontFamily: 'SpaceMono' }]}>
+                  SHADOWS[currentTheme].md
+                </ThemedText>
               </ThemedView>
               <ThemedView style={[
                 styles.shadowBox, 
@@ -380,8 +400,58 @@ export default function DesignSystemScreen() {
               ]}>
                 <ThemedText>Large</ThemedText>
                 <ThemedText type="small" style={styles.shadowInfo}>Elevação Alta</ThemedText>
+                <ThemedText style={[styles.codeExample, { fontFamily: 'SpaceMono' }]}>
+                  SHADOWS[currentTheme].lg
+                </ThemedText>
+              </ThemedView>
+              <ThemedView style={[
+                styles.shadowBox, 
+                SHADOWS[currentTheme].xl,
+                { backgroundColor: COLORS[currentTheme].primaryBackground }
+              ]}>
+                <ThemedText>Extra Large</ThemedText>
+                <ThemedText type="small" style={styles.shadowInfo}>Elevação Maior</ThemedText>
+                <ThemedText style={[styles.codeExample, { fontFamily: 'SpaceMono' }]}>
+                  SHADOWS[currentTheme].xl
+                </ThemedText>
+              </ThemedView>
+              <ThemedView style={[
+                styles.shadowBox, 
+                SHADOWS[currentTheme]['2xl'],
+                { backgroundColor: COLORS[currentTheme].primaryBackground }
+              ]}>
+                <ThemedText>2XL</ThemedText>
+                <ThemedText type="small" style={styles.shadowInfo}>Elevação Muito Alta</ThemedText>
+                <ThemedText style={[styles.codeExample, { fontFamily: 'SpaceMono' }]}>
+                  SHADOWS[currentTheme]['2xl']
+                </ThemedText>
+              </ThemedView>
+              <ThemedView style={[
+                styles.shadowBox, 
+                SHADOWS[currentTheme]['3xl'],
+                { backgroundColor: COLORS[currentTheme].primaryBackground }
+              ]}>
+                <ThemedText>3XL</ThemedText>
+                <ThemedText type="small" style={styles.shadowInfo}>Elevação Máxima</ThemedText>
+                <ThemedText style={[styles.codeExample, { fontFamily: 'SpaceMono' }]}>
+                  SHADOWS[currentTheme]['3xl']
+                </ThemedText>
+              </ThemedView>
+              <ThemedView style={[
+                styles.shadowBox, 
+                SHADOWS[currentTheme].overlay,
+                { backgroundColor: COLORS[currentTheme].primaryBackground }
+              ]}>
+                <ThemedText>Overlay</ThemedText>
+                <ThemedText type="small" style={styles.shadowInfo}>Elevação para Overlays</ThemedText>
+                <ThemedText style={[styles.codeExample, { fontFamily: 'SpaceMono' }]}>
+                  SHADOWS[currentTheme].overlay
+                </ThemedText>
               </ThemedView>
             </ThemedView>
+            <ThemedText style={[styles.componentDescription, { textAlign: 'left', marginTop: 16 }]}>
+              💡 Para usar as sombras, importe SHADOWS de constants/DesignSystem e use com currentTheme
+            </ThemedText>
           </ThemedView>
 
           {/* Componentes */}
@@ -716,5 +786,13 @@ const styles = StyleSheet.create({
   typographyGroupTitle: {
     marginBottom: SPACING.md,
     opacity: 0.7,
+  },
+  codeExample: {
+    fontSize: 12,
+    opacity: 0.7,
+    marginTop: 8,
+    padding: 4,
+    backgroundColor: COLORS.light.primaryBackground + '20',
+    borderRadius: 4,
   },
 }); 

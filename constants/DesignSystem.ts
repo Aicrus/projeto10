@@ -403,13 +403,47 @@ export const TYPOGRAPHY: {
 
 // Espaçamento
 export const SPACING = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
-};
+  none: 0,    // Sem espaçamento
+  xs: 4,      // Espaçamento extra pequeno
+  sm: 8,      // Espaçamento pequeno
+  md: 16,     // Espaçamento médio
+  lg: 24,     // Espaçamento grande
+  xl: 32,     // Espaçamento extra grande
+  xxl: 48,    // Espaçamento 2x extra grande
+  xxxl: 64,   // Espaçamento 3x extra grande
+  max: 72,    // Espaçamento máximo
+} as const;
+
+// Exemplos de uso do sistema de espaçamento:
+/*
+  // React Native
+  import { StyleSheet } from 'react-native';
+  import { SPACING } from '@constants/DesignSystem';
+
+  const styles = StyleSheet.create({
+    container: {
+      padding: SPACING.md,
+      gap: SPACING.sm,
+      marginBottom: SPACING.lg,
+    },
+    card: {
+      margin: SPACING.md,
+      padding: SPACING.lg,
+      gap: SPACING.sm,
+    },
+    section: {
+      paddingVertical: SPACING.xl,
+      paddingHorizontal: SPACING.md,
+    },
+  });
+
+  // Tailwind/NativeWind
+  const Component = () => (
+    <View className={`p-[${SPACING.md}px] gap-[${SPACING.sm}px]`}>
+      <Text>Conteúdo</Text>
+    </View>
+  );
+*/
 
 // Bordas
 export const BORDER_RADIUS = {
@@ -423,49 +457,119 @@ export const BORDER_RADIUS = {
 // Sombras
 export const SHADOWS = {
   light: {
-    sm: {
+    xs: {
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.05,
       shadowRadius: 2,
-      elevation: 2,
+      elevation: 1,
     },
-    md: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 4,
-    },
-    lg: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.15,
-      shadowRadius: 8,
-      elevation: 8,
-    },
-  },
-  dark: {
     sm: {
-      shadowColor: '#fff',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.05,
-      shadowRadius: 2,
-      elevation: 2,
-    },
-    md: {
-      shadowColor: '#fff',
+      shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.08,
       shadowRadius: 4,
+      elevation: 2,
+    },
+    md: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.12,
+      shadowRadius: 8,
+      elevation: 4,
+    },
+    lg: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 6 },
+      shadowOpacity: 0.16,
+      shadowRadius: 12,
+      elevation: 8,
+    },
+    xl: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.2,
+      shadowRadius: 16,
+      elevation: 12,
+    },
+    '2xl': {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 12 },
+      shadowOpacity: 0.25,
+      shadowRadius: 24,
+      elevation: 16,
+    },
+    '3xl': {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 16 },
+      shadowOpacity: 0.3,
+      shadowRadius: 32,
+      elevation: 24,
+    },
+    overlay: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 24 },
+      shadowOpacity: 0.4,
+      shadowRadius: 48,
+      elevation: 32,
+    },
+  },
+  dark: {
+    xs: {
+      shadowColor: '#fff',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.03,
+      shadowRadius: 2,
+      elevation: 1,
+    },
+    sm: {
+      shadowColor: '#fff',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.05,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    md: {
+      shadowColor: '#fff',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.08,
+      shadowRadius: 8,
       elevation: 4,
     },
     lg: {
       shadowColor: '#fff',
-      shadowOffset: { width: 0, height: 4 },
+      shadowOffset: { width: 0, height: 6 },
       shadowOpacity: 0.12,
-      shadowRadius: 8,
+      shadowRadius: 12,
       elevation: 8,
+    },
+    xl: {
+      shadowColor: '#fff',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.16,
+      shadowRadius: 16,
+      elevation: 12,
+    },
+    '2xl': {
+      shadowColor: '#fff',
+      shadowOffset: { width: 0, height: 12 },
+      shadowOpacity: 0.2,
+      shadowRadius: 24,
+      elevation: 16,
+    },
+    '3xl': {
+      shadowColor: '#fff',
+      shadowOffset: { width: 0, height: 16 },
+      shadowOpacity: 0.24,
+      shadowRadius: 32,
+      elevation: 24,
+    },
+    overlay: {
+      shadowColor: '#fff',
+      shadowOffset: { width: 0, height: 24 },
+      shadowOpacity: 0.32,
+      shadowRadius: 48,
+      elevation: 32,
     },
   },
 };
