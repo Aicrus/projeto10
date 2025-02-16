@@ -11,42 +11,42 @@ export const BREAKPOINTS = {
 export const COLORS = {
   light: {
     // Brand Colors - Cores principais da marca
-    primary: '#6366F1',    // Indigo vibrante - Cor principal moderna e tecnológica
-    secondary: '#22D3EE',  // Ciano vibrante - Complementa o indigo com um tom refrescante
-    tertiary: '#F43F5E',   // Rosa vibrante - Adiciona energia e contraste
-    alternate: '#e0e3e7',  // Cor alternativa (igual à imagem #e0e3e7)
+    primary: '#4A6FA5',    // Azul sofisticado
+    secondary: '#22D3EE',  // Azul claro moderno
+    tertiary: '#D3545D',   // Vermelho refinado
+    alternate: '#E0E3E7',  // Cinza suave e elegante
 
     // Utility Colors - Cores utilitárias para texto e fundo
-    primaryText: '#14181b',    // Cor principal para textos (igual à imagem)
-    secondaryText: '#57636c',  // Cor secundária para textos (igual à imagem)
-    primaryBackground: '#F7F8FA',   // Cor de fundo principal (igual à imagem)
-    secondaryBackground: '#ffffff', // Cor de fundo secundária (igual à imagem)
+    primaryText: '#14181B',    // Cinza escuro para boa legibilidade
+    secondaryText: '#57636C',  // Cinza médio suave
+    primaryBackground: '#F7F8FA',   // Branco quase puro
+    secondaryBackground: '#FFFFFF', // Branco puro
 
     // System Colors - Cores do sistema
-    icon: '#57636c',           // Mesma cor do secondaryText para consistência
-    tabIconDefault: '#57636c', // Mesma cor do secondaryText para consistência
-    tabIconSelected: '#6366F1',// Usa a cor primary
-    divider: '#e0e3e7',        // Mesma cor do alternate
+    icon: '#57636C',           // Cinza neutro
+    tabIconDefault: '#57636C', // Mesmo tom do ícone
+    tabIconSelected: '#4A6FA5',// Mesmo azul da cor primária
+    divider: '#E0E3E7',        // Cinza claro suave
     hover: '#00000008',        // Hover suave
   },
   dark: {
     // Brand Colors - Cores principais da marca no tema escuro
-    primary: '#6366F1',    // Mantém a mesma cor primária
-    secondary: '#22D3EE',  // Mantém a mesma cor secundária
-    tertiary: '#F43F5E',   // Mantém a mesma cor terciária
-    alternate: '#262d34',  // Cor alternativa (igual à imagem #262d34)
+    primary: '#4A6FA5',    // Azul sofisticado
+    secondary: '#2C3E50',  // Azul acinzentado moderno
+    tertiary: '#D3545D',   // Vermelho refinado
+    alternate: '#262D34',  // Cinza escuro clássico
 
     // Utility Colors - Cores utilitárias adaptadas para o tema escuro
-    primaryText: '#ffffff',    // Texto principal (igual à imagem)
-    secondaryText: '#95a1ac',  // Texto secundário (igual à imagem)
-    primaryBackground: '#1d2428',   // Fundo principal (igual à imagem)
-    secondaryBackground: '#14181b', // Fundo secundário (igual à imagem)
+    primaryText: '#FFFFFF',    // Branco puro
+    secondaryText: '#95A1AC',  // Cinza claro para legibilidade
+    primaryBackground: '#1C1E26',   // Cinza bem escuro, não preto puro
+    secondaryBackground: '#14181B', // Cinza quase preto
 
     // System Colors - Cores do sistema adaptadas para o tema escuro
-    icon: '#95a1ac',           // Mesma cor do secondaryText para consistência
-    tabIconDefault: '#95a1ac', // Mesma cor do secondaryText para consistência
-    tabIconSelected: '#ffffff',// Branco para melhor contraste
-    divider: '#262d34',        // Mesma cor do alternate
+    icon: '#95A1AC',           // Cinza neutro
+    tabIconDefault: '#95A1AC', // Mesmo tom do ícone
+    tabIconSelected: '#4A6FA5',// Mesmo azul da cor primária
+    divider: '#262D34',        // Cinza escuro clássico
     hover: '#FFFFFF08',        // Hover suave
   },
 } as const;
