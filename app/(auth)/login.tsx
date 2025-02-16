@@ -66,7 +66,13 @@ export default function Login() {
   };
 
   return (
-    <ThemedView style={styles.container} onTouchStart={handlePressOutside}>
+    <ThemedView 
+      style={[
+        styles.container, 
+        { backgroundColor: COLORS[currentTheme].secondaryBackground }
+      ]} 
+      onTouchStart={handlePressOutside}
+    >
       <ThemedView style={styles.contentContainer}>
         <ThemedView style={[styles.formContainer, isDesktopOrTablet && styles.formContainerDesktop]}>
           <ThemedText style={[typography.title, styles.title]}>

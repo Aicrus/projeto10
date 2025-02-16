@@ -178,7 +178,13 @@ export default function Register() {
   const isDesktopOrTablet = width >= BREAKPOINTS.tablet;
 
   return (
-    <ThemedView style={styles.container} onTouchStart={handlePressOutside}>
+    <ThemedView 
+      style={[
+        styles.container, 
+        { backgroundColor: COLORS[currentTheme].secondaryBackground }
+      ]} 
+      onTouchStart={handlePressOutside}
+    >
       <ThemedView style={styles.contentContainer}>
         {isDesktopOrTablet && (
           <ThemedView style={styles.imageContainer}>

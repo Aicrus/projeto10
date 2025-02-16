@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import { useRouter, useSegments } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { Session } from '@supabase/supabase-js';
 import { useToast } from '@/hooks/useToast';
 import { View, ActivityIndicator } from 'react-native';
 import { COLORS } from '@/constants/DesignSystem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Tipos
 type AuthContextData = {
@@ -39,10 +41,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      if (currentSession) {
+      // Se a sessão mudou, atualiza
+      if (JSON.stringify(currentSession) !== JSON.stringify(session)) {
         setSession(currentSession);
-      } else {
-        setSession(null);
       }
     } catch (error) {
       console.error('Erro ao verificar sessão:', error);
@@ -53,10 +54,69 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Efeito para verificação inicial da sessão
+  // Efeito para verificação inicial da sessão e navegação
   useEffect(() => {
-    checkAndUpdateSession();
+    let isMounted = true;
+
+    const initialize = async () => {
+      try {
+        // Mantém o loading até ter certeza do estado
+        setIsLoading(true);
+
+        // Verifica a sessão antes de qualquer coisa
+        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+
+        if (!isMounted) return;
+
+        if (error) {
+          console.error('Erro ao verificar sessão:', error);
+          setSession(null);
+        } else {
+          setSession(currentSession);
+        }
+
+        // Marca como inicializado antes de remover o loading
+        setIsInitialized(true);
+
+        // Pequeno delay antes de remover o loading para garantir que tudo está pronto
+        setTimeout(() => {
+          if (isMounted) {
+            setIsLoading(false);
+          }
+        }, 100);
+
+      } catch (error) {
+        console.error('Erro ao verificar sessão:', error);
+        if (isMounted) {
+          setSession(null);
+          setIsInitialized(true);
+          setIsLoading(false);
+        }
+      }
+    };
+
+    initialize();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
+
+  // Efeito para navegação baseada no estado da sessão
+  useEffect(() => {
+    // Só executa quando já estiver inicializado e não estiver carregando
+    if (!isInitialized || isLoading) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+    const shouldBeInAuth = !session;
+
+    // Se está na rota errada, navega
+    if (shouldBeInAuth && !inAuthGroup) {
+      router.replace('/(auth)/login');
+    } else if (!shouldBeInAuth && inAuthGroup) {
+      router.replace('/(tabs)/dash');
+    }
+  }, [isInitialized, isLoading, session, segments]);
 
   // Efeito para monitorar mudanças na sessão
   useEffect(() => {
@@ -74,19 +134,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       subscription.unsubscribe();
     };
   }, []);
-
-  // Efeito para navegação baseada no estado da sessão
-  useEffect(() => {
-    if (!isInitialized) return;
-
-    const inAuthGroup = segments[0] === '(auth)';
-
-    if (!session && !inAuthGroup) {
-      router.replace('/(auth)/login');
-    } else if (session && inAuthGroup) {
-      router.replace('/(tabs)/dash');
-    }
-  }, [session, segments, isInitialized]);
 
   useEffect(() => {
     if (!session) return;
@@ -120,15 +167,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       
+      // Validação dos campos
+      if (!email || !password || !name) {
+        showToast({
+          type: 'warning',
+          message: 'Campos obrigatórios',
+          description: 'Por favor, preencha todos os campos.',
+        });
+        return;
+      }
+
+      if (password.length < 6) {
+        showToast({
+          type: 'warning',
+          message: 'Senha muito curta',
+          description: 'A senha deve ter pelo menos 6 caracteres.',
+        });
+        return;
+      }
+      
       const emailLowerCase = email.toLowerCase().trim();
 
-      // Verifica se o usuário já existe usando signInWithPassword
+      // Verifica se o usuário já existe
       const { error: checkError } = await supabase.auth.signInWithPassword({
         email: emailLowerCase,
         password: 'dummy-password-for-check',
       });
 
-      // Se não retornar erro de credenciais inválidas, significa que o email existe
       if (!checkError || !checkError.message.includes('Invalid login credentials')) {
         showToast({
           type: 'info',
@@ -204,11 +269,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }, 1500);
 
     } catch (error) {
-      console.error('Erro de conexão:', error);
       showToast({
         type: 'error',
-        message: 'Erro de conexão',
-        description: 'Verifique sua conexão com a internet e tente novamente.',
+        message: 'Erro no sistema',
+        description: 'Ocorreu um erro inesperado. Por favor, tente novamente.',
       });
     } finally {
       setIsLoading(false);
@@ -218,6 +282,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async ({ email, password }: { email: string; password: string }) => {
     try {
       setIsLoading(true);
+
+      // Validação dos campos
+      if (!email || !password) {
+        showToast({
+          type: 'warning',
+          message: 'Campos obrigatórios',
+          description: 'Por favor, preencha todos os campos.',
+        });
+        return;
+      }
       
       const emailLowerCase = email.toLowerCase().trim();
 
@@ -263,14 +337,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setTimeout(() => {
         router.replace('/(tabs)/dash');
-      }, 1000);
+      }, 100);
 
     } catch (error) {
-      console.error('Erro de conexão:', error);
       showToast({
         type: 'error',
-        message: 'Erro de conexão',
-        description: 'Verifique sua conexão com a internet e tente novamente.',
+        message: 'Erro no sistema',
+        description: 'Ocorreu um erro inesperado. Por favor, tente novamente.',
       });
     } finally {
       setIsLoading(false);
@@ -280,18 +353,52 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = async () => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        console.error('Erro no logout:', error);
-        showToast({
-          type: 'error',
-          message: 'Erro ao sair',
-          description: 'Não foi possível fazer logout. Por favor, tente novamente.',
+      console.log('🔑 Iniciando processo de logout...');
+
+      // Lista de todas as chaves que precisamos limpar
+      const storageKeys = [
+        'supabase.auth.token',
+        'supabase.auth.refreshToken',
+        'supabase.auth.session',
+        'sb-' + process.env.EXPO_PUBLIC_SUPABASE_URL + '-auth-token',
+        'supabase.auth.expires_at',
+        'supabase.auth.provider_token',
+        'supabase.auth.provider_refresh_token'
+      ];
+
+      // Limpa o storage primeiro
+      console.log('🔑 Iniciando limpeza do storage...');
+      if (Platform.OS === 'web') {
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('supabase.auth') || key.startsWith('sb-')) {
+            try {
+              localStorage.removeItem(key);
+              console.log(`✅ Storage web: ${key} removido`);
+            } catch (e) {
+              console.log(`⚠️ Erro ao remover ${key}:`, e);
+            }
+          }
         });
-        return;
+      } else {
+        await Promise.all(
+          storageKeys.map(async (key) => {
+            try {
+              await AsyncStorage.removeItem(key);
+              console.log(`✅ Storage nativo: ${key} removido`);
+            } catch (e) {
+              console.log(`⚠️ Erro ao remover ${key}:`, e);
+            }
+          })
+        );
       }
 
+      try {
+        await supabase.auth.signOut();
+      } catch (error: any) {
+        console.log('⚠️ Erro no signOut do Supabase:', error);
+      }
+
+      // Limpa o estado local
       setSession(null);
 
       showToast({
@@ -300,28 +407,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: 'Você foi desconectado com sucesso.',
       });
 
+      // Adiciona um pequeno delay antes de navegar
       setTimeout(() => {
         router.replace('/(auth)/login');
       }, 100);
 
     } catch (error) {
-      console.error('Erro no logout:', error);
       showToast({
         type: 'error',
-        message: 'Erro de conexão',
-        description: 'Verifique sua conexão com a internet e tente novamente.',
+        message: 'Erro no sistema',
+        description: 'Ocorreu um erro inesperado, mas você foi desconectado.',
       });
+      setSession(null);
+      
+      setTimeout(() => {
+        router.replace('/(auth)/login');
+      }, 100);
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (!isInitialized) {
+  // Loading screen
+  if (!isInitialized || isLoading) {
     return (
       <View 
         style={{ 
           flex: 1, 
-          backgroundColor: COLORS.light.background,
+          backgroundColor: COLORS.light.primaryBackground,
           justifyContent: 'center',
           alignItems: 'center'
         }} 
