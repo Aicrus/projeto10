@@ -107,6 +107,8 @@ export default function Login() {
               secureTextEntry={!showPassword}
               editable={!isLoading}
               onKeyPress={handleKeyPress}
+              textContentType="password"
+              autoComplete="current-password"
             />
             <Pressable 
               onPress={() => setShowPassword(!showPassword)}

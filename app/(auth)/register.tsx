@@ -238,6 +238,9 @@ export default function Register() {
               secureTextEntry={!showPassword}
               editable={!isLoading}
               onKeyPress={handleKeyPress}
+              textContentType="newPassword"
+              passwordRules="minlength: 6;"
+              autoComplete="new-password"
             />
             <Pressable 
               onPress={() => setShowPassword(!showPassword)}
@@ -261,6 +264,9 @@ export default function Register() {
               secureTextEntry={!showConfirmPassword}
               editable={!isLoading}
               onKeyPress={handleKeyPress}
+              textContentType="newPassword"
+              passwordRules="minlength: 6;"
+              autoComplete="new-password"
             />
             <Pressable 
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
