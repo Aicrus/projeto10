@@ -2,9 +2,9 @@ import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } fro
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar, StatusBarStyle } from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { ScrollView, Platform, ActivityIndicator, View, StatusBar as RNStatusBar } from 'react-native';
+import { ScrollView, Platform, ActivityIndicator, View } from 'react-native';
 import 'react-native-reanimated';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
@@ -19,36 +19,21 @@ import { COLORS } from '@/constants/DesignSystem';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-// Hook para gerenciar a cor da StatusBar
-function useStatusBarColor(backgroundColor: string) {
-  const { currentTheme } = useTheme();
-  
-  useEffect(() => {
-    // Determina se o background é claro baseado no tema atual
-    const isLightBackground = currentTheme === 'light';
-    
-    if (Platform.OS === 'ios') {
-      RNStatusBar.setBarStyle(isLightBackground ? 'dark-content' : 'light-content', true);
-    }
-  }, [currentTheme, backgroundColor]);
-
-  const style: StatusBarStyle = currentTheme === 'light' ? 'dark' : 'light';
-
-  return {
-    style,
-    backgroundColor: COLORS[currentTheme].primaryBackground,
-    translucent: true
-  };
-}
-
 function LoadingScreen() {
   const { currentTheme } = useTheme();
   const themeColors = COLORS[currentTheme];
-  const statusBarProps = useStatusBarColor(themeColors.primaryBackground);
   
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: themeColors.primaryBackground }}>
-      <StatusBar {...statusBarProps} />
+    <View style={{ 
+      flex: 1, 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      backgroundColor: themeColors.primaryBackground 
+    }}>
+      <StatusBar 
+        style={currentTheme === 'dark' ? 'light' : 'dark'}
+        backgroundColor={themeColors.secondaryBackground}
+      />
       <ActivityIndicator size="large" color={themeColors.primary} />
     </View>
   );
@@ -70,15 +55,15 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        {!fontsLoaded ? (
-          <LoadingScreen />
-        ) : (
-          <AuthProvider>
-            <ToastProvider>
+        <ToastProvider>
+          {!fontsLoaded ? (
+            <LoadingScreen />
+          ) : (
+            <AuthProvider>
               <RootLayoutNav />
-            </ToastProvider>
-          </AuthProvider>
-        )}
+            </AuthProvider>
+          )}
+        </ToastProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
@@ -87,15 +72,7 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const { currentTheme } = useTheme();
   const { isLoading, isInitialized, session } = useAuth();
-  const statusBarProps = useStatusBarColor(COLORS[currentTheme].primaryBackground);
-
-  // Efeito para atualizar a StatusBar quando o tema mudar
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      const isLightTheme = currentTheme === 'light';
-      RNStatusBar.setBarStyle(isLightTheme ? 'dark-content' : 'light-content', true);
-    }
-  }, [currentTheme]);
+  const themeColors = COLORS[currentTheme];
 
   console.log('📱 RootLayoutNav - Estado:', {
     isLoading,
@@ -104,7 +81,6 @@ function RootLayoutNav() {
     theme: currentTheme
   });
 
-  // Mostra tela de carregamento enquanto verifica a autenticação
   if (isLoading || !isInitialized) {
     console.log('⌛ Renderizando tela de carregamento...');
     return <LoadingScreen />;
@@ -113,14 +89,20 @@ function RootLayoutNav() {
   console.log('🎯 Renderizando conteúdo principal');
   const MainContent = (
     <NavigationThemeProvider value={currentTheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <ThemedView style={{ flex: 1, backgroundColor: COLORS[currentTheme].primaryBackground }}>
-        <StatusBar {...statusBarProps} />
+      <ThemedView style={{ 
+        flex: 1, 
+        backgroundColor: themeColors.primaryBackground
+      }}>
+        <StatusBar 
+          style={currentTheme === 'dark' ? 'light' : 'dark'}
+          backgroundColor={themeColors.secondaryBackground}
+        />
         <Stack 
           screenOptions={{
             headerShown: false,
             contentStyle: { 
               flex: 1,
-              backgroundColor: COLORS[currentTheme].primaryBackground 
+              backgroundColor: themeColors.primaryBackground 
             },
             animation: 'fade'
           }}
@@ -151,7 +133,13 @@ function RootLayoutNav() {
 
   console.log('📱 Renderizando para dispositivo móvel');
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top', 'right', 'left']}>
+    <SafeAreaView 
+      style={{ 
+        flex: 1,
+        backgroundColor: themeColors.secondaryBackground 
+      }} 
+      edges={['top', 'right', 'left']}
+    >
       {MainContent}
     </SafeAreaView>
   );
