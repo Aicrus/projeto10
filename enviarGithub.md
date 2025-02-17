@@ -4,18 +4,15 @@
 Antes de qualquer operação com o Git, é CRUCIAL verificar se a URL do repositório remoto está correta.
 
 ## Repositório do projeto
-URL_OFICIAL_DO_PROJETO="https://github.com/nomeperfil/nomerepositorio"
+# CONFIGURE AQUI A URL OFICIAL DO SEU REPOSITÓRIO:
+URL_OFICIAL_DO_PROJETO="https://github.com/Aicrus/projeto10"
 
 ## DIRETRIZES FUNDAMENTAIS:
 
-1. **VERIFICAÇÃO OBRIGATÓRIA DA URL DO REPOSITÓRIO:**
-   - Antes de qualquer operação, verificar se a URL remota atual corresponde à URL_OFICIAL_DO_PROJETO
-   - Se diferente, atualizar SEMPRE o remoto para corresponder à URL_OFICIAL_DO_PROJETO
-   - NUNCA alterar a URL_OFICIAL_DO_PROJETO neste documento
-
-2. **REGRAS DE BRANCH:**
-   - Sempre trabalhar diretamente na branch `main` por padrão
-   - Criar branches específicas SOMENTE quando explicitamente solicitado
+1. **VERIFICAÇÃO AUTOMÁTICA DA URL DO REPOSITÓRIO:**
+   - Antes de qualquer operação, o sistema verifica se a URL remota atual corresponde à URL_OFICIAL_DO_PROJETO
+   - Se diferente, o sistema AUTOMATICAMENTE corrige a URL remota para URL_OFICIAL_DO_PROJETO
+   - Para alterar a URL oficial, edite manualmente a variável URL_OFICIAL_DO_PROJETO acima
 
 ## Processo de Verificação Inicial (OBRIGATÓRIO):
 
@@ -25,14 +22,14 @@ REMOTE_URL=$(git remote get-url origin 2>/dev/null)
 
 # 2. Comparar com URL oficial do projeto
 if [ "$REMOTE_URL" != "$URL_OFICIAL_DO_PROJETO" ]; then
-    echo "ATENÇÃO: URL remota incorreta!"
-    echo "Atual: $REMOTE_URL"
-    echo "Esperada: $URL_OFICIAL_DO_PROJETO"
+    echo "⚠️ ATENÇÃO: URL remota incorreta detectada!"
+    echo "URL Atual: $REMOTE_URL"
+    echo "URL Oficial: $URL_OFICIAL_DO_PROJETO"
     
-    # 3. Atualizar URL remota
+    # 3. Corrigir automaticamente
     git remote remove origin 2>/dev/null
     git remote add origin "$URL_OFICIAL_DO_PROJETO"
-    echo "✓ Remote atualizado para: $URL_OFICIAL_DO_PROJETO"
+    echo "✓ URL remota corrigida automaticamente para: $URL_OFICIAL_DO_PROJETO"
 fi
 ```
 
