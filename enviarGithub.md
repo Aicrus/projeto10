@@ -1,27 +1,51 @@
 # Diretrizes de Interação com Github
 
-**OBSERVAÇÃO:** Commits só devem ser enviados quando solicitados por um dos comandos de envio e não automaticamente.
+**IMPORTANTE - VERIFICAÇÃO INICIAL OBRIGATÓRIA:**
+Antes de qualquer operação com o Git, é CRUCIAL verificar se a URL do repositório remoto está correta.
 
 ## Repositório do projeto
-
-https://github.com/nomeperfil/nomerepositorio
+URL_OFICIAL_DO_PROJETO="https://github.com/nomeperfil/nomerepositorio"
 
 ## DIRETRIZES FUNDAMENTAIS:
 
-- Sempre trabalhar diretamente na branch `main` por padrão
-- Criar branches específicas SOMENTE quando explicitamente solicitado
-- Analisar automaticamente o histórico Git para determinar tipo de commit
-- Verificar automaticamente todas as mudanças antes de gerar mensagens de commit
+1. **VERIFICAÇÃO OBRIGATÓRIA DA URL DO REPOSITÓRIO:**
+   - Antes de qualquer operação, verificar se a URL remota atual corresponde à URL_OFICIAL_DO_PROJETO
+   - Se diferente, atualizar SEMPRE o remoto para corresponder à URL_OFICIAL_DO_PROJETO
+   - NUNCA alterar a URL_OFICIAL_DO_PROJETO neste documento
+
+2. **REGRAS DE BRANCH:**
+   - Sempre trabalhar diretamente na branch `main` por padrão
+   - Criar branches específicas SOMENTE quando explicitamente solicitado
+
+## Processo de Verificação Inicial (OBRIGATÓRIO):
+
+```bash
+# 1. Verificar URL atual do remoto
+REMOTE_URL=$(git remote get-url origin 2>/dev/null)
+
+# 2. Comparar com URL oficial do projeto
+if [ "$REMOTE_URL" != "$URL_OFICIAL_DO_PROJETO" ]; then
+    echo "ATENÇÃO: URL remota incorreta!"
+    echo "Atual: $REMOTE_URL"
+    echo "Esperada: $URL_OFICIAL_DO_PROJETO"
+    
+    # 3. Atualizar URL remota
+    git remote remove origin 2>/dev/null
+    git remote add origin "$URL_OFICIAL_DO_PROJETO"
+    echo "✓ Remote atualizado para: $URL_OFICIAL_DO_PROJETO"
+fi
+```
 
 ## Comandos para Envio:
 
-Para enviar alterações, basta dizer:
-
+Para enviar alterações, use um dos comandos:
 - "Enviar alterações"
 - "Enviar mudanças"
 - "Enviar código"
 - "Commit"
 - "Push"
+
+**NOTA:** A verificação da URL do repositório é SEMPRE executada antes de qualquer operação de envio.
 
 ## Tipos de commits:
 
@@ -40,7 +64,11 @@ Para enviar alterações, basta dizer:
 
 ## Processo de Envio de Alterações:
 
-1. Verificar configuração Git e autenticação:
+1. **VERIFICAÇÃO INICIAL OBRIGATÓRIA:**
+   - Executar verificação da URL do repositório conforme processo acima
+   - Prosseguir APENAS se a URL estiver correta
+
+2. Verificar configuração Git e autenticação:
     
     ```bash
     # Verificar configuração Git
@@ -53,25 +81,12 @@ Para enviar alterações, basta dizer:
     
     ```
     
-2. Verificar login Github:
+3. Verificar login Github:
     
     ```bash
     gh auth status
     # Se não estiver logado:
     # gh auth login
-    
-    ```
-    
-3. Verificar e atualizar URL do repositório remoto:
-    
-    ```bash
-    REMOTE_URL=$(git remote get-url origin 2>/dev/null)
-    REPO_URL="<https://github.com/nomeperfil/nomerepositorio>"
-    if [ "$REMOTE_URL" != "$REPO_URL" ]; then
-        git remote remove origin 2>/dev/null
-        git remote add origin "$REPO_URL"
-        echo "Remote atualizado para: $REPO_URL"
-    fi
     
     ```
     
