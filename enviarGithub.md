@@ -1,7 +1,7 @@
 # Diretrizes de Interação com Github
 
 ⚠️ **AVISO CRÍTICO**
-A URL definida neste documento (URL_OFICIAL_DO_PROJETO) é a ÚNICA URL CORRETA e fonte da verdade.
+A URL definida neste documento (URL_OFICIAL_DO_PROJETO) é a ÚNICA URL CORRETA e fonte da verdade. 1
 Se a URL remota do seu repositório estiver diferente, é a URL remota que DEVE ser corrigida, NUNCA o contrário.
 
 ## Repositório Oficial do Projeto
