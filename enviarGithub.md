@@ -33,14 +33,6 @@ if [ "$REMOTE_URL" != "$URL_OFICIAL_DO_PROJETO" ]; then
 fi
 ```
 
-## Comandos para Envio:
-
-Para enviar alterações, use um dos comandos:
-- "Enviar alterações"
-- "Enviar mudanças"
-- "Enviar código"
-- "Commit"
-- "Push"
 
 **NOTA:** A verificação da URL do repositório é SEMPRE executada antes de qualquer operação de envio.
 
