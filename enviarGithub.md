@@ -5,7 +5,7 @@ Antes de qualquer operação com o Git, é CRUCIAL verificar se a URL do reposit
 
 ## Repositório do projeto
 # CONFIGURE AQUI A URL OFICIAL DO SEU REPOSITÓRIO:
-URL_OFICIAL_DO_PROJETO="https://github.com/Aicrus/projeto10"
+URL_OFICIAL_DO_PROJETO="https://github.com/Aicrus/DevSync"
 
 ## DIRETRIZES FUNDAMENTAIS:
 
