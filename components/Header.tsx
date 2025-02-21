@@ -13,7 +13,6 @@ import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { useAuth } from '@/contexts/auth';
 
 interface HeaderProps {
-  sidebarWidth: Animated.Value;
   onNavigate?: (route: string) => void;
   currentPath?: string;
 }
@@ -41,7 +40,7 @@ const getStorage = () => {
   };
 };
 
-export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: HeaderProps) {
+export function Header({ onNavigate, currentPath = '/dash' }: HeaderProps) {
   const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
   const [isNotificationsMenuVisible, setIsNotificationsMenuVisible] = useState(false);
   const [userAvatarColor, setUserAvatarColor] = useState<string>(pastelColors[0]);
@@ -85,9 +84,9 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
       case '/design-system':
         return 'Design System';
       case '/dash':
-        return 'Dashboard';
+        return 'Home';
       default:
-        return 'Dashboard';
+        return 'Home';
     }
   };
 
@@ -97,9 +96,9 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
         styles.header,
         {
           borderBottomColor: themeColors.divider,
-          left: isMobile ? 0 : sidebarWidth,
           right: 0,
           backgroundColor: currentTheme === 'dark' ? '#151718' : 'white',
+          width: '100%',
         }
       ]}
     >
@@ -176,11 +175,7 @@ export function Header({ sidebarWidth, onNavigate, currentPath = '/dash' }: Head
 const styles = StyleSheet.create({
   header: {
     height: 64,
-    position: Platform.select({
-      web: 'fixed',
-      default: 'absolute'
-    }) as 'fixed' | 'absolute',
-    top: 0,
+    position: 'relative',
     backgroundColor: 'transparent',
     borderBottomWidth: 1,
     flexDirection: 'row',

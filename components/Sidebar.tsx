@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Animated, Easing, Platform, Pressable, useColorScheme, useWindowDimensions, TextStyle, ScrollView } from 'react-native';
+import { View, StyleSheet, Animated, Easing, Platform, Pressable, useColorScheme, useWindowDimensions, TextStyle, ScrollView, Image } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { HoverableView } from './HoverableView';
@@ -22,8 +22,8 @@ interface TypographyStyle {
   fontWeight?: TextStyle['fontWeight'];
 }
 
-const EXPANDED_WIDTH = 240;
-const COLLAPSED_WIDTH = 68;
+const EXPANDED_WIDTH = 200;
+const COLLAPSED_WIDTH = 60;
 
 const getFontWeight = (weight?: TextStyle['fontWeight']): TextStyle['fontWeight'] => {
   switch (weight) {
@@ -167,21 +167,19 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
         {
           width: animatedWidth,
           backgroundColor: themeColors.secondaryBackground,
-          borderRightWidth: 0.5,
-          borderRightColor: themeColors.divider,
         }
       ]}>
         <ThemedView style={styles.content}>
           <ThemedView style={[styles.header, { backgroundColor: 'transparent' }]}>
             <View style={[
               styles.logoContainer,
-              { backgroundColor: themeColors.primary }
+              { backgroundColor: 'transparent' }
             ]}>
-              <ThemedText style={[
-                styles.logoText,
-                typography.title,
-                { fontSize: (typography.title?.fontSize || 24) * 0.8 }
-              ]} type="title">A</ThemedText>
+              <Image 
+                source={{ uri: 'https://static.vecteezy.com/system/resources/thumbnails/041/463/807/small/code-icon-3d-rendering-symbol-of-web-development-png.png' }}
+                style={styles.logo}
+                resizeMode="contain"
+              />
             </View>
             <Animated.View style={{
               opacity: fadeAnim,
@@ -191,39 +189,11 @@ export const Sidebar = ({ onNavigate, currentPath = '/dash', onToggle }: Sidebar
               })}]
             }}>
               {isExpanded && (
-                <ThemedText type="subtitle" style={[styles.brandText, typography.subtitle]}>
-                  Aicrus Tech
+                <ThemedText type="bodySemiBold" style={[styles.brandText]}>
+                  DevSync
                 </ThemedText>
               )}
             </Animated.View>
-            <HoverableView
-              onPress={toggleSidebar}
-              style={[
-                styles.toggleButton,
-                {
-                  backgroundColor: themeColors.secondaryBackground,
-                  right: -8,
-                  top: 62,
-                  borderColor: themeColors.divider,
-                  borderWidth: 1,
-                }
-              ]}
-              hoverScale={1.02}
-            >
-              {isExpanded ? (
-                <Icons.ChevronLeft 
-                  color={currentTheme === 'dark' ? '#fff' : themeColors.primary} 
-                  size={16} 
-                  strokeWidth={2} 
-                />
-              ) : (
-                <Icons.ChevronRight 
-                  color={currentTheme === 'dark' ? '#fff' : themeColors.primary} 
-                  size={16} 
-                  strokeWidth={2} 
-                />
-              )}
-            </HoverableView>
           </ThemedView>
 
           <ScrollView 
@@ -384,37 +354,19 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.lg,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
     ...Platform.select({
       web: {
         transition: 'all 0.3s ease',
       },
     }),
   },
-  logoText: {
-    color: 'white',
+  logo: {
+    width: 36,
+    height: 36,
   },
   brandText: {
-    marginLeft: SPACING.md,
-  },
-  toggleButton: {
-    position: 'absolute',
-    width: 24,
-    height: 24,
-    borderRadius: BORDER_RADIUS.pill,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    right: -8,
-    top: 64,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-      },
-      default: {
-        elevation: 2,
-      },
-    }),
+    marginLeft: SPACING.none,
   },
   menuContainer: {
     flex: 1,

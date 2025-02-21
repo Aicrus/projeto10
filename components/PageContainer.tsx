@@ -58,22 +58,21 @@ export function PageContainer({ children, style }: PageContainerProps) {
     <ThemedView style={[
       styles.container,
       {
-        // Largura máxima do conteúdo por breakpoint
-        maxWidth: isDesktop ? 1200 : 800,
+      
 
         // LATERAIS - Ajuste aqui o padding das laterais para cada breakpoint
         // Mobile: SPACING.md (16px) | Tablet: SPACING.xl (24px) | Desktop: SPACING.xxl (32px)
-        paddingHorizontal: isMobile ? SPACING.md : isTablet ? SPACING.xl : SPACING.xxl,
+        paddingHorizontal: isMobile ? SPACING.none : isTablet ? SPACING.md : SPACING.md,
 
         // SUPERIOR E INFERIOR BASE - Ajuste aqui o padding vertical base para cada breakpoint
         // Mobile: SPACING.md (16px) | Tablet: SPACING.xl (24px) | Desktop: SPACING.xxl (32px)
-        paddingVertical: isMobile ? SPACING.md : isTablet ? SPACING.xl : SPACING.xxl,
+        paddingVertical: isMobile ? SPACING.none : isTablet ? SPACING.md : SPACING.md,
 
         // SUPERIOR ESPECÍFICO - Ajuste aqui o padding superior específico
         // Web (Mobile/Tablet/Desktop) - Responsivo
         // Mobile Nativo - Valor fixo para status bar
         paddingTop: Platform.select({
-          web: isMobile ? SPACING.xl : isTablet ? SPACING.xl : SPACING.xxl,
+          web: isMobile ? SPACING.none : isTablet ? SPACING.md : SPACING.md,
           default: 50 // Mobile nativo: fixo para status bar
         }),
 
@@ -81,7 +80,7 @@ export function PageContainer({ children, style }: PageContainerProps) {
         // Web (Mobile/Tablet/Desktop) - Responsivo
         // Mobile Nativo - Valor fixo para navigation bar
         paddingBottom: Platform.select({
-          web: isMobile ? SPACING.md : isTablet ? SPACING.xl : SPACING.xxl,
+          web: isMobile ? SPACING.none : isTablet ? SPACING.md : SPACING.md,
           default: 75 // Mobile nativo: fixo para navigation bar
         }),
       },
